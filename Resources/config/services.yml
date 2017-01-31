@@ -11,7 +11,7 @@ services:
 
     lch_image_validator:
         class: LCH\MediaBundle\Validator\Constraints\ImageExtensionValidator
-        arguments: [ '@logger', '%kernel.root_dir%' ]
+        arguments: [ '%kernel.root_dir%' ]
         tags:
             - { name: validator.constraint_validator, alias: alias_name }
 

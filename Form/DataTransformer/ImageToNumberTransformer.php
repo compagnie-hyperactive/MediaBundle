@@ -3,8 +3,8 @@
 namespace LCH\MediaBundle\Form\DataTransformer;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use LCH\MediaBundle\Event\ImageEvent;
-use LCH\MediaBundle\LCHMediaEvents;
+use Lch\MediaBundle\Event\ImageEvent;
+use Lch\MediaBundle\LCHMediaEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -47,7 +47,7 @@ class ImageToNumberTransformer implements DataTransformerInterface
         $imageEvent = new ImageEvent($image, $this->image_param);
 
         $this->eventDispatcher->dispatch(
-            LCHMediaEvents::LCH_MEDIA_IMAGE_REVERSE_TRANSFORM, $imageEvent
+            LchMediaEvents::LCH_MEDIA_IMAGE_REVERSE_TRANSFORM, $imageEvent
         );
 
         if (null === $image) {

@@ -31,8 +31,6 @@ class ImageFormatValidator extends ConstraintValidator
             }
 
             if (null !== $constraint->getMaxWidth() && $value->getWidth() > $constraint->getMaxWidth()) {
-                // $this->context->getRoot()->get($this->context->getPropertyName())->getConfig()->getOptions()['label'],
-                // die(dump($this->context->getPropertyName()));
                 $this->context
                     ->buildViolation($constraint->maxWidthMessage)
                     ->setParameter('%maxWidth%', $constraint->getMaxWidth())
@@ -50,7 +48,7 @@ class ImageFormatValidator extends ConstraintValidator
                     ->addViolation();
             }
 
-            if (null !== $constraint->getMaxHeight() && $value->getHeight() < $constraint->getMaxHeight()) {
+            if (null !== $constraint->getMaxHeight() && $value->getHeight() > $constraint->getMaxHeight()) {
                 $this->context
                     ->buildViolation($constraint->maxHeightMessage)
                     ->setParameter('%maxHeight%', $constraint->getMaxHeight())
@@ -59,5 +57,7 @@ class ImageFormatValidator extends ConstraintValidator
                     ->addViolation();
             }
         }
+
+        return false;
     }
 }

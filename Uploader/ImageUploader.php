@@ -13,8 +13,12 @@ class ImageUploader
         $this->rootDir = $rootDir;
     }
 
-    public function upload(UploadedFile $file)
+    public function upload($file)
     {
+        if (is_string($file)) {
+            $fileName = explode('\\',$file);
+            $file = new UploadedFile($file, end($fileName));
+        }
         $rootPath = "/uploads/images/" . date('Y') . "/" . date('m') . "/";
 
         $imagesDir = "{$this->rootDir}/../web{$rootPath}";
@@ -25,7 +29,11 @@ class ImageUploader
 
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-        $file->move($imagesDir, $fileName);
+        try{
+            $file->move($imagesDir, $fileName);
+        } catch (\Exception $e) {
+            die(var_dump($e->getMessage()));
+        }
 
         return $rootPath.$fileName;
     }

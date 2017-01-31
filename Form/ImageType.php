@@ -25,7 +25,6 @@ class ImageType extends AbstractType
             ->add('file', FileType::class, [
                 'label' => 'lch.media_bundle.image.file',
                 'required' => true,
-                'constraints' => $this->setFileConstraint(),
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'lch.media_bundle.image.modal.save',
@@ -41,14 +40,6 @@ class ImageType extends AbstractType
         $resolver->setDefaults([
             'modal_title' => '',
         ]);
-    }
-
-    /**
-     * @return array
-     */
-    public function setFileConstraint()
-    {
-        return [];
     }
 
     public function getName()
