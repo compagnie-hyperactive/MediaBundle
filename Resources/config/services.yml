@@ -1,25 +1,25 @@
 services:
     lch.media_bundle.image_uploader:
-        class: LCH\MediaBundle\Uploader\ImageUploader
+        class: Lch\MediaBundle\Uploader\ImageUploader
         arguments: [ '%kernel.root_dir%' ]
 
     lch.media_bundle.addmedia:
-        class: LCH\MediaBundle\Form\AddImageType
+        class: Lch\MediaBundle\Form\AddImageType
         arguments: [ "@doctrine.orm.entity_manager", "@event_dispatcher" ]
         tags:
             - { name: form.type }
 
     lch_image_validator:
-        class: LCH\MediaBundle\Validator\Constraints\ImageExtensionValidator
+        class: Lch\MediaBundle\Validator\Constraints\ImageExtensionValidator
         arguments: [ '%kernel.root_dir%' ]
         tags:
             - { name: validator.constraint_validator, alias: alias_name }
 
     lch.media_bundle.image_manager:
-        class: LCH\MediaBundle\Manager\ImageManager
+        class: Lch\MediaBundle\Manager\ImageManager
         arguments: [ '@lch.media_bundle.image_uploader' ]
 
     lch.media_bundle.image_extension:
-        class: LCH\MediaBundle\Twig\Extension\ImageExtension
+        class: Lch\MediaBundle\Twig\Extension\ImageExtension
         tags:
           - { name: twig.extension }

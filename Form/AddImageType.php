@@ -1,6 +1,6 @@
 <?php
 
-namespace LCH\MediaBundle\Form;
+namespace Lch\MediaBundle\Form;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;
@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use LCH\MediaBundle\Form\DataTransformer\ImageToNumberTransformer;
+use Lch\MediaBundle\Form\DataTransformer\ImageToNumberTransformer;
 
 class AddImageType extends AbstractType
 {

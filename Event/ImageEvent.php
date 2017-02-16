@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class ImageEvent
- * @package LCH\MediaBundle\Event
+ * @package Lch\MediaBundle\Event
  */
 class ImageEvent extends Event
 {
