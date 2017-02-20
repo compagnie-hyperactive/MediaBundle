@@ -7,8 +7,9 @@ $(document).ready(function(){
     $('div[id^='+idModal+']').on('show.bs.modal', function (e) {
         var id = $(this).attr('id');
         var randId = extractRandId(id);
-        var route = $(this).attr('data-route');
-        loadMediaForm(randId,route);
+        var addRoute = $(this).attr('data-route-add');
+        var listRoute = $(this).attr('data-route-list');
+        loadMediaForm(randId, addRoute, listRoute);
     });
 
     $('button[id^='+idModalSave+']').on('click',function(e){
@@ -40,23 +41,25 @@ $(document).ready(function(){
      * Load the add Media Form in the modal
      *
      * @param randId
-     * @param route
+     * @param addRoute
+     * @param listRoute
      */
-    function loadMediaForm(randId, route)
+    function loadMediaForm(randId, addRoute, listRoute)
     {
         var modal = $('#'+idModal+randId);
         var fileValue;
         var data = {'id' : $('div[id="'+inputName+randId+'"] input[type=hidden]').val() };
 
+        // Load addition route by default
         jQuery.ajax({
-            url : Routing.generate(route),
+            url : Routing.generate(addRoute),
             type: 'post',
             data : data,
             success: function(html) {
                 var formName = $(html).attr('name');
 
-                modal.find('div.modal-body').empty();
-                modal.find('div.modal-body').append(
+                modal.find('div.modal-body #add-media').empty();
+                modal.find('div.modal-body #add-media').append(
                     html
                 );
 

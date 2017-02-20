@@ -28,7 +28,8 @@
             tabindex="-1"
             role="dialog"
             aria-labelledby="myModalLabel"
-            data-route="{{ form.vars['attr']['form_route'] }}"
+            data-route-add="{{ form.vars['attr']['add_form_route'] }}"
+            data-route-list="{{ form.vars['attr']['list_form_route'] }}"
         >
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -37,6 +38,15 @@
                         <h4 class="modal-title" id="myModalLabel">{{ form.vars['attr']['modal_title']|trans }}</h4>
                     </div>
                     <div class="modal-body">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#add-media" aria-controls="add-media" role="tab" data-toggle="tab">Add a media</a></li>
+                            <li role="presentation"><a href="#list-media" aria-controls="profile" role="tab" data-toggle="tab">Choose a media</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="add-media">add</div>
+                            <div role="tabpanel" class="tab-pane" id="list-media">list</div>
+                        </div>
                     </div>
                 </div>
             </div>

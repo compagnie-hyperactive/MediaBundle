@@ -4,7 +4,7 @@ services:
         arguments: [ '%kernel.root_dir%', '%lch_media.root_folder%' ]
 
     lch.media_bundle.addmedia:
-        class: Lch\MediaBundle\Form\AddImageType
+        class: Lch\MediaBundle\Form\AddOrChooseImageType
         arguments: [ "@doctrine.orm.entity_manager", "@event_dispatcher" ]
         tags:
             - { name: form.type }

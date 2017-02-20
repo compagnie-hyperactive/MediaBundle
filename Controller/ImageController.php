@@ -12,25 +12,24 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ImageController extends Controller
 {
-    public function saveAction(Request $request)
+    public function listAction(Request $request) {
+        // TODO handle differents media types
+        // TODO add events for listing filtering
+        // TODO add pagination, infinite scroll
+        $images = $this->getDoctrine()->getRepository('AppBundle:Image')->findAll();
+
+        return $this->render('@LchMedia/Image/list.html.twig', [
+            'images' => $images
+        ]);
+    }
+
+    public function addAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
         $entity = new Image();
-
-//        $id = $request->request->get('id');
-//        if (null === $id || empty($id) || '' === $id) {
-//            $entity = new Image();
-//        } else {
-//            /** @var Image $entity */
-//            $entity = $em->getRepository('AtlasBundle:Image')->findOneBy(['id'=>$id]);
-//            $entity->setFile(
-//                new File($this->get('kernel')->getRootDir().'/../web'.$entity->getFile())
-//            );
-//        }
-
         $form = $this->createForm(ImageType::class, $entity, [
-            'action' => $this->generateUrl('lch_media_image_save'),
+            'action' => $this->generateUrl('lch_media_image_add'),
         ]);
 
         $form->handleRequest($request);
@@ -67,7 +66,7 @@ class ImageController extends Controller
             }
         }
 
-        return $this->render('@App/Image/form.html.twig', [
+        return $this->render('@LchMedia/Image/add.html.twig', [
                 'form' => $form->createView(),
             ],
             (isset($response)) ? $response : null

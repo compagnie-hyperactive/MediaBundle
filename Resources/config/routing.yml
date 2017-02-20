@@ -1,4 +1,12 @@
-lch_media_image_save:
-    path: /image-save
-    defaults: { _controller: LchMediaBundle:Image:save }
+lch_media_image_add:
+    path: /image/add
+    defaults: { _controller: LchMediaBundle:Image:add }
     methods:  [ PUT, POST ]
+    options:
+        expose: true
+
+lch_media_image_list:
+    path: /image/list
+    defaults: { _controller: LchMediaBundle:Image:list }
+    options:
+        expose: true

@@ -12,7 +12,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Lch\MediaBundle\Form\DataTransformer\ImageToNumberTransformer;
 
-class AddImageType extends AbstractType
+class AddOrChooseImageType extends AbstractType
 {
     private $manager;
     private $eventDispatcher;
@@ -38,8 +38,11 @@ class AddImageType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         // Set default route for saving if not override
-        if(!isset($options['attr']['form_route'])) {
-            $view->vars['attr']['form_route'] = 'lch_media_image_save';
+        if(!isset($options['attr']['add_form_route'])) {
+            $view->vars['attr']['add_form_route'] = 'lch_media_image_add';
+        }
+        if(!isset($options['attr']['list_form_route'])) {
+            $view->vars['attr']['list_form_route'] = 'lch_media_image_list';
         }
         parent::finishView($view, $form, $options);
     }
