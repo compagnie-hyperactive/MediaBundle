@@ -6,11 +6,20 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageUploader
 {
-    private $rootDir;
+    /**
+     * @var string
+     */
+    private $kernelRootDir;
 
-    public function __construct($rootDir)
+    /**
+     * @var string
+     */
+    private $mediaRootDir;
+
+    public function __construct($kernelRootDir, $mediaRootDir)
     {
-        $this->rootDir = $rootDir;
+        $this->kernelRootDir = $kernelRootDir;
+        $this->mediaRootDir = $mediaRootDir;
     }
 
     public function upload($file)
@@ -19,9 +28,9 @@ class ImageUploader
             $fileName = explode('\\',$file);
             $file = new UploadedFile($file, end($fileName));
         }
-        $rootPath = "/uploads/images/" . date('Y') . "/" . date('m') . "/";
+        $rootPath = "/{$this->mediaRootDir}/" . date('Y') . "/" . date('m') . "/";
 
-        $imagesDir = "{$this->rootDir}/../web{$rootPath}";
+        $imagesDir = "{$this->kernelRootDir}/../web{$rootPath}";
 
         if(!file_exists($imagesDir)) {
             mkdir($imagesDir, 0755, true);

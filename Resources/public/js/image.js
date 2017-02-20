@@ -8,7 +8,7 @@ $(document).ready(function(){
         var id = $(this).attr('id');
         var randId = extractRandId(id);
         var route = $(this).attr('data-route');
-        loadImageForm(randId,route);
+        loadMediaForm(randId,route);
     });
 
     $('button[id^='+idModalSave+']').on('click',function(e){
@@ -37,12 +37,12 @@ $(document).ready(function(){
     }
 
     /**
-     * Load the add Image Form in the modal
+     * Load the add Media Form in the modal
      *
      * @param randId
      * @param route
      */
-    function loadImageForm(randId, route)
+    function loadMediaForm(randId, route)
     {
         var modal = $('#'+idModal+randId);
         var fileValue;
@@ -97,7 +97,7 @@ $(document).ready(function(){
 
                     var file = this.files[0];
                     if( file ) {
-                        var img = new Image();
+                        var img = new Media();
 
                         img.src = window.URL.createObjectURL( file );
 
@@ -186,7 +186,7 @@ $(document).ready(function(){
                                 $('div[id="'+inputName+randId+'"] div#imageThumb').html('<img src="'+entity.url+'" width="150"/>');
                             }
 
-                            $('div[id="'+inputName+randId+'"] p#displayImageName-'+randId).text(entity.name);
+                            $('div[id="'+inputName+randId+'"] p#displayMediaName-'+randId).text(entity.name);
 
                             modal.modal('toggle');
                         },

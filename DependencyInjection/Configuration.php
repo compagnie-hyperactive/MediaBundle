@@ -12,14 +12,30 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    const ROOT_NAMESPACE = "lch_media";
+    const KEY = 'key';
+    const DEFAULT_VALUE = 'default_value';
+    const ROOT_FOLDER = [
+        self::KEY           => 'root_folder',
+        self::DEFAULT_VALUE => 'uploads'
+    ];
     /**
      * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('lch_media');
+        $rootNode = $treeBuilder->root(self::ROOT_NAMESPACE);
 
+        // TODO add other options
+        $rootNode
+            // Root folder for medias
+            ->children()
+                ->scalarNode(self::ROOT_FOLDER[self::KEY])
+                    ->defaultValue(self::ROOT_FOLDER[self::DEFAULT_VALUE])
+                    ->info('Define the relative media root dir')
+                ->end()
+        ;
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.

@@ -1,7 +1,7 @@
 services:
     lch.media_bundle.image_uploader:
         class: Lch\MediaBundle\Uploader\ImageUploader
-        arguments: [ '%kernel.root_dir%' ]
+        arguments: [ '%kernel.root_dir%', '%lch_media.root_folder%' ]
 
     lch.media_bundle.addmedia:
         class: Lch\MediaBundle\Form\AddImageType

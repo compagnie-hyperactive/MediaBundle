@@ -22,6 +22,14 @@ class LchMediaExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        // Add configuration parameters
+        if(isset($config[Configuration::ROOT_FOLDER[Configuration::KEY]])) {
+            $container->setParameter(
+                Configuration::ROOT_NAMESPACE . "." . Configuration::ROOT_FOLDER[Configuration::KEY],
+                $config[Configuration::ROOT_FOLDER[Configuration::KEY]]
+            );
+        }
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }

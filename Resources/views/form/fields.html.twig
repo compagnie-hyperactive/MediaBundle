@@ -23,21 +23,20 @@
         </div>
 
         <div
-                class="modal fade"
-                id="image-modal-{{ rand }}"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="myModalLabel"
-                data-route="{{ form.vars['attr']['form_route'] }}"
+            class="modal fade"
+            id="image-modal-{{ rand }}"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="myModalLabel"
+            data-route="{{ form.vars['attr']['form_route'] }}"
         >
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">{{ form.vars['attr']['modal_title']|trans }}</h4>
                     </div>
                     <div class="modal-body">
-
                     </div>
                 </div>
             </div>

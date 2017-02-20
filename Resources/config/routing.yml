@@ -1,4 +1,4 @@
 lch_media_image_save:
     path: /image-save
     defaults: { _controller: LchMediaBundle:Image:save }
-    methods:  [ PUT ]
+    methods:  [ PUT, POST ]
