@@ -9,7 +9,7 @@ $(document).ready(function(){
         var randId = extractRandId(id);
         var addRoute = $(this).attr('data-route-add');
         var listRoute = $(this).attr('data-route-list');
-        loadMediaForm(randId, addRoute, listRoute);
+        loadAddMediaForm(randId, addRoute);
     });
 
     $('button[id^='+idModalSave+']').on('click',function(e){
@@ -18,6 +18,10 @@ $(document).ready(function(){
         save();
     });
 
+    $('div[id^='+idModal+'] a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        e.target // newly activated tab
+        e.relatedTarget // previous active tab
+    })
 
 
     /**
@@ -44,7 +48,7 @@ $(document).ready(function(){
      * @param addRoute
      * @param listRoute
      */
-    function loadMediaForm(randId, addRoute, listRoute)
+    function loadAddMediaForm(randId, addRoute)
     {
         var modal = $('#'+idModal+randId);
         var fileValue;
