@@ -32,7 +32,12 @@ class ImageToNumberTransformer implements DataTransformerInterface
 
         return $image;
     }
-    
+
+    /**
+     * Used on form validation, to transofrm media ID in real entity for relation saving
+     * @param mixed $imageNumber
+     * @return null|object
+     */
     public function reverseTransform($imageNumber)
     {
         if (!$imageNumber) {
@@ -41,7 +46,7 @@ class ImageToNumberTransformer implements DataTransformerInterface
         
         $image = $this->manager
             ->getRepository($this->entityReference)
-            ->findOneBy(array('id'=>$imageNumber))
+            ->find($imageNumber)
         ;
 
         $imageEvent = new ImageEvent($image, $this->image_param);

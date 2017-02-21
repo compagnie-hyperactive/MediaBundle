@@ -8,5 +8,6 @@ lch_media_image_add:
 lch_media_image_list:
     path: /image/list
     defaults: { _controller: LchMediaBundle:Image:list }
+    methods:  [ GET ]
     options:
         expose: true

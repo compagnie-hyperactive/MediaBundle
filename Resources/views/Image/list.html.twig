@@ -1,3 +1,7 @@
-{% for image in images %}
-    {{ image.name }}
-{% endfor %}
+<div class="media-list">
+    {% for image in images %}
+        <div data-id="{{ image.id }}" data-url="{{ image.file }}" data-name="{{ image.name }}" class="media">
+            {{ image.name }}
+        </div>
+    {% endfor %}
+</div>
