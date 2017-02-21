@@ -3,7 +3,6 @@ $(document).ready(function(){
     var idModal = 'image-modal-';
     var idModalSave = 'image-modal-save-';
     var inputName= 'image-';
-    var islistTabAlreadyActivated = false;
 
     $('div[id^='+idModal+']').on('show.bs.modal', function (e) {
         var id = $(this).attr('id');
@@ -24,8 +23,7 @@ $(document).ready(function(){
         var randId = extractRandId(id);
         var listRoute = $parentModal.attr('data-route-list');
 
-        if(e.target.hash == "#list-media" && !islistTabAlreadyActivated) {
-            islistTabAlreadyActivated = true;
+        if(e.target.hash == "#list-media-" + randId) {
             loadListMediaForm(randId, listRoute);
         }
     })
@@ -68,8 +66,8 @@ $(document).ready(function(){
             success: function(html) {
                 var formName = $(html).attr('name');
 
-                $modal.find('div.modal-body #add-media').empty();
-                $modal.find('div.modal-body #add-media').append(
+                $modal.find('div.modal-body #add-media-' + randId).empty();
+                $modal.find('div.modal-body #add-media-' + randId).append(
                     html
                 );
 
@@ -226,7 +224,7 @@ $(document).ready(function(){
     function loadListMediaForm(randId, listRoute)
     {
         var $modal = $('#'+idModal+randId);
-        var $listTab = $modal.find('div.modal-body #list-media');
+        var $listTab = $modal.find('div.modal-body #list-media-' + randId);
         // var fileValue;
 
         // Load list route
