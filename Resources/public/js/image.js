@@ -239,9 +239,9 @@ $(document).ready(function(){
                     html
                 );
 
-                // Add "choose" button
+                // // Add "choose" button
                 $listTab.append(
-                    "<button type='submit' class='btn btn-primary'>Choose</button>"
+                    "<button type='submit' class='btn btn-primary select'>Choose</button>"
                 );
                 // Handle media selection in list
                 $listTab.find("div.media").on('click', function(e) {

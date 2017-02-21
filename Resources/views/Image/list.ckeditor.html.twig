@@ -1,0 +1,17 @@
+{% include '@LchMedia/Image/list.html.twig' %}
+<button type='submit' class='btn btn-primary select'>Choose</button>
+<script src="{{ asset('bundles/app/js/jquery-3.1.1.min.js') }}" ></script>
+<script>
+    $(function() {
+        $("div.media").on('click', function(e) {
+            $("div.media").removeClass('chosen');
+            $(this).addClass('chosen');
+        });
+        $("body").on('click', ".select", function (e) {
+            e.preventDefault();
+            {#{{ app.request.get('CKEditorFuncNum')|escape('js') }}#}
+            window.opener.CKEDITOR.tools.callFunction({{ app.request.get('CKEditorFuncNum')|escape('js') }}, $("div.media.chosen").attr("data-url"));
+            window.close();
+        });
+    })
+</script>

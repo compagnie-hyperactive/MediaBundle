@@ -18,7 +18,13 @@ class ImageController extends Controller
         // TODO add pagination, infinite scroll
         $images = $this->getDoctrine()->getRepository('AppBundle:Image')->findAll();
 
-        return $this->render('@LchMedia/Image/list.html.twig', [
+        // Choose CKEditor template if params in query
+        if($request->query->has("CKEditor")) {
+            $template = '@LchMedia/Image/list.ckeditor.html.twig';
+        } else {
+            $template = '@LchMedia/Image/list.html.twig';
+        }
+        return $this->render($template, [
             'images' => $images
         ]);
     }
