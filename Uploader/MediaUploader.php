@@ -4,7 +4,7 @@ namespace Lch\MediaBundle\Uploader;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ImageUploader
+class MediaUploader
 {
     /**
      * @var string

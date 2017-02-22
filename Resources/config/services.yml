@@ -1,6 +1,6 @@
 services:
-    lch.media_bundle.image_uploader:
-        class: Lch\MediaBundle\Uploader\ImageUploader
+    lch.media_bundle.media_uploader:
+        class: Lch\MediaBundle\Uploader\MediaUploader
         arguments: [ '%kernel.root_dir%', '%lch_media.root_folder%' ]
 
     lch.media_bundle.addmedia:
@@ -15,11 +15,14 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: alias_name }
 
-    lch.media_bundle.image_manager:
-        class: Lch\MediaBundle\Manager\ImageManager
-        arguments: [ '@lch.media_bundle.image_uploader' ]
+    lch.media_bundle.media_manager:
+        class: Lch\MediaBundle\Manager\MediaManager
+        arguments: [ '@lch.media_bundle.media_uploader' ]
 
     lch.media_bundle.image_extension:
         class: Lch\MediaBundle\Twig\Extension\ImageExtension
         tags:
           - { name: twig.extension }
+
+    lch.media_bundle.media_type_finder:
+        class: MediaTypeFinder

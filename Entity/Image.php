@@ -6,46 +6,34 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Image
- * @package LCH\MediaBundle\Model
+ * @package LCH\MediaBundle\Entity
+ * @ORM\Entity(repositoryClass="Lch\MediaBundle\Repository\ImageRepository")
  */
-abstract class Image implements ImageInterface
+class Image extends Media
 {
-
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
-     */
-    protected $name;
-
-    /**
-     * @var string
+     * @var string $alt the alternative text
      *
      * @ORM\Column(name="alt", type="string", length=255, nullable=true)
      */
     protected $alt;
 
     /**
-     * @ORM\Column(name="file", type="string", nullable=true)
-     */
-    protected $file;
-
-    /**
-     * @var integer
+     * @var integer $width image main file's width
      *
      * @ORM\Column(name="width", type="integer", nullable=false)
      */
     protected $width;
 
     /**
-     * @var integer
+     * @var integer $height image main file's height
      *
      * @ORM\Column(name="height", type="integer", nullable=false)
      */
     protected $height;
 
     /**
-     * @inheritdoc
+     * @return int
      */
     public function getWidth()
     {
@@ -53,7 +41,8 @@ abstract class Image implements ImageInterface
     }
 
     /**
-     * @inheritdoc
+     * @param $width
+     * @return $this
      */
     public function setWidth($width)
     {
@@ -62,7 +51,7 @@ abstract class Image implements ImageInterface
     }
 
     /**
-     * @inheritdoc
+     * @return int
      */
     public function getHeight()
     {
@@ -70,29 +59,12 @@ abstract class Image implements ImageInterface
     }
 
     /**
-     * @inheritdoc
+     * @param $height
+     * @return $this
      */
     public function setHeight($height)
     {
         $this->height = $height;
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
         return $this;
     }
 
@@ -111,26 +83,6 @@ abstract class Image implements ImageInterface
     {
         $this->alt = $alt;
 
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setFile($file)
-    {
-        $this->file = $file;
-        if ($file) {
-            $this->updatedAt = new \DateTime('now');
-        }
         return $this;
     }
 }
