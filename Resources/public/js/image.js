@@ -23,9 +23,10 @@ $(document).ready(function(){
         var id = $parentModal.attr('id');
         var randId = extractRandId(id);
         var listRoute = $parentModal.attr('data-route-list');
+        var mediaType = $parentModal.attr('data-media-type');
 
         if(e.target.hash == "#list-media-" + randId) {
-            loadListMediaForm(randId, listRoute);
+            loadListMediaForm(randId, listRoute, mediaType);
         }
     })
 
@@ -227,8 +228,9 @@ $(document).ready(function(){
      *
      * @param randId
      * @param listRoute
+     * @param mediaType
      */
-    function loadListMediaForm(randId, listRoute)
+    function loadListMediaForm(randId, listRoute, mediaType)
     {
         var $modal = $('#'+idModal+randId);
         var $listTab = $modal.find('div.modal-body #list-media-' + randId);
@@ -236,7 +238,7 @@ $(document).ready(function(){
 
         // Load list route
         jQuery.ajax({
-            url : Routing.generate(listRoute),
+            url : Routing.generate(listRoute, { type: mediaType }),
             type: 'GET',
             success: function(html) {
                 // var formName = $(html).attr('name');

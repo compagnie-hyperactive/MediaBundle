@@ -10,19 +10,35 @@ use Lch\MediaBundle\LchMediaEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class MediaController extends Controller // implements MediaControllerInterface
 {
 
+    /**
+     * @param Request $request
+     * @param string $type
+     * @return Response
+     * @throws \Exception
+     */
     public function listAction(Request $request, $type = Media::ALL) {
 
         $registeredMediaTypes = $this->getParameter('lch.media.types');
-        // TODO add events for listing filtering, pass types found to event
 
-        $medias = $this->get('lch.media.manager')->getFilteredMedias($registeredMediaTypes);
-//        $medias = $this->getDoctrine()->getRepository('')->findAll();
+        if($type == Media::ALL) {
+            $authorizedMediaTypes = $registeredMediaTypes;
+        } else if(isset($registeredMediaTypes[$type])) {
+            // Array creation with only type allowed
+            $authorizedMediaTypes = [$type => $registeredMediaTypes[$type]];
+        } else {
+            // TODO specialize exception
+            throw new \Exception();
+        }
+        // TODO add events for listing filtering, pass types found to event
+        $medias = $this->get('lch.media.manager')->getFilteredMedias($authorizedMediaTypes);
 
         // TODO add pagination, infinite scroll
+        // TODO handle generalisation for view
         // Choose CKEditor template if params in query
         if($request->query->has("CKEditor")) {
             $template = '@LchMedia/Media/fragments/list.ckeditor.html.twig';
@@ -36,7 +52,8 @@ class MediaController extends Controller // implements MediaControllerInterface
 
     /**
      * @param Request $request
-     * @param $type string the media type to add
+     * @param $type
+     * @return JsonResponse|Response
      */
     public function addAction(Request $request, $type)
     {
@@ -85,6 +102,7 @@ class MediaController extends Controller // implements MediaControllerInterface
             return new JsonResponse(array_merge(['success'   => true], $prePersistEvent->getData()));
         }
 
+        // TODO handle view generalisation
         return $this->render('@LchMedia/Media/add.html.twig', [
             'mediaForm' => $mediaForm->createView(),
             ]

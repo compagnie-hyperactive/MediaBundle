@@ -1,6 +1,6 @@
 lch_media_list:
     path: /list/{type}
-    defaults: { _controller: LchMediaBundle:Media:list, type: "" }
+    defaults: { _controller: LchMediaBundle:Media:list, type: "all" }
     methods:  [ GET ]
     options:
         expose: true
