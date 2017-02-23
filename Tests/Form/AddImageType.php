@@ -2,7 +2,7 @@
 
 namespace Lch\MediaBundle\Tests\Form;
 
-use Lch\MediaBundle\Form\AddOrChooseImageType;
+use Lch\MediaBundle\Form\AddOrChooseMediaType;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\PreloadedExtension;
@@ -25,7 +25,7 @@ class AddImageTypeTest extends TypeTestCase
     protected function getExtensions()
     {
         // create a type instance with the mocked dependencies
-        $type = new AddOrChooseImageType($this->entityManager, $this->eventDispatcher);
+        $type = new AddOrChooseMediaType($this->entityManager, $this->eventDispatcher);
 
         return array(
             new PreloadedExtension(array(
@@ -36,6 +36,6 @@ class AddImageTypeTest extends TypeTestCase
 
     public function testSubmitValidData()
     {
-        $form = $this->factory->create(AddOrChooseImageType::class);
+        $form = $this->factory->create(AddOrChooseMediaType::class);
     }
 }

@@ -1,0 +1,7 @@
+<div class="media-list">
+    {% for media in medias %}
+        <div data-id="{{ media.id }}" data-url="{{ media.path }}" data-name="{{ media.name }}" class="media">
+            {{ media.name }}
+        </div>
+    {% endfor %}
+</div>

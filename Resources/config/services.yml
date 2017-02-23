@@ -1,28 +1,45 @@
+parameters:
+  lch.media.types:
+    image:
+      entity: 'Lch\MediaBundle\Entity\Image'
+      form:   'Lch\MediaBundle\Form\ImageType'
+      extensions: ['jpg', 'png', 'gif']
+
+    pdf:
+      entity: 'Lch\MediaBundle\Entity\Pdf'
+      form:   'Lch\MediaBundle\Form\PdfType'
+      extensions: ['pdf']
+
+
 services:
-    lch.media_bundle.media_uploader:
-        class: Lch\MediaBundle\Uploader\MediaUploader
-        arguments: [ '%kernel.root_dir%', '%lch_media.root_folder%' ]
+  lch.media.uploader:
+    class: Lch\MediaBundle\Uploader\MediaUploader
+    arguments: [ '%kernel.root_dir%', '%lch_media.root_folder%' ]
 
-    lch.media_bundle.addmedia:
-        class: Lch\MediaBundle\Form\AddOrChooseImageType
-        arguments: [ "@doctrine.orm.entity_manager", "@event_dispatcher" ]
-        tags:
-            - { name: form.type }
+  lch.media.form:
+    class: Lch\MediaBundle\Form\AddOrChooseMediaType
+    arguments: [ "@doctrine.orm.entity_manager", "@event_dispatcher", '%lch.media.types%' ]
+    tags:
+      - { name: form.type }
 
-    lch_image_validator:
-        class: Lch\MediaBundle\Validator\Constraints\ImageExtensionValidator
-        arguments: [ '%kernel.root_dir%' ]
-        tags:
-            - { name: validator.constraint_validator, alias: alias_name }
+  lch.media.manager:
+    class: Lch\MediaBundle\Manager\MediaManager
+    arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager' ]
 
-    lch.media_bundle.media_manager:
-        class: Lch\MediaBundle\Manager\MediaManager
-        arguments: [ '@lch.media_bundle.media_uploader' ]
+  lch.media.image.validator:
+    class: Lch\MediaBundle\Validator\Constraints\ImageExtensionValidator
+    arguments: [ '%kernel.root_dir%' ]
+    tags:
+      - { name: validator.constraint_validator, alias: alias_name }
 
-    lch.media_bundle.image_extension:
-        class: Lch\MediaBundle\Twig\Extension\ImageExtension
-        tags:
-          - { name: twig.extension }
+  lch.media.image.extension:
+    class: Lch\MediaBundle\Twig\Extension\ImageExtension
+    tags:
+      - { name: twig.extension }
 
-    lch.media_bundle.media_type_finder:
-        class: MediaTypeFinder
+  lch.media.image.pre_persist.listener:
+    class: Lch\MediaBundle\Listener\ImagePrePersistListener
+    arguments: ['@lch.media.manager']
+    tags:
+      - { name: kernel.event_listener, event: lch.media.pre_persist, method: onImagePrePersist }
+#    lazy: true

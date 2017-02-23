@@ -19,6 +19,11 @@ class Configuration implements ConfigurationInterface
         self::KEY           => 'root_folder',
         self::DEFAULT_VALUE => 'uploads'
     ];
+
+    const ENTITY = 'entity';
+    const FORM = 'form';
+    const EXTENSIONS = 'extensions';
+    const VIEW_TRANSFORMER = 'view_transformer';
     /**
      * {@inheritdoc}
      */

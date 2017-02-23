@@ -1,8 +1,7 @@
 <?php
 
-namespace Lch\MediaBundle\Model;
+namespace Lch\MediaBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class Media
 {
+    
+    const ALL = 'all';
+
     /**
      * @var int
      *
@@ -29,12 +31,7 @@ abstract class Media
      */
     protected $name;
 
-    /**
-     * @var string $path the file absolute path
-     *
-     * @ORM\Column(name="path", type="string", length=512, nullable=true)
-     */
-    protected $path;
+    
 
     /**
      * Get id
@@ -61,24 +58,6 @@ abstract class Media
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * @param string $path
-     * @return Media
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
         return $this;
     }
 }

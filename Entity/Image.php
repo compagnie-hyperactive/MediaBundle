@@ -1,34 +1,37 @@
 <?php
 
-namespace Lch\MediaBundle\Model;
+namespace Lch\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Lch\MediaBundle\Behavior\Storable;
 
 /**
  * Class Image
- * @package LCH\MediaBundle\Entity
+ * @package Lch\MediaBundle\Entity
  * @ORM\Entity(repositoryClass="Lch\MediaBundle\Repository\ImageRepository")
  */
 class Image extends Media
 {
+    use Storable;
+    
     /**
      * @var string $alt the alternative text
      *
-     * @ORM\Column(name="alt", type="string", length=255, nullable=true)
+     * @ORM\Column(name="alt", type="string", length=255)
      */
     protected $alt;
 
     /**
      * @var integer $width image main file's width
      *
-     * @ORM\Column(name="width", type="integer", nullable=false)
+     * @ORM\Column(name="width", type="integer")
      */
     protected $width;
 
     /**
      * @var integer $height image main file's height
      *
-     * @ORM\Column(name="height", type="integer", nullable=false)
+     * @ORM\Column(name="height", type="integer")
      */
     protected $height;
 

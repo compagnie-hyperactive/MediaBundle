@@ -1,13 +1,21 @@
-lch_media_image_add:
-    path: /image/add
-    defaults: { _controller: LchMediaBundle:Image:add }
+lch_media_list:
+    path: /list/{type}
+    defaults: { _controller: LchMediaBundle:Media:list, type: "" }
+    methods:  [ GET ]
+    options:
+        expose: true
+
+lch_media_add:
+    path: /add/{type}
+    defaults: { _controller: LchMediaBundle:Media:add }
     methods:  [ PUT, POST ]
     options:
         expose: true
 
-lch_media_image_list:
-    path: /image/list
-    defaults: { _controller: LchMediaBundle:Image:list }
-    methods:  [ GET ]
-    options:
-        expose: true
+#lch_media_image_add:
+#    path: /image/add
+#    defaults: { _controller: LchMediaBundle:Image:add }
+#    methods:  [ PUT, POST ]
+#    options:
+#        expose: true
+

@@ -2,13 +2,13 @@
 
 namespace Lch\MediaBundle\Tests\manager;
 
-use Lch\MediaBundle\Manager\MediaManager;
+use Lch\MediaBundle\Manager\MediaUploader;
 use Lch\MediaBundle\Model\Image;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var  MediaManager */
+    /** @var  MediaUploader */
     private $imageManager;
     private $imageUplaoder;
 

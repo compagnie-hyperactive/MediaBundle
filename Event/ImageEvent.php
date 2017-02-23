@@ -2,6 +2,7 @@
 
 namespace Lch\MediaBundle\Event;
 
+use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\Model\ImageInterface;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -19,20 +20,20 @@ class ImageEvent extends Event
 
     /**
      * ImageEvent constructor.
-     * @param ImageInterface $image
+     * @param Image $image
      * @param array $imageParam
      */
-    public function __construct(ImageInterface $image, array $imageParam)
+    public function __construct(Image $image, array $imageParam)
     {
         $this->image = $image;
         $this->imageParam = $imageParam;
     }
 
     /**
-     * @param ImageInterface $image
+     * @param Image $image
      * @return $this
      */
-    public function setImage(ImageInterface $image)
+    public function setImage(Image $image)
     {
         $this->image = $image;
 

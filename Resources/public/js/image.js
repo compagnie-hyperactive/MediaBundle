@@ -8,7 +8,8 @@ $(document).ready(function(){
         var id = $(this).attr('id');
         var randId = extractRandId(id);
         var addRoute = $(this).attr('data-route-add');
-        loadAddMediaForm(randId, addRoute);
+        var mediaType = $(this).attr('data-media-type');
+        loadAddMediaForm(randId, addRoute, mediaType);
     });
 
     $('button[id^='+idModalSave+']').on('click',function(e){
@@ -51,8 +52,9 @@ $(document).ready(function(){
      *
      * @param randId
      * @param addRoute
+     * @param mediaType
      */
-    function loadAddMediaForm(randId, addRoute)
+    function loadAddMediaForm(randId, addRoute, mediaType)
     {
         var $modal = $('#'+idModal+randId);
         var fileValue;
@@ -60,8 +62,8 @@ $(document).ready(function(){
 
         // Load addition route by default
         jQuery.ajax({
-            url : Routing.generate(addRoute),
-            type: 'post',
+            url : Routing.generate(addRoute, {'type': mediaType}),
+            type: 'POST',
             data : data,
             success: function(html) {
                 var formName = $(html).attr('name');
@@ -74,8 +76,9 @@ $(document).ready(function(){
                 // Set file helper
                 $('div#'+idModal+randId+' p.fileHelper').html($('#'+inputName+randId).find('input[type=hidden]').attr('data-helper'));
 
+                // TODO review extension check
                 // var $fileError = $('#'+idModal+randId + ' #fileError');
-                // $('div#'+idModal+randId+' #lch_media_bundle_image_file').on('change', function() {
+                $('div#'+idModal+randId+' #lch_media_bundle_image_file').on('change', function() {
                 //
                 //     fileValue = $(this).val();
                 //
@@ -105,7 +108,7 @@ $(document).ready(function(){
                 //             $('div#'+idModal+randId+' #lch_media_bundle_image_file').val('');
                 //         }
                 //     }
-                //
+                // TODO review limit checks
                 //     var file = this.files[0];
                 //     if( file ) {
                 //         var img = new Media();
@@ -164,48 +167,52 @@ $(document).ready(function(){
                 //             }
                 //         };
                 //     }
-                // });
+                });
 
                 $('form[name='+formName+']').on('submit', function(e) {
                     e.preventDefault();
 
-                    var $fileAlt = $('div#'+idModal+randId+' #lch_media_bundle_image_alt');
-                    if ($fileAlt.val() == '') {
-                        $fileAlt.val(fileValue);
-                    }
+                    // TODO handle alt and name server side
+                    // var $fileAlt = $('div#'+idModal+randId+' #lch_media_bundle_image_alt');
+                    // if ($fileAlt.val() == '') {
+                    //     $fileAlt.val(fileValue);
+                    // }
+                    //
+                    // var $fileName = $('div#'+idModal+randId+' #lch_media_bundle_image_name');
+                    // if ($fileName.val() == '') {
+                    //     $fileName.val(fileValue);
+                    // }
 
-                    var $fileName = $('div#'+idModal+randId+' #lch_media_bundle_image_name');
-                    if ($fileName.val() == '') {
-                        $fileName.val(fileValue);
-                    }
+                    // var formdata = (window.FormData) ? new FormData($(this)) : null;
+                    // var data = (formdata !== null) ? formdata : $(this).serialize();
 
-                    var formdata = (window.FormData) ? new FormData($(this)[0]) : null;
-                    var data = (formdata !== null) ? formdata : $(this).serialize();
+                    var formData = new FormData($(this)[0]);
+                    // var formData = $(this).serialize();
 
                     jQuery.ajax({
                         url : $(html).attr('action'),
                         type: 'POST',
-                        data: data,
+                        data: formData,
+                        cache: false,
                         contentType: false,
                         processData: false,
-                        success: function(entity) {
-                            setChosenMedia(entity, randId);
-                            $modal.modal('toggle');
-                            // $('div[id="'+inputName+randId+'"] input[type=hidden]').val(entity.id);
-                            // if ($('div[id="'+inputName+randId+'"] div#imageThumb img').length) {
-                            //     $('div[id="'+inputName+randId+'"] div#imageThumb img').attr('src', entity.url);
-                            // } else {
-                            //     $('div[id="'+inputName+randId+'"] div#imageThumb').html('<img src="'+entity.url+'" width="150"/>');
-                            // }
-                            //
-                            // $('div[id="'+inputName+randId+'"] p#displayMediaName-'+randId).text(entity.name);
-                            // modal.modal('toggle');
+                        success: function(result) {
+                            if("success" in result) {
+                                setChosenMedia(result, randId);
+                                $modal.modal('toggle');
+                            } else {
+                                $modal.find('div.modal-body #add-media-' + randId)
+                                    .empty()
+                                    .html(result)
+                                ;
+                            }
+                            
                         },
                         error: function (xhr, status, error) {
-                            $modal.find('div.modal-body').empty();
-                            $modal.find('div.modal-body').html(
-                                xhr.responseText
-                            );
+                            // $modal.find('div.modal-body').empty();
+                            // $modal.find('div.modal-body').html(
+                            //     xhr.responseText
+                            // );
                         }
                     });
                     return false;

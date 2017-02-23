@@ -1,4 +1,4 @@
-{% block lch_add_media_image_widget %}
+{% block lch_add_choose_media_widget %}
     {% set rand = random() %}
     {% spaceless %}
         <div id="image-{{ rand }}">
@@ -28,14 +28,15 @@
             tabindex="-1"
             role="dialog"
             aria-labelledby="myModalLabel"
-            data-route-add="{{ form.vars['attr']['add_form_route'] }}"
-            data-route-list="{{ form.vars['attr']['list_form_route'] }}"
+            data-route-add="{{ form.vars['add_media_route'] }}"
+            data-route-list="{{ form.vars['list_media_route'] }}"
+            data-media-type="{{ form.vars['media_type'] }}"
         >
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{{ form.vars['attr']['modal_title']|trans }}</h4>
+                        <h4 class="modal-title" id="myModalLabel">{{ form.vars['modal_title']|trans }}</h4>
                     </div>
                     <div class="modal-body">
                         <ul class="nav nav-tabs" role="tablist">
