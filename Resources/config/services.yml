@@ -3,7 +3,7 @@ parameters:
     image:
       entity: 'Lch\MediaBundle\Entity\Image'
       form:   'Lch\MediaBundle\Form\ImageType'
-      extensions: ['jpg', 'png', 'gif']
+      extensions: ['jpg', 'jpeg', 'png', 'gif']
 
     pdf:
       entity: 'Lch\MediaBundle\Entity\Pdf'
@@ -26,9 +26,9 @@ services:
     class: Lch\MediaBundle\Manager\MediaManager
     arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager' ]
 
-  lch.media.image.validator:
-    class: Lch\MediaBundle\Validator\Constraints\ImageExtensionValidator
-    arguments: [ '%kernel.root_dir%' ]
+  lch.media.extension.validator:
+    class: Lch\MediaBundle\Validator\Constraints\HasAllowedFileExtensionValidator
+    arguments: [ '%kernel.root_dir%', '%lch.media.types%' ]
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
 

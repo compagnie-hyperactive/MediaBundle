@@ -4,7 +4,7 @@ namespace Lch\MediaBundle\Tests\Validator\Constraints;
 
 use Lch\MediaBundle\Tests\TestImage;
 use Lch\MediaBundle\Validator\Constraints\ImageExtension;
-use Lch\MediaBundle\Validator\Constraints\ImageExtensionValidator;
+use Lch\MediaBundle\Validator\Constraints\MediaFileExtensionValidator;
 use Symfony\Component\Validator\Exception\InvalidOptionsException;
 
 
@@ -64,7 +64,7 @@ class ImageExtensionValidatorTest extends \PHPUnit_Framework_TestCase
         }
 
         // initialize the validator with the mocked context
-        $validator = new ImageExtensionValidator(__DIR__);
+        $validator = new MediaFileExtensionValidator(__DIR__);
         $validator->initialize($context);
 
         // return the SomeConstraintValidator

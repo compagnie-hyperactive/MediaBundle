@@ -22,12 +22,12 @@ class MediaUploader
         $this->mediaRootDir = $mediaRootDir;
     }
 
-    public function upload($file)
+    public function upload(UploadedFile $file)
     {
-        if (is_string($file)) {
-            $fileName = explode('\\',$file);
-            $file = new UploadedFile($file, end($fileName));
-        }
+//        if (is_string($file)) {
+//            $fileName = explode('\\',$file);
+//            $file = new UploadedFile($file, end($fileName));
+//        }
         $rootPath = "/{$this->mediaRootDir}/" . date('Y') . "/" . date('m') . "/";
 
         $imagesDir = "{$this->kernelRootDir}/../web{$rootPath}";

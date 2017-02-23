@@ -38,29 +38,29 @@ class ImagePrePersistListener
             return;
         }
 
-        if (null !== $image->getFilePath()) {
+        if (null !== $image->getFile()) {
 
-            $imageInfos = getimagesize($image->getFilePath());
+            $imageInfos = getimagesize($image->getFile());
 
             // TODO add checks, see how to pass constraints to event?
             $image->setWidth($imageInfos[0]);
             $image->setHeight($imageInfos[1]);
-            
-            $fileName = $this->mediaManager->upload($image);
-            $image->setFilePath($fileName);
 
             if(empty($image->getName())) {
-                $image->setName(pathinfo($image->getFilePath(), PATHINFO_BASENAME));
+                $image->setName(pathinfo($image->getFile()->getClientOriginalName(), PATHINFO_BASENAME));
             }
             if(empty($image->getAlt())) {
-                $image->setAlt(pathinfo($image->getFilePath(), PATHINFO_BASENAME));
+                $image->setAlt(pathinfo($image->getFile(), PATHINFO_BASENAME));
             }
+
+            $fileName = $this->mediaManager->upload($image->getFile());
+            $image->setFile($fileName);
 
             $event->setMedia($image);
             $event->setData([
                 'id'        => $image->getId(),
                 'name'      => $image->getName(),
-                'url'       => $image->getFilePath(),
+                'url'       => $image->getFile(),
             ]);
         }
     }

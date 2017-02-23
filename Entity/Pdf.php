@@ -3,6 +3,7 @@
 namespace Lch\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Lch\MediaBundle\Behavior\Storable;
 
 /**
  * Pdf
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Pdf extends Media
 {
+    use Storable;
 
 }
 

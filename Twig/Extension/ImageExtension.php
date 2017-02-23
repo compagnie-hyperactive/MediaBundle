@@ -2,6 +2,7 @@
 
 namespace Lch\MediaBundle\Twig\Extension;
 
+use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\Model\ImageInterface;
 
 class ImageExtension extends \Twig_Extension
@@ -16,7 +17,7 @@ class ImageExtension extends \Twig_Extension
         );
     }
 
-    public function image(ImageInterface $image = null, $width = null, $height = null)
+    public function image(Image $image = null, $width = null, $height = null)
     {
         if (null === $image) {
             return '';
@@ -27,7 +28,7 @@ class ImageExtension extends \Twig_Extension
         return "<img src='".$conf['file']."'".$conf['width']."".$conf['height']." atl='".$image->getAlt()."' />";
     }
 
-    protected function getImageConf(ImageInterface $image, $width = null, $height = null)
+    protected function getImageConf(Image $image, $width = null, $height = null)
     {
         $renderWidth = '';
         if (null !== $width) {

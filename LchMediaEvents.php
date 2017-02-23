@@ -4,6 +4,8 @@ namespace Lch\MediaBundle;
 
 final class LchMediaEvents
 {
-    const LCH_MEDIA_IMAGE_REVERSE_TRANSFORM = 'lch_media_image_reverse_transform';
+    const TRANSFORM = 'lch.media.transform';
+    const REVERSE_TRANSFORM = 'lch.media.reverse_transform';
     const PRE_PERSIST = "lch.media.pre_persist";
+    const POST_PERSIST = "lch.media.post_persist";
 }

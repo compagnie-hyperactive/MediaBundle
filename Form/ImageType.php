@@ -24,7 +24,7 @@ class ImageType extends AbstractType
                 'label' => 'lch.media.image.alt',
                 'required' => false,
             ])
-            ->add('filePath', FileType::class, [
+            ->add('file', FileType::class, [
                 'label' => 'lch.media.image.file',
                 'required' => true,
             ])

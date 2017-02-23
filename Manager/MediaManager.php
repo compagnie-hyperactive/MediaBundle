@@ -7,6 +7,7 @@ use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Model\ImageInterface;
 use Lch\MediaBundle\Uploader\MediaUploader;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaManager
 {
@@ -32,11 +33,10 @@ class MediaManager
     }
 
     // TODO review
-    public function upload(Media $media)
+    public function upload(UploadedFile $file)
     {
-        // TODO add check on storage trait. Throw exception if not
         
-        $fileName = $this->mediaUploader->upload($media->getFilePath());
+        $fileName = $this->mediaUploader->upload($file);
 
         return $fileName;
     }

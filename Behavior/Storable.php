@@ -7,31 +7,32 @@
  */
 namespace Lch\MediaBundle\Behavior;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 trait Storable
 {
     /**
-     * @var string $filePath the file absolute path
-     *
+     * @var UploadedFile $file the file absolute path
      * @ORM\Column(name="file_path", type="string", length=512)
      */
-    protected $filePath;
+    protected $file;
 
 
     /**
-     * @return string
+     * @return UploadedFile
      */
-    public function getFilePath()
+    public function getFile()
     {
-        return $this->filePath;
+        return $this->file;
     }
 
     /**
-     * @param string $filePath
-     * @return Storable
+     * @param UploadedFile $file
+     * @return $this
      */
-    public function setFilePath($filePath)
+    public function setFile($file)
     {
-        $this->filePath = $filePath;
+        $this->file = $file;
         return $this;
     }
 }

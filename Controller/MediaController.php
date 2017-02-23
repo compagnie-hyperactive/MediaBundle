@@ -4,6 +4,7 @@ namespace Lch\MediaBundle\Controller;
 
 use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
+use Lch\MediaBundle\Event\PostPersistEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -61,7 +62,8 @@ class MediaController extends Controller // implements MediaControllerInterface
 
         if ($mediaForm->isSubmitted() && $mediaForm->isValid()) {
             
-            // Dispatch pre-persist event to allow different media types listener to correctly persist media
+            // Dispatch pre-persist event
+            // - Allow different media types listener to correctly persist media according to its customisations
             $prePersistEvent = new PrePersistEvent($mediaEntity);
             $this->get('event_dispatcher')->dispatch(
                 LchMediaEvents::PRE_PERSIST,
@@ -71,6 +73,14 @@ class MediaController extends Controller // implements MediaControllerInterface
             $em = $this->getDoctrine()->getManager();
             $em->persist($prePersistEvent->getMedia());
             $em->flush();
+
+            // Dispatch post-persist event
+            // - Once media correctly saved and stored, allow different media types listener to perform post-operations (thumbnail generations...)
+            $postPersistEvent = new PostPersistEvent($prePersistEvent->getMedia());
+            $this->get('event_dispatcher')->dispatch(
+                LchMediaEvents::POST_PERSIST,
+                $postPersistEvent
+            );
 
             return new JsonResponse(array_merge(['success'   => true], $prePersistEvent->getData()));
         }
