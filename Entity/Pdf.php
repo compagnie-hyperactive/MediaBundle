@@ -14,6 +14,4 @@ use Lch\MediaBundle\Behavior\Storable;
 class Pdf extends Media
 {
     use Storable;
-
 }
-

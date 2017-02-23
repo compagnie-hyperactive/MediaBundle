@@ -22,6 +22,8 @@ class Configuration implements ConfigurationInterface
 
     const ENTITY = 'entity';
     const FORM = 'form';
+    const ADD_VIEW = 'add_view';
+    const THUMBNAIL_VIEW = 'thumbnail_view';
     const EXTENSIONS = 'extensions';
     const VIEW_TRANSFORMER = 'view_transformer';
     /**

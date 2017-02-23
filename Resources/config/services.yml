@@ -1,13 +1,17 @@
 parameters:
   lch.media.types:
     image:
-      entity: 'Lch\MediaBundle\Entity\Image'
-      form:   'Lch\MediaBundle\Form\ImageType'
+      entity:     'Lch\MediaBundle\Entity\Image'
+      form:       'Lch\MediaBundle\Form\ImageType'
+      add_view:   'LchMediaBundle:Image/fragments:add.html.twig'
+      thumbnail_view: 'LchMediaBundle:Image/fragments:thumbnail.html.twig'
       extensions: ['jpg', 'jpeg', 'png', 'gif']
 
     pdf:
-      entity: 'Lch\MediaBundle\Entity\Pdf'
-      form:   'Lch\MediaBundle\Form\PdfType'
+      entity:     'Lch\MediaBundle\Entity\Pdf'
+      form:       'Lch\MediaBundle\Form\PdfType'
+      add_view:   'LchMediaBundle:Pdf/fragments:add.html.twig'
+      thumbnail_view: 'LchMediaBundle:Pdf/fragments:thumbnail.html.twig'
       extensions: ['pdf']
 
 
@@ -24,7 +28,7 @@ services:
 
   lch.media.manager:
     class: Lch\MediaBundle\Manager\MediaManager
-    arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager' ]
+    arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager', '@event_dispatcher', '@twig', '%lch.media.types%' ]
 
   lch.media.extension.validator:
     class: Lch\MediaBundle\Validator\Constraints\HasAllowedFileExtensionValidator
@@ -32,14 +36,22 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
 
-  lch.media.image.extension:
-    class: Lch\MediaBundle\Twig\Extension\ImageExtension
+  lch.media.twig.extension:
+    class: Lch\MediaBundle\Twig\Extension\MediaExtension
+    arguments: [ '@lch.media.manager', '%lch.media.types%' ]
     tags:
       - { name: twig.extension }
 
-  lch.media.image.pre_persist.listener:
-    class: Lch\MediaBundle\Listener\ImagePrePersistListener
+  lch.media.image.subscriber:
+    class: Lch\MediaBundle\Listener\ImageSubscriber
     arguments: ['@lch.media.manager']
     tags:
-      - { name: kernel.event_listener, event: lch.media.pre_persist, method: onImagePrePersist }
-#    lazy: true
+      - { name: kernel.event_subscriber }
+    lazy: true
+
+  lch.media.pdf.pre_persist.listener:
+    class: Lch\MediaBundle\Listener\PdfPrePersistListener
+    arguments: ['@lch.media.manager']
+    tags:
+      - { name: kernel.event_listener, event: lch.media.pre_persist, method: onPdfPrePersist }
+    lazy: true

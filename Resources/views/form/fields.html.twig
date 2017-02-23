@@ -6,7 +6,7 @@
             <div>
                 <div id="imageThumb">
                     {% if value is not empty %}
-                        {{ image(value, 50, 50) }}
+                        {{ getThumbnail(value, 50, 50) }}
                     {% endif %}
                 </div>
                 <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value.id }}" {% endif %}/>

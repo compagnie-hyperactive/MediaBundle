@@ -102,59 +102,10 @@ class MediaController extends Controller // implements MediaControllerInterface
             return new JsonResponse(array_merge(['success'   => true], $prePersistEvent->getData()));
         }
 
-        // TODO handle view generalisation
-        return $this->render('@LchMedia/Media/add.html.twig', [
+        return $this->render($this->getParameter('lch.media.types')[$type][Configuration::ADD_VIEW], [
             'mediaForm' => $mediaForm->createView(),
             ]
         );
-
-//        $em = $this->getDoctrine()->getManager();
-
-
-//        $entity = new Image();
-//        $form = $this->createForm(ImageType::class, $entity, [
-//            'action' => $this->generateUrl('lch_media_image_add'),
-//        ]);
-//
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() ) {
-//            if ($form->isValid()) {
-//
-//                if (null !== $entity->getFile()) {
-//
-                    $fileName = $this->get('lch.media.manager')->upload($entity);
-//                    $entity->setFile($fileName);
-//                }
-//
-//                if (null === $entity->getId()) {
-//                    $em->persist($entity);
-//                }
-//
-//                $em->flush();
-//
-//                $response = new JsonResponse();
-//                $response->setData(array(
-//                    'id' => $entity->getId(),
-//                    'name' => $entity->getName(),
-//                    'url' => $entity->getFile(),
-//                ));
-//
-//                return $response;
-//            } else {
-//                $response = new Response(
-//                    'Content',
-//                    Response::HTTP_BAD_REQUEST,
-//                    array('content-type' => 'text/html')
-//                );
-//            }
-//        }
-//
-//        return $this->render('@LchMedia/Image/add.html.twig', [
-//            'form' => $form->createView(),
-//        ],
-//            (isset($response)) ? $response : null
-//        );
     }
 
     public function editAction()
