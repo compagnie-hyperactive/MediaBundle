@@ -14,6 +14,10 @@ class MediaExtension extends \Twig_Extension
     private $mediaManager;
 
     /**
+     * @var \Twig_Environment
+     */
+    private $twig;
+    /**
      * @var array
      */
     private $mediaTypes;
@@ -21,11 +25,13 @@ class MediaExtension extends \Twig_Extension
     /**
      * MediaExtension constructor.
      * @param MediaManager $mediaManager
+     * @param \Twig_Environment $twig
      * @param array $mediaTypes
      */
-    public function __construct(MediaManager $mediaManager, array $mediaTypes) {
-        $this->mediaTypes = $mediaTypes;
+    public function __construct(MediaManager $mediaManager, \Twig_Environment $twig, array $mediaTypes) {
         $this->mediaManager = $mediaManager;
+        $this->twig = $twig;
+        $this->mediaTypes = $mediaTypes;
     }
 
     public function getFunctions()
@@ -34,13 +40,35 @@ class MediaExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getThumbnail', [$this, 'getThumbnail' ], [
                 'needs_environment' => false,
                 'is_safe' => ['html']
+            ]),
+            new \Twig_SimpleFunction('getListItem', [$this, 'getListItem' ], [
+                'needs_environment' => false,
+                'is_safe' => ['html']
             ])
         );
     }
 
-    public function getThumbnail(Media $image, $width = null, $height = null)
+    public function getThumbnail(Media $media, $width = null, $height = null)
     {
-        return $this->mediaManager->getThumbnail($image);
+//        return $this->twig->render($this->getMediaTypeConfiguration($media)[Configuration::THUMBNAIL_VIEW],
+//            ['thumbnailEvent' => $thumbnailEvent]);
+        $templateEvent =  $this->mediaManager->getThumbnail($media);
+
+        return $this->twig->render($templateEvent->getTemplate(), ['thumbnailEvent' => $templateEvent]);
+//        if (null === $image) {
+//            return '';
+//        }
+//
+//        $conf = $this->getImageConf($image, $width, $height);
+//
+//        return "<img src='".$conf['file']."'".$conf['width']."".$conf['height']." atl='".$image->getAlt()."' />";
+    }
+
+    public function getListItem(Media $media)
+    {
+        $templateEvent =  $this->mediaManager->getListItem($media);
+
+        return $this->twig->render($templateEvent->getTemplate(), ['listItemEvent' => $templateEvent]);
 //        if (null === $image) {
 //            return '';
 //        }

@@ -12,12 +12,17 @@ namespace Lch\MediaBundle\Event;
 use Lch\MediaBundle\Entity\Media;
 use Symfony\Component\EventDispatcher\Event;
 
-class ThumbnailEvent extends Event
+class ThumbnailEvent extends Event implements MediaTemplateEventInterface
 {
     /**
      * @var Media
      */
     private $media;
+
+    /**
+     * @var string 
+     */
+    private $template;
 
     /**
      * @var array
@@ -39,6 +44,22 @@ class ThumbnailEvent extends Event
     public function setThumbnailPath($thumbnailPath)
     {
         $this->thumbnailPath = $thumbnailPath;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate() {
+        return $this->template;
+    }
+
+    /**
+     * @param string $template
+     * @return $this
+     */
+    public function setTemplate($template) {
+        $this->template = $template;
         return $this;
     }
 

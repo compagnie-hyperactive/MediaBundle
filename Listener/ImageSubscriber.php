@@ -10,6 +10,7 @@ namespace Lch\MediaBundle\Listener;
 
 
 use Lch\MediaBundle\Entity\Image;
+use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\LchMediaEvents;
@@ -36,7 +37,8 @@ class ImageSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents() {
         return [
             LchMediaEvents::PRE_PERSIST => 'onImagePrePersist',
-            LchMediaEvents::THUMBNAIL => 'onImageThumbnail'
+            LchMediaEvents::THUMBNAIL => 'onImageThumbnail',
+            LchMediaEvents::LIST_ITEM => 'onImageListItem'
         ];
     }
 
@@ -79,6 +81,9 @@ class ImageSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param ThumbnailEvent $event
+     */
     public function onImageThumbnail(ThumbnailEvent $event) {
         $image = $event->getMedia();
 
@@ -88,5 +93,17 @@ class ImageSubscriber implements EventSubscriberInterface
         }
         // TODO elaborate
         $event->setThumbnailPath($image->getFile());
+    }
+
+    /**
+     * @param ListItemEvent $event
+     */
+    public function onImageListItem(ListItemEvent $event) {
+        $image = $event->getMedia();
+
+        // Only for images
+        if(!$image instanceof Image) {
+            return;
+        }
     }
 }

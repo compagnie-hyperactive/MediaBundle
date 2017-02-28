@@ -1,7 +1,5 @@
-<div class="media-list">
+<div class="media-list col-xs-12">
     {% for media in medias %}
-        <div data-id="{{ media.id }}" data-url="{{ media.file }}" data-name="{{ media.name }}" class="media">
-            {{ media.name }}
-        </div>
+        {{ getListItem(media) }}
     {% endfor %}
 </div>

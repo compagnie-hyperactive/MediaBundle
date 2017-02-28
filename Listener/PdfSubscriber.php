@@ -8,10 +8,14 @@
 namespace Lch\MediaBundle\Listener;
 
 use Lch\MediaBundle\Entity\Pdf;
+use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
+use Lch\MediaBundle\Event\ThumbnailEvent;
+use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Manager\MediaManager;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class PdfPrePersistListener
+class PdfSubscriber implements EventSubscriberInterface
 {
     /**
      * @var MediaManager
@@ -19,13 +23,22 @@ class PdfPrePersistListener
     private $mediaManager;
 
     /**
-     * PdfPrePersistListener constructor.
+     * PdfSubscriber constructor.
      * @param MediaManager $mediaManager
      */
     public function __construct(MediaManager $mediaManager) {
         $this->mediaManager = $mediaManager;
     }
 
+
+    public static function getSubscribedEvents() {
+        return [
+            LchMediaEvents::PRE_PERSIST => 'onPdfPrePersist',
+            LchMediaEvents::THUMBNAIL => 'onPdfThumbnail',
+            LchMediaEvents::LIST_ITEM => 'onPdfListItem'
+        ];
+    }
+    
     /**
      * @param PrePersistEvent $event
      */
@@ -52,6 +65,32 @@ class PdfPrePersistListener
                 'name'      => $pdf->getName(),
                 'url'       => $pdf->getFile(),
             ]);
+        }
+    }
+
+    /**
+     * @param ThumbnailEvent $event
+     */
+    public function onPdfThumbnail(ThumbnailEvent $event) {
+        $pdf = $event->getMedia();
+
+        // Only for PDF
+        if(!$pdf instanceof Pdf) {
+            return;
+        }
+        // TODO elaborate
+//        $event->setThumbnailPath($image->getFile());
+    }
+
+    /**
+     * @param ListItemEvent $event
+     */
+    public function onPdfListItem(ListItemEvent $event) {
+        $pdf = $event->getMedia();
+
+        // Only for images
+        if(!$pdf instanceof Pdf) {
+            return;
         }
     }
 }

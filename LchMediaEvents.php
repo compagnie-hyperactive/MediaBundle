@@ -9,4 +9,5 @@ final class LchMediaEvents
     const PRE_PERSIST = "lch.media.pre_persist";
     const POST_PERSIST = "lch.media.post_persist";
     const THUMBNAIL = "lch.media.thumbnail";
+    const LIST_ITEM = "lch.media.list_item";
 }

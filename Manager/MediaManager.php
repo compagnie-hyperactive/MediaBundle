@@ -5,6 +5,8 @@ namespace Lch\MediaBundle\Manager;
 use Doctrine\ORM\EntityManager;
 use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
+use Lch\MediaBundle\Event\ListItemEvent;
+use Lch\MediaBundle\Event\MediaTemplateEventInterface;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Model\ImageInterface;
@@ -30,11 +32,6 @@ class MediaManager
     private $eventDispatcher;
 
     /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
-    /**
      * @var array
      */
     private $mediaTypes;
@@ -44,15 +41,13 @@ class MediaManager
      * @param MediaUploader $mediaUploader
      * @param EntityManager $entityManager
      * @param EventDispatcherInterface $eventDispatcher
-     * @param \Twig_Environment $twig
      * @param array $mediaTypes
      */
-    public function __construct(MediaUploader $mediaUploader, EntityManager $entityManager, EventDispatcherInterface $eventDispatcher, \Twig_Environment $twig, array $mediaTypes)
+    public function __construct(MediaUploader $mediaUploader, EntityManager $entityManager, EventDispatcherInterface $eventDispatcher, array $mediaTypes)
     {
         $this->mediaUploader = $mediaUploader;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->twig = $twig;
         $this->mediaTypes = $mediaTypes;
     }
 
@@ -69,17 +64,42 @@ class MediaManager
 
     /**
      * @param Media $media
-     * @return string
+     * @return MediaTemplateEventInterface
      */
     public function getThumbnail(Media $media) {
         $thumbnailEvent = new ThumbnailEvent($media);
+//        $thumbnailEvent->setTemplate($this->getMediaTypeConfiguration($media)[Configuration::LIST_ITEM_VIEW]);
+        $thumbnailEvent->setMedia($media);
+        $thumbnailEvent->setTemplate($this->getMediaTypeConfiguration($media)[Configuration::THUMBNAIL_VIEW]);
+
         $this->eventDispatcher->dispatch(
             LchMediaEvents::THUMBNAIL,
             $thumbnailEvent
         );
+        
+        // TODO: add one by default
 
-        return $this->twig->render($this->getMediaTypeConfiguration($media)[Configuration::THUMBNAIL_VIEW],
-            ['thumbnailEvent' => $thumbnailEvent]);
+        return $thumbnailEvent;
+    }
+
+    /**
+     * @param Media $media
+     * @return MediaTemplateEventInterface
+     * @throws \Exception
+     */
+    public function getListItem(Media $media) {
+        $listItemEvent = new ListItemEvent($media);
+        $listItemEvent->setMedia($media);
+        $listItemEvent->setTemplate($this->getMediaTypeConfiguration($media)[Configuration::LIST_ITEM_VIEW]);
+
+        $this->eventDispatcher->dispatch(
+            LchMediaEvents::LIST_ITEM,
+            $listItemEvent
+        );
+
+        // TODO: add one by default
+
+        return $listItemEvent;
     }
 
     /**

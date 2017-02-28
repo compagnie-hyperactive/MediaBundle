@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\Event;
  * Class ImageEvent
  * @package Lch\MediaBundle\Event
  */
-class TransformEvent extends Event
+class TransformEvent extends Event implements MediaTemplateEventInterface
 {
     /** @var Media */
     private $media;
