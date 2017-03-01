@@ -7,11 +7,12 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
-class ImageFormatValidator extends ConstraintValidator
+class ImageSizeValidator extends ConstraintValidator
 {
     /**
-     * @param mixed|ImageInterface $value
-     * @param Constraint|ImageFormat $constraint
+     * @param mixed $value
+     * @param Constraint $constraint
+     * @return bool
      */
     public function validate($value, Constraint $constraint)
     {

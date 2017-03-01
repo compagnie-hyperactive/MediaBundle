@@ -19,6 +19,27 @@ class AddOrChooseMediaType extends AbstractType
 {
     const NAME = 'lch_add_choose_media';
 
+    const HELPER = "helper";
+    /**
+     * The route for adding media to collection
+     */
+    const ADD_MEDIA_ROUTE = "add_media_route";
+
+    /**
+     * The route for listing media
+     */
+    const LIST_MEDIA_ROUTE = "list_media_route";
+
+    /**
+     * The entity reference for listing one media type
+     */
+    const ENTITY_REFERENCE = 'entity_reference';
+
+    /**
+     * other media parameters
+     */
+    const MEDIA_PARAMETERS = 'media_parameters';
+
     /**
      * @var ObjectManager
      */
@@ -47,8 +68,8 @@ class AddOrChooseMediaType extends AbstractType
         $transformer = new MediaToNumberTransformer(
             $this->manager,
             $this->eventDispatcher,
-            $options['entity_reference'],
-            $options['media_parameters']
+            $options[self::ENTITY_REFERENCE],
+            $options[self::MEDIA_PARAMETERS]
         );
         $builder->addViewTransformer($transformer);
 
@@ -62,20 +83,26 @@ class AddOrChooseMediaType extends AbstractType
     {
 
         // Media listing
-        $view->vars['list_media_route'] = $options['list_media_route'];
+        $view->vars[self::LIST_MEDIA_ROUTE] = $options[self::LIST_MEDIA_ROUTE];
         // Media addition
-        $view->vars['add_media_route'] = $options['add_media_route'];
+        $view->vars[self::ADD_MEDIA_ROUTE] = $options[self::ADD_MEDIA_ROUTE];
 
         // Media type
         foreach($this->registeredMediaTypes as $mediaSlug => $registeredMediaType) {
-            if($registeredMediaType[Configuration::ENTITY] === $options['entity_reference']) {
+            if($registeredMediaType[Configuration::ENTITY] === $options[self::ENTITY_REFERENCE]) {
                 $view->vars['media_type'] = $mediaSlug;
             }
         }
         if(!isset($view->vars['media_type'])) {
             // TODO throw exception, media type not found
         }
+
         $view->vars['modal_title'] = $options['modal_title'];
+
+        // Media helper
+        $view->vars[self::HELPER] = $options[self::HELPER];
+        // Media parameters
+        $view->vars[self::MEDIA_PARAMETERS] = $options[self::MEDIA_PARAMETERS];
 
         parent::finishView($view, $form, $options);
     }
@@ -84,13 +111,14 @@ class AddOrChooseMediaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'entity_reference' => '',
+            self::ENTITY_REFERENCE => '',
             'label' => 'lch.media.form.add',
             'modal_title' => 'lch.media.form.modal.title',
-            'add_media_route' => 'lch_media_add',
-            'list_media_route' => 'lch_media_list',
+            self::ADD_MEDIA_ROUTE => 'lch_media_add',
+            self::LIST_MEDIA_ROUTE => 'lch_media_list',
             'invalid_message' => 'The selected image does not exist',
-            'media_parameters' => [],
+            self::MEDIA_PARAMETERS => [],
+            self::HELPER => 'lch.media.helper'
         ));
     }
 

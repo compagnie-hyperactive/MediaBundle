@@ -1,0 +1,9 @@
+.media-list {
+  .media {
+    border-radius: 4px;
+    border: 1px solid black;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

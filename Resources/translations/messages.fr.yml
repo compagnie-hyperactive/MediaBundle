@@ -1,11 +1,13 @@
 lch:
-    media_bundle:
-        image:
-            add:
-                button: Ajouter
-            name: Nom
-            alt: Texte Alternatif
-            file: Fichier
-            modal:
-                close: Fermer
-                save: Enregistrer
+  media:
+    choose: Choisir un média
+    add: Ajouter un média
+    edit: Modifier un média
+#      add:
+#        button: Ajouter
+#      name: Nom
+#      alt: Texte Alternatif
+#      file: Fichier
+#      modal:
+#        close: Fermer
+#        save: Enregistrer

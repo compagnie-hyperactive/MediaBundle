@@ -1,12 +1,18 @@
 {% block lch_add_choose_media_widget %}
     {% set rand = random() %}
     {% spaceless %}
+        {% if(test is not defined)  %}
+            {% set test = 'TEST' %}
+        {% else %}
+            {{ dump(test) }}
+        {% endif  %}
         <div id="image-{{ rand }}">
             <label>{{ form.vars.label|trans }}</label>
+            <p>{{ form.vars['helper']|trans }}</p>
             <div>
                 <div id="imageThumb">
                     {% if value is not empty %}
-                        {{ getThumbnail(value, 50, 50) }}
+                        {{ getThumbnail(value) }}
                     {% endif %}
                 </div>
                 <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value.id }}" {% endif %}/>
@@ -14,9 +20,9 @@
             </div>
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#image-modal-{{ rand }}">
                 {% if value is not empty %}
-                    {{ 'app.modify'|trans }}
+                    {{ 'lch.media.edit'|trans }}
                 {% else %}
-                    {{ 'app.add'|trans }}
+                    {{ 'lch.media.choose'|trans }}
                 {% endif %}
 
             </button>
@@ -31,17 +37,19 @@
             data-route-add="{{ form.vars['add_media_route'] }}"
             data-route-list="{{ form.vars['list_media_route'] }}"
             data-media-type="{{ form.vars['media_type'] }}"
+            data-media-params="{{ form.vars['media_parameters']|json_encode }}"
         >
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">{{ form.vars['modal_title']|trans }}</h4>
+                        <p>{{ form.vars['helper']|trans }}</p>
                     </div>
                     <div class="modal-body">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#add-media-{{ rand }}" aria-controls="add-media" role="tab" data-toggle="tab">Add a media</a></li>
-                            <li role="presentation"><a href="#list-media-{{ rand }}" aria-controls="profile" role="tab" data-toggle="tab">Choose a media</a></li>
+                            <li role="presentation" class="active"><a href="#add-media-{{ rand }}" aria-controls="add-media" role="tab" data-toggle="tab">{{ "lch.media.add"|trans }}</a></li>
+                            <li role="presentation"><a href="#list-media-{{ rand }}" aria-controls="profile" role="tab" data-toggle="tab">{{ "lch.media.choose"|trans }}</a></li>
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">

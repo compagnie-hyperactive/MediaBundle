@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+    // TODO find better way to check already handled
     var idModal = 'image-modal-';
     var idModalSave = 'image-modal-save-';
     var inputName= 'image-';
