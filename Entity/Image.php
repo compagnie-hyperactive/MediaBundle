@@ -8,6 +8,7 @@ use Lch\MediaBundle\Behavior\Storable;
 /**
  * Class Image
  * @package Lch\MediaBundle\Entity
+ * @ORM\Table(name="lch_image")
  * @ORM\Entity(repositoryClass="Lch\MediaBundle\Repository\ImageRepository")
  */
 class Image extends Media

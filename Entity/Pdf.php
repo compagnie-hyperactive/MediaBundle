@@ -8,7 +8,7 @@ use Lch\MediaBundle\Behavior\Storable;
 /**
  * Pdf
  *
- * @ORM\Table(name="pdf")
+ * @ORM\Table(name="lch_pdf")
  * @ORM\Entity(repositoryClass="Lch\MediaBundle\Repository\PdfRepository")
  */
 class Pdf extends Media
