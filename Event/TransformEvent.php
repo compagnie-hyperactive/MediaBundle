@@ -16,6 +16,10 @@ class TransformEvent extends Event implements MediaTemplateEventInterface
 
     /** @var  array */
     private $mediaParameters;
+    /**
+     * @var string
+     */
+    private $template;
 
     /**
      * ImageEvent constructor.
@@ -29,13 +33,20 @@ class TransformEvent extends Event implements MediaTemplateEventInterface
     }
 
     /**
-     * @param Media $media
-     * @return $this
+     * @return string
      */
-    public function setMedia(Media $media)
+    public function getTemplate(): string
     {
-        $this->media = $media;
+        return $this->template;
+    }
 
+    /**
+     * @param string $template
+     * @return TransformEvent
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
         return $this;
     }
 
@@ -45,6 +56,17 @@ class TransformEvent extends Event implements MediaTemplateEventInterface
     public function getMedia()
     {
         return $this->media;
+    }
+
+    /**
+     * @param Media $media
+     * @return $this
+     */
+    public function setMedia(Media $media)
+    {
+        $this->media = $media;
+
+        return $this;
     }
 
     /**

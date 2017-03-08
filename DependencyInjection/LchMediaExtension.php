@@ -22,6 +22,9 @@ class LchMediaExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yml');
+
         /*******************************
          * Add configuration parameters
          */
@@ -33,10 +36,11 @@ class LchMediaExtension extends Extension
             );
         }
 
-        // Types registered
-        
+        // Overload registered types and declare new ones
+        if(isset($config[Configuration::TYPES])) {
+            $typesParametersAlias = Configuration::ROOT_PARAMETERS_NAMESPACE . "." . Configuration::TYPES;
+            $container->setParameter($typesParametersAlias, array_merge($container->getParameter($typesParametersAlias), $config[Configuration::TYPES]));
+        }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
     }
 }

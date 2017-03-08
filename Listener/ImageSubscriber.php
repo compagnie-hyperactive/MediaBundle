@@ -74,7 +74,6 @@ class ImageSubscriber implements EventSubscriberInterface
 
             $event->setMedia($image);
             $event->setData([
-                'id'        => $image->getId(),
                 'name'      => $image->getName(),
                 'url'       => $image->getFile(),
             ]);

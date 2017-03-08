@@ -1,25 +1,27 @@
 parameters:
+  lch.media.uploader.class: Lch\MediaBundle\Uploader\MediaUploader
+  lch.media.manager.class: Lch\MediaBundle\Manager\MediaManager
   lch.media.types:
-    image:
-      entity:     'Lch\MediaBundle\Entity\Image'
-      form:       'Lch\MediaBundle\Form\ImageType'
-      add_view:   'LchMediaBundle:Image/fragments:add.html.twig'
-      thumbnail_view: 'LchMediaBundle:Image/fragments:thumbnail.html.twig'
-      list_item_view: 'LchMediaBundle:Image/fragments:list.item.html.twig'
-      extensions: ['jpg', 'jpeg', 'png', 'gif']
+      image:
+        entity:     'Lch\MediaBundle\Entity\Image'
+        form:       'Lch\MediaBundle\Form\ImageType'
+        add_view:   'LchMediaBundle:Image/fragments:add.html.twig'
+        thumbnail_view: 'LchMediaBundle:Image/fragments:thumbnail.html.twig'
+        list_item_view: 'LchMediaBundle:Image/fragments:list.item.html.twig'
+        extensions: ['jpg', 'jpeg', 'png', 'gif']
 
-    pdf:
-      entity:     'Lch\MediaBundle\Entity\Pdf'
-      form:       'Lch\MediaBundle\Form\PdfType'
-      add_view:   'LchMediaBundle:Pdf/fragments:add.html.twig'
-      thumbnail_view: 'LchMediaBundle:Pdf/fragments:thumbnail.html.twig'
-      list_item_view: 'LchMediaBundle:Pdf/fragments:list.item.html.twig'
-      extensions: ['pdf']
+      pdf:
+        entity:     'Lch\MediaBundle\Entity\Pdf'
+        form:       'Lch\MediaBundle\Form\PdfType'
+        add_view:   'LchMediaBundle:Pdf/fragments:add.html.twig'
+        thumbnail_view: 'LchMediaBundle:Pdf/fragments:thumbnail.html.twig'
+        list_item_view: 'LchMediaBundle:Pdf/fragments:list.item.html.twig'
+        extensions: ['pdf']
 
 
 services:
   lch.media.uploader:
-    class: Lch\MediaBundle\Uploader\MediaUploader
+    class: '%lch.media.uploader.class%'
     arguments: [ '%kernel.root_dir%', '%lch_media.root_folder%' ]
     lazy: true
 
@@ -30,13 +32,13 @@ services:
       - { name: form.type }
 
   lch.media.manager:
-    class: Lch\MediaBundle\Manager\MediaManager
+    class: '%lch.media.manager.class%'
     arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager', '@event_dispatcher', '%lch.media.types%' ]
     lazy: true
 
   lch.media.extension.validator:
     class: Lch\MediaBundle\Validator\Constraints\HasAllowedFileExtensionValidator
-    arguments: [ '%kernel.root_dir%', '%lch.media.types%' ]
+    arguments: [ '%kernel.root_dir%', '@lch.media.manager' ]
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
 

@@ -92,14 +92,14 @@ class MediaController extends Controller // implements MediaControllerInterface
             $em->flush();
 
             // Dispatch post-persist event
-            // - Once media correctly saved and stored, allow different media types listener to perform post-operations (thumbnail generations...)
+            // - Once media correctly saved and stored, allow different media types listener to perform post-operations (thumbnail generations...) and retrieve ID for DataTransformer
             $postPersistEvent = new PostPersistEvent($prePersistEvent->getMedia());
             $this->get('event_dispatcher')->dispatch(
                 LchMediaEvents::POST_PERSIST,
                 $postPersistEvent
             );
 
-            return new JsonResponse(array_merge(['success'   => true], $prePersistEvent->getData()));
+            return new JsonResponse(array_merge(['success'   => true], array_merge(['id' => $postPersistEvent->getMedia()->getId() ], $prePersistEvent->getData())));
         }
 
         return $this->render($this->getParameter('lch.media.types')[$type][Configuration::ADD_VIEW], [
