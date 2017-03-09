@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode(self::ENTITY)
+                                ->isRequired()
                                 // TODO add check class exists ifTrue
                             ->end()
                             ->scalarNode(self::FORM)

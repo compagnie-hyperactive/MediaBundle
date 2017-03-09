@@ -3,7 +3,6 @@ parameters:
   lch.media.manager.class: Lch\MediaBundle\Manager\MediaManager
   lch.media.types:
       image:
-        entity:     'Lch\MediaBundle\Entity\Image'
         form:       'Lch\MediaBundle\Form\ImageType'
         add_view:   'LchMediaBundle:Image/fragments:add.html.twig'
         thumbnail_view: 'LchMediaBundle:Image/fragments:thumbnail.html.twig'
@@ -11,7 +10,6 @@ parameters:
         extensions: ['jpg', 'jpeg', 'png', 'gif']
 
       pdf:
-        entity:     'Lch\MediaBundle\Entity\Pdf'
         form:       'Lch\MediaBundle\Form\PdfType'
         add_view:   'LchMediaBundle:Pdf/fragments:add.html.twig'
         thumbnail_view: 'LchMediaBundle:Pdf/fragments:thumbnail.html.twig'

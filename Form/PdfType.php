@@ -12,20 +12,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PdfType extends AbstractType
 {
     const NAME = 'lch_media_pdf_type';
+    const ROOT_TRANSLATION_PATH = 'lch.media.pdf';
 
+    /**
+     * @inheritdoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'lch.media_bundle.image.name',
+                'label' => static::ROOT_TRANSLATION_PATH . '.name',
                 'required' => false,
             ])
             ->add('file', FileType::class, [
-                'label' => 'lch.media_bundle.image.file',
+                'label' => static::ROOT_TRANSLATION_PATH . '.file',
                 'required' => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'lch.media_bundle.image.modal.save',
+                'label' => static::ROOT_TRANSLATION_PATH . '.modal.save',
                 'attr' => [
                     'class' => 'btn btn-primary',
                 ],
@@ -33,18 +37,27 @@ class PdfType extends AbstractType
         ;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            
+            'data_class' => 'Lch\MediaBundle\Entity\Pdf'
         ]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return self::NAME;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getBlockPrefix()
     {
         return self::NAME;

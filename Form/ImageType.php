@@ -12,24 +12,28 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ImageType extends AbstractType
 {
     const NAME = 'lch_media_image_type';
+    const ROOT_TRANSLATION_PATH = 'lch.media.image';
 
+    /**
+     * @inheritdoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'lch.media.image.name',
+                'label' => static::ROOT_TRANSLATION_PATH . '.name.label',
                 'required' => false,
             ])
             ->add('alt', TextType::class, [
-                'label' => 'lch.media.image.alt',
+                'label' => static::ROOT_TRANSLATION_PATH . '.alt.label',
                 'required' => false,
             ])
             ->add('file', FileType::class, [
-                'label' => 'lch.media.image.file',
+                'label' => static::ROOT_TRANSLATION_PATH . '.file.label',
                 'required' => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'lch.media.image.modal.save',
+                'label' => static::ROOT_TRANSLATION_PATH . '.modal.save.label',
                 'attr' => [
                     'class' => 'btn btn-primary',
                 ],
@@ -37,6 +41,9 @@ class ImageType extends AbstractType
         ;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -44,11 +51,17 @@ class ImageType extends AbstractType
         ]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return self::NAME;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getBlockPrefix()
     {
         return self::NAME;

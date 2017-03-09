@@ -39,8 +39,19 @@ class LchMediaExtension extends Extension
         // Overload registered types and declare new ones
         if(isset($config[Configuration::TYPES])) {
             $typesParametersAlias = Configuration::ROOT_PARAMETERS_NAMESPACE . "." . Configuration::TYPES;
-            $container->setParameter($typesParametersAlias, array_merge($container->getParameter($typesParametersAlias), $config[Configuration::TYPES]));
-        }
+            $nativeTypes = $container->getParameter($typesParametersAlias);
+            $mergedTypes = [];
 
+            // Loop over types for array_merge
+            foreach($config[Configuration::TYPES] as $type => $data) {
+                if(isset($nativeTypes[$type])) {
+                    $mergedTypes[$type] = array_merge($nativeTypes[$type], $data);
+                } else {
+                    $mergedTypes[$type] = $data;
+                }
+            }
+
+            $container->setParameter($typesParametersAlias, $mergedTypes);
+        }
     }
 }

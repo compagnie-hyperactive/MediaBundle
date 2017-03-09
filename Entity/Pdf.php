@@ -8,10 +8,9 @@ use Lch\MediaBundle\Behavior\Storable;
 /**
  * Pdf
  *
- * @ORM\Table(name="lch_pdf")
- * @ORM\Entity(repositoryClass="Lch\MediaBundle\Repository\PdfRepository")
+ * @ORM\MappedSuperclass()
  */
-class Pdf extends Media
+abstract class Pdf extends Media
 {
     use Storable;
 }

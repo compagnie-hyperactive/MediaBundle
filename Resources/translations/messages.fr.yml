@@ -3,6 +3,17 @@ lch:
     choose: Choisir un média
     add: Ajouter un média
     edit: Modifier un média
+
+    image:
+      name:
+        label: Nom
+      alt:
+        label: Texte alternatif
+      file:
+        label: Fichier
+      modal:
+        save:
+          label: Enregistrer l'image
 #      add:
 #        button: Ajouter
 #      name: Nom
