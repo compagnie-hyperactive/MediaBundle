@@ -52,7 +52,7 @@ class PdfType extends AbstractType
      */
     public function getName()
     {
-        return self::NAME;
+        return static::NAME;
     }
 
     /**
@@ -60,6 +60,6 @@ class PdfType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return static::NAME;
     }
 }

@@ -36,36 +36,36 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root(self::ROOT_NAMESPACE);
+        $rootNode = $treeBuilder->root(static::ROOT_NAMESPACE);
 
         // TODO add other options
         $rootNode
             // Root folder for medias
             ->children()
-                ->scalarNode(self::ROOT_FOLDER[self::KEY])
-                    ->defaultValue(self::ROOT_FOLDER[self::DEFAULT_VALUE])
+                ->scalarNode(static::ROOT_FOLDER[static::KEY])
+                    ->defaultValue(static::ROOT_FOLDER[static::DEFAULT_VALUE])
                     ->info('Define the relative media root dir')
                 ->end()
-                ->arrayNode(self::TYPES)
+                ->arrayNode(static::TYPES)
                     ->prototype('array')
                         ->children()
-                            ->scalarNode(self::ENTITY)
+                            ->scalarNode(static::ENTITY)
                                 ->isRequired()
                                 // TODO add check class exists ifTrue
                             ->end()
-                            ->scalarNode(self::FORM)
+                            ->scalarNode(static::FORM)
                                 // TODO add check class exists ifTrue
                             ->end()
-                            ->scalarNode(self::ADD_VIEW)
+                            ->scalarNode(static::ADD_VIEW)
                                 // TODO add check twig exists ifTrue
                             ->end()
-                            ->scalarNode(self::THUMBNAIL_VIEW)
+                            ->scalarNode(static::THUMBNAIL_VIEW)
                                 // TODO add check twig exists ifTrue
                             ->end()
-                            ->scalarNode(self::LIST_ITEM_VIEW)
+                            ->scalarNode(static::LIST_ITEM_VIEW)
                                 // TODO add check twig exists ifTrue
                             ->end()
-                            ->arrayNode(self::EXTENSIONS)
+                            ->arrayNode(static::EXTENSIONS)
                                 ->prototype('scalar')->end()
                             ->end()
                         ->end()

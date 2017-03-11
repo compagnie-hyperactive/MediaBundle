@@ -29,6 +29,12 @@ services:
     tags:
       - { name: form.type }
 
+  lch.media.multiple.form:
+    class: Lch\MediaBundle\Form\AddOrChooseMultipleMediasType
+    arguments: [ "@doctrine.orm.entity_manager", "@event_dispatcher", '%lch.media.types%' ]
+    tags:
+      - { name: form.type }
+
   lch.media.manager:
     class: '%lch.media.manager.class%'
     arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager', '@event_dispatcher', '%lch.media.types%' ]

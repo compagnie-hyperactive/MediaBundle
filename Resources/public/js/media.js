@@ -1,11 +1,20 @@
-$(document).ready(function(){
+// TODO make all this available as jquery plugin
+// (function ( $ ) {
+//     var LchMedia = {
+//         changeRandomId: function () {
+//             alert('change');
+//         }
+//     };
+// }( $ ));
 
+
+$(document).ready(function(){
     // TODO find better way to check already handled
-    var idModal = 'image-modal-';
-    var idModalSave = 'image-modal-save-';
+    var idModal = 'image-modal__';
+    var idModalSave = 'image-modal-save__';
     var inputName= 'image-';
 
-    $('div[id^='+idModal+']').on('show.bs.modal', function (e) {
+    $('body').on('show.bs.modal', 'div[id^='+idModal+']', function (e) {
         var id = $(this).attr('id');
         var randId = extractRandId(id);
         var addRoute = $(this).attr('data-route-add');
@@ -13,13 +22,13 @@ $(document).ready(function(){
         loadAddMediaForm(randId, addRoute, mediaType);
     });
 
-    $('button[id^='+idModalSave+']').on('click',function(e){
+    $('body').on('click', 'button[id^='+idModalSave+']', function(e){
         var id = $(this).attr('id');
         var randId = extractRandId(id);
         save();
     });
 
-    $('div[id^='+idModal+'] a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    $('body').on('shown.bs.tab', 'div[id^='+idModal+'] a[data-toggle="tab"]', function (e) {
         var $parentModal = $(this).parents('div[id^='+idModal+']');
         var id = $parentModal.attr('id');
         var randId = extractRandId(id);
@@ -70,8 +79,8 @@ $(document).ready(function(){
             success: function(html) {
                 var formName = $(html).attr('name');
 
-                $modal.find('div.modal-body #add-media-' + randId).empty();
-                $modal.find('div.modal-body #add-media-' + randId).append(
+                $modal.find('div.modal-body #add-media__' + randId).empty();
+                $modal.find('div.modal-body #add-media__' + randId).append(
                     html
                 );
 
@@ -203,7 +212,7 @@ $(document).ready(function(){
                                 setChosenMedia(result, randId);
                                 $modal.modal('toggle');
                             } else {
-                                $modal.find('div.modal-body #add-media-' + randId)
+                                $modal.find('div.modal-body #add-media__' + randId)
                                     .empty()
                                     .html(result)
                                 ;
@@ -234,7 +243,7 @@ $(document).ready(function(){
     function loadListMediaForm(randId, listRoute, mediaType)
     {
         var $modal = $('#'+idModal+randId);
-        var $listTab = $modal.find('div.modal-body #list-media-' + randId);
+        var $listTab = $modal.find('div.modal-body #list-media__' + randId);
         // var fileValue;
 
         // Load list route

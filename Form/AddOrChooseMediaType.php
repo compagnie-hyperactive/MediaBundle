@@ -5,8 +5,6 @@ namespace Lch\MediaBundle\Form;
 use Lch\MediaBundle\DependencyInjection\Configuration;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,18 +41,24 @@ class AddOrChooseMediaType extends AbstractType
     /**
      * @var ObjectManager
      */
-    private $manager;
+    protected $manager;
 
     /**
      * @var EventDispatcherInterface
      */
-    private $eventDispatcher;
+    protected $eventDispatcher;
 
     /**
      * @var array $types media types registered
      */
-    private $registeredMediaTypes;
+    protected $registeredMediaTypes;
 
+    /**
+     * AddOrChooseMediaType constructor.
+     * @param ObjectManager $manager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param array $registeredMediaTypes
+     */
     public function __construct(ObjectManager $manager, EventDispatcherInterface $eventDispatcher, array $registeredMediaTypes)
     {
         $this->manager = $manager;
@@ -62,14 +66,18 @@ class AddOrChooseMediaType extends AbstractType
         $this->registeredMediaTypes = $registeredMediaTypes;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // TODO add check on required options and related exceptions
         $transformer = new MediaToNumberTransformer(
             $this->manager,
             $this->eventDispatcher,
-            $options[self::ENTITY_REFERENCE],
-            $options[self::MEDIA_PARAMETERS]
+            $options[static::ENTITY_REFERENCE],
+            $options[static::MEDIA_PARAMETERS]
         );
         $builder->addViewTransformer($transformer);
 
@@ -83,13 +91,13 @@ class AddOrChooseMediaType extends AbstractType
     {
 
         // Media listing
-        $view->vars[self::LIST_MEDIA_ROUTE] = $options[self::LIST_MEDIA_ROUTE];
+        $view->vars[static::LIST_MEDIA_ROUTE] = $options[static::LIST_MEDIA_ROUTE];
         // Media addition
-        $view->vars[self::ADD_MEDIA_ROUTE] = $options[self::ADD_MEDIA_ROUTE];
+        $view->vars[static::ADD_MEDIA_ROUTE] = $options[static::ADD_MEDIA_ROUTE];
 
         // Media type
         foreach($this->registeredMediaTypes as $mediaSlug => $registeredMediaType) {
-            if($registeredMediaType[Configuration::ENTITY] === $options[self::ENTITY_REFERENCE]) {
+            if($registeredMediaType[Configuration::ENTITY] === $options[static::ENTITY_REFERENCE]) {
                 $view->vars['media_type'] = $mediaSlug;
             }
         }
@@ -100,35 +108,43 @@ class AddOrChooseMediaType extends AbstractType
         $view->vars['modal_title'] = $options['modal_title'];
 
         // Media helper
-        $view->vars[self::HELPER] = $options[self::HELPER];
+        $view->vars[static::HELPER] = $options[static::HELPER];
         // Media parameters
-        $view->vars[self::MEDIA_PARAMETERS] = $options[self::MEDIA_PARAMETERS];
+        $view->vars[static::MEDIA_PARAMETERS] = $options[static::MEDIA_PARAMETERS];
 
         parent::finishView($view, $form, $options);
     }
 
-
+    /**
+     * @inheritdoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            self::ENTITY_REFERENCE => '',
+            static::ENTITY_REFERENCE => '',
             'label' => 'lch.media.form.add',
             'modal_title' => 'lch.media.form.modal.title',
-            self::ADD_MEDIA_ROUTE => 'lch_media_add',
-            self::LIST_MEDIA_ROUTE => 'lch_media_list',
+            static::ADD_MEDIA_ROUTE => 'lch_media_add',
+            static::LIST_MEDIA_ROUTE => 'lch_media_list',
             'invalid_message' => 'The selected image does not exist',
-            self::MEDIA_PARAMETERS => [],
-            self::HELPER => 'lch.media.helper'
+            static::MEDIA_PARAMETERS => [],
+            static::HELPER => 'lch.media.helper'
         ));
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getParent()
     {
         return HiddenType::class;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return static::NAME;
     }
 }
