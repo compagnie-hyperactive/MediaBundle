@@ -12,7 +12,8 @@ $(document).ready(function(){
     // TODO find better way to check already handled
     var idModal = 'image-modal__';
     var idModalSave = 'image-modal-save__';
-    var inputName= 'image-';
+    var inputName = 'image__';
+    var thumbName = 'imageThumb__';
 
     $('body').on('show.bs.modal', 'div[id^='+idModal+']', function (e) {
         var id = $(this).attr('id');
@@ -35,7 +36,7 @@ $(document).ready(function(){
         var listRoute = $parentModal.attr('data-route-list');
         var mediaType = $parentModal.attr('data-media-type');
 
-        if(e.target.hash == "#list-media-" + randId) {
+        if(e.target.hash == "#list-media__" + randId) {
             loadListMediaForm(randId, listRoute, mediaType);
         }
     })
@@ -289,10 +290,12 @@ $(document).ready(function(){
     function setChosenMedia(entity, randId) {
         var $mediaControl = $('div[id="'+inputName+randId+'"]');
         $mediaControl.find('input[type=hidden]').val(entity.id);
-        if ($mediaControl.find('div#imageThumb img').length) {
-            $mediaControl.find('div#imageThumb img').attr('src', entity.url);
+        var thumbId = thumbName + randId;
+        var thumbSelector = "div#" + thumbId;
+        if ($mediaControl.find(thumbSelector  + ' img').length) {
+            $mediaControl.find(thumbSelector + ' img').attr('src', entity.url);
         } else {
-            $mediaControl.find('div#imageThumb').html('<img src="'+entity.url+'" width="150"/>');
+            $mediaControl.find(thumbSelector).html('<img src="'+entity.url+'" width="150"/>');
         }
 
         $mediaControl.find('p[id^=display]').text(entity.name);
