@@ -69,6 +69,11 @@ class MediaController extends Controller // implements MediaControllerInterface
          */
         $mediaEntity = $mediaReflection->newInstance();
 
+        if(!$mediaEntity instanceof Media) {
+            // TODO specialise
+            throw new \Exception();
+        }
+
         $mediaForm = $this->createForm(
             $this->getParameter('lch.media.types')[$type][Configuration::FORM],
             $mediaEntity,
@@ -99,7 +104,15 @@ class MediaController extends Controller // implements MediaControllerInterface
                 $postPersistEvent
             );
 
-            return new JsonResponse(array_merge(['success'   => true], array_merge(['id' => $postPersistEvent->getMedia()->getId() ], $prePersistEvent->getData())));
+            // Merge success tag + prepersist + postpersist (for ID)
+            return new JsonResponse(
+                array_merge(['success'   => true],
+                    array_merge(
+                        $prePersistEvent->getData(),
+                        ['id' => $postPersistEvent->getMedia()->getId() ]
+                    )
+                )
+            );
         }
 
         return $this->render($this->getParameter('lch.media.types')[$type][Configuration::ADD_VIEW], [

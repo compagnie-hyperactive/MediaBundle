@@ -21,15 +21,15 @@ class PdfType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => static::ROOT_TRANSLATION_PATH . '.name',
+                'label' => static::ROOT_TRANSLATION_PATH . '.name.label',
                 'required' => false,
             ])
             ->add('file', FileType::class, [
-                'label' => static::ROOT_TRANSLATION_PATH . '.file',
+                'label' => static::ROOT_TRANSLATION_PATH . '.file.label',
                 'required' => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => static::ROOT_TRANSLATION_PATH . '.modal.save',
+                'label' => static::ROOT_TRANSLATION_PATH . '.modal.save.label',
                 'attr' => [
                     'class' => 'btn btn-primary',
                 ],
