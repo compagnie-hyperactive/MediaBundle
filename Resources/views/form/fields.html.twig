@@ -53,8 +53,16 @@
                                 </ul>
                                 <!-- Tab panes -->
                                 <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="add-media__{{ rand }}">add</div>
-                                    <div role="tabpanel" class="tab-pane" id="list-media__{{ rand }}">list</div>
+                                    <div role="tabpanel" class="tab-pane active" id="add-media__{{ rand }}">
+                                        <div class="col-xs-12 text-center">
+                                            <img src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="list-media__{{ rand }}">
+                                        <div class="col-xs-12 text-center">
+                                            <img src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
