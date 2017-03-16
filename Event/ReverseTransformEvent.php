@@ -2,6 +2,7 @@
 
 namespace Lch\MediaBundle\Event;
 
+use Lch\MediaBundle\Behavior\Mediable;
 use Lch\MediaBundle\Entity\Media;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -11,8 +12,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ReverseTransformEvent extends Event
 {
-    /** @var Media */
-    private $media;
+    use Mediable;
 
     /** @var  array */
     private $mediaParameters;
@@ -26,25 +26,6 @@ class ReverseTransformEvent extends Event
     {
         $this->media = $media;
         $this->mediaParameters = $imagesParameters;
-    }
-
-    /**
-     * @param Media $media
-     * @return $this
-     */
-    public function setMedia(Media $media)
-    {
-        $this->media = $media;
-
-        return $this;
-    }
-
-    /**
-     * @return Media
-     */
-    public function getMedia()
-    {
-        return $this->media;
     }
 
     /**

@@ -3,15 +3,18 @@
 namespace Lch\MediaBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
+use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
+use Lch\MediaBundle\Behavior\Storable;
 use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\MediaTemplateEventInterface;
+use Lch\MediaBundle\Event\StorageEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\LchMediaEvents;
+use Lch\MediaBundle\Loader\MediaUploader;
 use Lch\MediaBundle\Model\ImageInterface;
 use Lch\MediaBundle\Twig\Extension\MediaExtension;
-use Lch\MediaBundle\Uploader\MediaUploader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -53,14 +56,37 @@ class MediaManager
     }
 
     /**
-     * @param UploadedFile $file
+     * @param Media $media
      * @return string
+     * @throws \Exception
      */
-    public function upload(UploadedFile $file)
+    public function upload(Media $media)
     {
-        $fileName = $this->mediaUploader->upload($file);
+        $this->mediaUploader->checkStorable($media);
+
+        // Create file path
+        $relativeFilePath = "/" . date('Y') . "/" . date('m') . "/";
+
+        // Create file name
+        $fileName = md5(uniqid()).'.' . $media->getFile()->guessExtension();
+
+        // Throw event to act on storage
+        $storageEvent = new StorageEvent($media, $relativeFilePath, $fileName);
+
+        $this->eventDispatcher->dispatch(LchMediaEvents::STORAGE, $storageEvent);
+
+        $fileName = $this->mediaUploader->upload($media, $storageEvent->getRelativeFilePath(), $storageEvent->getFileName());
 
         return $fileName;
+    }
+
+
+    public function download(Media $media) {
+
+    }
+
+    public function getUrl(Media $media) {
+
     }
 
     /**

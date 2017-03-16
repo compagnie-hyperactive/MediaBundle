@@ -1,6 +1,8 @@
 parameters:
-  lch.media.uploader.class: Lch\MediaBundle\Uploader\MediaUploader
+  lch.media.uploader.class: Lch\MediaBundle\Loader\MediaUploader
+  lch.media.downloader.class: Lch\MediaBundle\Loader\MediaDownloader
   lch.media.manager.class: Lch\MediaBundle\Manager\MediaManager
+  lch.media.twig.extension.class: Lch\MediaBundle\Twig\Extension\MediaExtension
   lch.media.types:
       image:
         form:       'Lch\MediaBundle\Form\ImageType'
@@ -20,6 +22,11 @@ parameters:
 services:
   lch.media.uploader:
     class: '%lch.media.uploader.class%'
+    arguments: [ '@knp.doctrine_behaviors.reflection.class_analyzer', '%kernel.root_dir%', '%lch_media.root_folder%' ]
+    lazy: true
+
+  lch.media.downloader:
+    class: '%lch.media.downloader.class%'
     arguments: [ '%kernel.root_dir%', '%lch_media.root_folder%' ]
     lazy: true
 
@@ -36,7 +43,7 @@ services:
       - { name: form.type }
 
   lch.media.twig.extension:
-    class: Lch\MediaBundle\Twig\Extension\MediaExtension
+    class: "%lch.media.twig.extension.class%"
     arguments: [ '@lch.media.manager', '@twig', '%lch.media.types%' ]
     tags:
       - { name: twig.extension }

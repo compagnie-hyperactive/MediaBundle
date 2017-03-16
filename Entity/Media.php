@@ -13,6 +13,7 @@ abstract class Media
 {
     
     const ALL = 'all';
+    const DOWNLOAD = 'download';
 
     /**
      * @var int

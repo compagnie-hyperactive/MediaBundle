@@ -4,13 +4,17 @@ namespace Lch\MediaBundle\Controller;
 
 use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
+use Lch\MediaBundle\Event\DownloadEvent;
 use Lch\MediaBundle\Event\PostPersistEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class MediaController extends Controller // implements MediaControllerInterface
 {
@@ -147,6 +151,53 @@ class MediaController extends Controller // implements MediaControllerInterface
     public function removeAction()
     {
         // TODO: Implement removeAction() method.
+    }
+
+    /**
+     * @param $id
+     * @param $class
+     * @return BinaryFileResponse
+     * @throws \Exception
+     */
+    public function downloadAction($id, $class) {
+
+        $media = $this->getDoctrine()->getRepository($class)->find($id);
+
+        // check media is a media
+        if(!$media instanceof Media) {
+            // TODO Specialize
+            throw new \Exception();
+        }
+
+        // Check storability
+        $this->get('lch.media.uploader')->checkStorable($media);
+
+        $basePath = $this->container->getParameter('kernel.root_dir') . '/../web';
+        $filePath = $basePath . $media->getFile();
+
+        $file = new File($filePath);
+
+        // Authorization check
+        $this->denyAccessUnlessGranted(Media::DOWNLOAD, $media);
+
+        // Distpatch download event
+        $downloadEvent = new DownloadEvent($media, $file);
+        $this->get('event_dispatcher')->dispatch(
+            LchMediaEvents::DOWNLOAD,
+            $downloadEvent
+        );
+
+        // prepare BinaryFileResponse
+        $response = new BinaryFileResponse($downloadEvent->getFile()->getRealPath());
+        $response->trustXSendfileTypeHeader();
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $downloadEvent->getFile()->getFilename(),
+            iconv('UTF-8', 'ASCII//TRANSLIT', $downloadEvent->getFile()->getFilename())
+        );
+
+        // Serve file
+        return $response;
     }
 
 }

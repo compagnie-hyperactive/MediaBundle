@@ -9,16 +9,13 @@
 namespace Lch\MediaBundle\Event;
 
 
+use Lch\MediaBundle\Behavior\Mediable;
 use Lch\MediaBundle\Entity\Media;
 use Symfony\Component\EventDispatcher\Event;
 
 class ThumbnailEvent extends Event implements MediaTemplateEventInterface
 {
-    /**
-     * @var Media
-     */
-    private $media;
-
+    use Mediable;
     /**
      * @var string 
      */
@@ -28,6 +25,18 @@ class ThumbnailEvent extends Event implements MediaTemplateEventInterface
      * @var array
      */
     private $thumbnailParameters;
+    /**
+     * @var string
+     */
+    private $thumbnailPath;
+
+    /**
+     * ThumbnailEvent constructor.
+     * @param Media $media
+     */
+    public function __construct(Media $media) {
+        $this->media = $media;
+    }
 
     /**
      * @return string
@@ -64,19 +73,6 @@ class ThumbnailEvent extends Event implements MediaTemplateEventInterface
     }
 
     /**
-     * @var string
-     */
-    private $thumbnailPath;
-
-    /**
-     * ThumbnailEvent constructor.
-     * @param Media $media
-     */
-    public function __construct(Media $media) {
-        $this->media = $media;
-    }
-
-    /**
      * @return array
      */
     public function getThumbnailParameters()
@@ -93,23 +89,4 @@ class ThumbnailEvent extends Event implements MediaTemplateEventInterface
         $this->thumbnailParameters = $thumbnailParameters;
         return $this;
     }
-
-    /**
-     * @return Media
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-
-    /**
-     * @param Media $media
-     * @return ThumbnailEvent
-     */
-    public function setMedia($media)
-    {
-        $this->media = $media;
-        return $this;
-    }
-
 }

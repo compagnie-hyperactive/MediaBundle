@@ -9,15 +9,13 @@
 namespace Lch\MediaBundle\Event;
 
 
+use Lch\MediaBundle\Behavior\Mediable;
 use Lch\MediaBundle\Entity\Media;
 use Symfony\Component\EventDispatcher\Event;
 
 class PostPersistEvent extends Event
 {
-    /**
-     * @var Media
-     */
-    private $media;
+    use Mediable;
 
     /**
      * PostPersistEvent constructor.
@@ -26,23 +24,4 @@ class PostPersistEvent extends Event
     public function __construct(Media $media) {
         $this->media = $media;
     }
-    
-    /**
-     * @return Media
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-
-    /**
-     * @param Media $media
-     * @return PrePersistEvent
-     */
-    public function setMedia($media)
-    {
-        $this->media = $media;
-        return $this;
-    }
-
 }

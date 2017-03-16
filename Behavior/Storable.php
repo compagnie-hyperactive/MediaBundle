@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait Storable
 {
+    // TODO : improve to automatic serve File when requested, instead of path
     /**
      * @var UploadedFile $file the file absolute path
      * @ORM\Column(name="file_path", type="string", length=512)

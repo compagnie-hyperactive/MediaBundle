@@ -9,15 +9,14 @@
 namespace Lch\MediaBundle\Event;
 
 
+use Lch\MediaBundle\Behavior\Mediable;
 use Lch\MediaBundle\Entity\Media;
 use Symfony\Component\EventDispatcher\Event;
 
 class PrePersistEvent extends Event
 {
-    /**
-     * @var Media
-     */
-    private $media;
+    use Mediable;
+
     /**
      * @var array $data array containing media information for form type display
      */
@@ -44,23 +43,4 @@ class PrePersistEvent extends Event
         $this->data = $data;
         return $this;
     }
-
-    /**
-     * @return Media
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-
-    /**
-     * @param Media $media
-     * @return PrePersistEvent
-     */
-    public function setMedia($media)
-    {
-        $this->media = $media;
-        return $this;
-    }
-
 }

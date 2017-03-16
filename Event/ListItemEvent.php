@@ -9,36 +9,18 @@
 namespace Lch\MediaBundle\Event;
 
 
-use Lch\MediaBundle\Entity\Media;
+use Lch\MediaBundle\Behavior\Mediable;
 use Symfony\Component\EventDispatcher\Event;
 
 class ListItemEvent extends Event implements MediaTemplateEventInterface
 {
-    /**
-     * @var Media
-     */
-    private $media;
+    use Mediable;
+
     /**
      * @var string
      */
     private $template;
 
-    /**
-     * @return Media
-     */
-    public function getMedia() {
-        return $this->media;
-    }
-
-    /**
-     * @param Media $media
-     * @return ThumbnailEvent
-     */
-    public function setMedia($media) {
-        $this->media = $media;
-        return $this;
-    }
-    
     /**
      * @return string
      */

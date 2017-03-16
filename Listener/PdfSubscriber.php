@@ -56,7 +56,7 @@ class PdfSubscriber implements EventSubscriberInterface
             // TODO add checks, see how to pass constraints to event?
 
 
-            $fileName = $this->mediaManager->upload($pdf->getFile());
+            $fileName = $this->mediaManager->upload($pdf);
             $pdf->setFile($fileName);
 
             $event->setMedia($pdf);

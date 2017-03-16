@@ -69,13 +69,15 @@ class ImageSubscriber implements EventSubscriberInterface
                 $image->setAlt(pathinfo($image->getFile(), PATHINFO_BASENAME));
             }
 
-            $fileName = $this->mediaManager->upload($image->getFile());
+            $fileName = $this->mediaManager->upload($image);
             $image->setFile($fileName);
 
             $event->setMedia($image);
             $event->setData([
                 'name'      => $image->getName(),
                 'url'       => $image->getFile(),
+                // TODO find a way to trigger thumbnail generation from here
+                'thumbnail' => '<img width="50" src="' . $image->getFile() . '" />'
             ]);
         }
     }
