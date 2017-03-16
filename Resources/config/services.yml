@@ -35,6 +35,13 @@ services:
     tags:
       - { name: form.type }
 
+  lch.media.twig.extension:
+    class: Lch\MediaBundle\Twig\Extension\MediaExtension
+    arguments: [ '@lch.media.manager', '@twig', '%lch.media.types%' ]
+    tags:
+      - { name: twig.extension }
+    lazy: true
+
   lch.media.manager:
     class: '%lch.media.manager.class%'
     arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager', '@event_dispatcher', '%lch.media.types%' ]
@@ -45,13 +52,6 @@ services:
     arguments: [ '%kernel.root_dir%', '@lch.media.manager' ]
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
-
-  lch.media.twig.extension:
-    class: Lch\MediaBundle\Twig\Extension\MediaExtension
-    arguments: [ '@lch.media.manager', '@twig', '%lch.media.types%' ]
-    tags:
-      - { name: twig.extension }
-    lazy: true
 
   lch.media.image.subscriber:
     class: Lch\MediaBundle\Listener\ImageSubscriber

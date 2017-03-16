@@ -121,6 +121,24 @@ class MediaController extends Controller // implements MediaControllerInterface
         );
     }
 
+//    /**
+//     * @param Request $request
+//     * @param int $id
+//     * @return Response
+//     * @throws \Exception
+//     */
+//    public function getThumbnailAction(Request $request, $id){
+//        if($request->isXmlHttpRequest()) {
+//            return $this->render("@LchMedia/Image/fragments/thumbnail.html.twig", [
+//                    'media' => $media,
+//                ]
+//            );
+//        } else {
+//            // TODO SPecialize
+//            throw new \Exception();
+//        }
+//    }
+
     public function editAction()
     {
         // TODO: Implement editAction() method.

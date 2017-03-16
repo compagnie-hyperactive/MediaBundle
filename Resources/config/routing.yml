@@ -5,6 +5,13 @@ lch_media_list:
     options:
         expose: true
 
+#lch_media_get_thumbnail:
+#    path: /thumbnail
+#    defaults: { _controller: LchMediaBundle:Media:getThumbnail }
+#    methods:  [ POST ]
+#    options:
+#        expose: true
+
 lch_media_add:
     path: /add/{type}
     defaults: { _controller: LchMediaBundle:Media:add }

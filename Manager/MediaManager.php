@@ -10,6 +10,7 @@ use Lch\MediaBundle\Event\MediaTemplateEventInterface;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Model\ImageInterface;
+use Lch\MediaBundle\Twig\Extension\MediaExtension;
 use Lch\MediaBundle\Uploader\MediaUploader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -84,6 +85,21 @@ class MediaManager
 
     /**
      * @param Media $media
+     * @return array
+     * @throws \Exception
+     */
+    public function getMediaTypeConfiguration(Media $media) {
+        foreach($this->mediaTypes as $mediaType) {
+            // TODO find wwwwayyy better (due to Proxy class)
+            if(strpos(get_class($media), $mediaType[Configuration::ENTITY]) !== false) {
+                return $mediaType;
+            }
+        }
+        throw new \Exception();
+    }
+
+    /**
+     * @param Media $media
      * @return MediaTemplateEventInterface
      * @throws \Exception
      */
@@ -110,30 +126,15 @@ class MediaManager
         $authorizedMediasQueryBuilder = $this->entityManager->createQueryBuilder();
 
         $medias = [];
-        
+
         foreach($authorizedMediasTypes as $alias => $authorizedMediasType) {
             $authorizedMediasQueryBuilder
                 ->select($alias)
                 ->from($authorizedMediasType[Configuration::ENTITY], $alias)
             ;
-            // TODO order, add tags for filtering? 
+            // TODO order, add tags for filtering?
             $medias = array_merge($medias, $authorizedMediasQueryBuilder->getQuery()->getResult());
         }
         return $medias;
-    }
-
-    /**
-     * @param Media $media
-     * @return array
-     * @throws \Exception
-     */
-    public function getMediaTypeConfiguration(Media $media) {
-        foreach($this->mediaTypes as $mediaType) {
-            // TODO find wwwwayyy better (due to Proxy class)
-            if(strpos(get_class($media), $mediaType[Configuration::ENTITY]) !== false) {
-                return $mediaType;
-            }
-        }
-        throw new \Exception();
     }
 }

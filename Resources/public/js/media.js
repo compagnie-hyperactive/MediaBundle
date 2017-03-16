@@ -273,11 +273,11 @@ $(document).ready(function(){
                 // Handle media final choosing
                 $listTab.find("button[type='submit']").on('click', function(e) {
                     e.preventDefault();
-                    // TODO handle multiple
                     var $chosen = $listTab.find("div.media.chosen");
                     var entity = {
                         id: $chosen.attr('data-id'),
                         url: $chosen.attr('data-url'),
+                        thumbnail: $chosen.html(),
                         name: $chosen.attr('data-name'),
                     }
                     setChosenMedia(entity, randId);
@@ -292,11 +292,12 @@ $(document).ready(function(){
         $mediaControl.find('input[type=hidden]').val(entity.id);
         var thumbId = thumbName + randId;
         var thumbSelector = "div#" + thumbId;
-        if ($mediaControl.find(thumbSelector  + ' img').length) {
-            $mediaControl.find(thumbSelector + ' img').attr('src', entity.url);
-        } else {
-            $mediaControl.find(thumbSelector).html('<img src="'+entity.url+'" width="150"/>');
-        }
+        $mediaControl.find(thumbSelector).html(entity.thumbnail);
+        // if ($mediaControl.find(thumbSelector  + ' img').length) {
+        //     $mediaControl.find(thumbSelector + ' img').attr('src', entity.url);
+        // } else {
+        //     $mediaControl.find(thumbSelector).html('<img src="'+entity.url+'" width="150"/>');
+        // }
 
         $mediaControl.find('p[id^=display]').text(entity.name);
     }
