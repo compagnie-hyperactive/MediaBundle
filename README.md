@@ -3,6 +3,11 @@
 ## Installation
 
 ## Configuration
+Add media form theme
+  form_themes:
+  # Order is important here
+    - 'LchMediaBundle:form:fields.html.twig'    
+
 
 lch_media:
 
