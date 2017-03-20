@@ -7,7 +7,7 @@
                 <div id="image__{{ rand }}">
                     {#<p>{{ form.vars['helper']|trans }}</p>#}
                     <div>
-                        <div id="imageThumb__{{ rand }}">
+                        <div id="imageThumb__{{ rand }}" class="media-list-item">
                             {% if value is not empty %}
                                 {{ getThumbnail(value) }}
                             {% endif %}
@@ -27,7 +27,7 @@
                     {{ block('form_errors') }}
                 </div>
                 <div
-                    class="modal fade"
+                    class="modal fade media-modal"
                     id="image-modal__{{ rand }}"
                     tabindex="-1"
                     role="dialog"
@@ -53,12 +53,12 @@
                                 </ul>
                                 <!-- Tab panes -->
                                 <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="add-media__{{ rand }}">
+                                    <div role="tabpanel" class="tab-pane active clearfix" id="add-media__{{ rand }}">
                                         <div class="col-xs-12 text-center">
                                             <img src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
                                         </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane" id="list-media__{{ rand }}">
+                                    <div role="tabpanel" class="tab-pane clearfix" id="list-media__{{ rand }}">
                                         <div class="col-xs-12 text-center">
                                             <img src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
                                         </div>

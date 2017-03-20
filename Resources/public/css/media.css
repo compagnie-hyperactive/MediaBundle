@@ -1,2 +1,2 @@
-.media-list .media{border-radius:4px;border:1px solid black}.media-list .media:hover{cursor:pointer}
+.media-list-item{border-radius:4px;border:1px solid #e5e5e5;padding:5px}.media-modal div[role="tabpanel"]{padding:20px 0}.media-modal .media-list .media-list-item:hover,.media-modal .media-list .media-list-item.chosen{cursor:pointer;background-color:#e5e5e5}
 /*# sourceMappingURL=media.css.map */

@@ -23,14 +23,23 @@ class ImageType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => static::ROOT_TRANSLATION_PATH . '.name.label',
                 'required' => false,
+                'attr' => [
+                    'helper' => static::ROOT_TRANSLATION_PATH . '.name.helper',
+                ]
             ])
             ->add('alt', TextType::class, [
                 'label' => static::ROOT_TRANSLATION_PATH . '.alt.label',
                 'required' => false,
+                'attr' => [
+                    'helper' => static::ROOT_TRANSLATION_PATH . '.alt.helper',
+                ]
             ])
             ->add('file', FileType::class, [
                 'label' => static::ROOT_TRANSLATION_PATH . '.file.label',
                 'required' => true,
+                'attr' => [
+                    'helper' => static::ROOT_TRANSLATION_PATH . '.file.helper',
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => static::ROOT_TRANSLATION_PATH . '.modal.save.label',

@@ -1,9 +1,18 @@
-<div class="media-list col-xs-12">
+<div class="media-list col-xs-12 clearfix">
     {% if medias|length > 0 %}
         {% for media in medias %}
             {{ getListItem(media) }}
         {% endfor %}
     {% else %}
         <p>{{ "lch.media.list.empty"|trans }}</p>
+    {% endif %}
+
+    {% if choose is defined and choose == true %}
+        <div class="col-xs-12 text-right">
+            <button type='submit' class='btn btn-primary select'>
+                    <i class="glyphicon glyphicon-check"></i>
+                {{ "lch.media.choose"|trans }}
+            </button>
+        </div>
     {% endif %}
 </div>

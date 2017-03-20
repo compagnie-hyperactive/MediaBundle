@@ -50,7 +50,8 @@ class MediaController extends Controller // implements MediaControllerInterface
             $template = '@LchMedia/Media/fragments/list.html.twig';
         }
         return $this->render($template, [
-            'medias' => $medias
+            'medias' => $medias,
+            'choose' => true
         ]);
     }
 
