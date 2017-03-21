@@ -64,11 +64,15 @@ class MediaExtension extends \Twig_Extension
 //        return "<img src='".$conf['file']."'".$conf['width']."".$conf['height']." atl='".$image->getAlt()."' />";
     }
 
-    public function getListItem(Media $media)
+    public function getListItem(Media $media, array $attributes = [])
     {
         $templateEvent =  $this->mediaManager->getListItem($media);
 
-        return $this->twig->render($templateEvent->getTemplate(), ['listItemEvent' => $templateEvent]);
+        return $this->twig->render($templateEvent->getTemplate(), [
+                'listItemEvent' => $templateEvent,
+                'attributes' => $attributes
+            ]
+        );
 //        if (null === $image) {
 //            return '';
 //        }

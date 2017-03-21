@@ -41,11 +41,15 @@ class MediaUploader
      * @param $relativeFilePath
      * @param $fileName
      * @return string
+     * @throws \Exception
      */
     public function upload(Media $media, $relativeFilePath, $fileName)
     {
         // Check storability
-        $this->checkStorable($media);
+        if(!$this->checkStorable($media)) {
+            // TODO specialise
+            throw new \Exception();
+        }
 
         $filePath = "{$this->kernelRootDir}/../web/{$this->mediaRootDir}{$relativeFilePath}";
 
@@ -67,13 +71,13 @@ class MediaUploader
     /**
      * Check if a media is storable (implements matching trait)
      * @param Media $media
-     * @throws \Exception
+     * @return boolean
      */
     public function checkStorable(Media $media) {
         // Check media is storable
         if(!$this->classAnalyzer->hasTrait(new \ReflectionClass($media), Storable::class, true)) {
-            // TODO specialise
-            throw new \Exception();
+            return false;
         }
+        return true;
     }
 }

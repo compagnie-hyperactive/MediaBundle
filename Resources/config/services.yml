@@ -62,10 +62,16 @@ services:
 
   lch.media.image.subscriber:
     class: Lch\MediaBundle\Listener\ImageSubscriber
-    arguments: ['@lch.media.manager']
+    arguments: ['@lch.media.manager', '%kernel.root_dir%']
     tags:
       - { name: kernel.event_subscriber }
     lazy: true
+
+  lch.media.doctrine.listener:
+    class: Lch\MediaBundle\Listener\DoctrineMediaListener
+    arguments: ['@lch.media.uploader', '%kernel.root_dir%']
+    tags:
+        - { name: doctrine.event_listener, event: postLoad }
 
   lch.media.pdf.subscriber:
     class: Lch\MediaBundle\Listener\PdfSubscriber

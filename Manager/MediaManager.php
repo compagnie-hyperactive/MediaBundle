@@ -62,7 +62,10 @@ class MediaManager
      */
     public function upload(Media $media)
     {
-        $this->mediaUploader->checkStorable($media);
+        if($this->mediaUploader->checkStorable($media)) {
+            // TODO Specialize
+            throw new \Exception();
+        }
 
         // Create file path
         $relativeFilePath = "/" . date('Y') . "/" . date('m') . "/";
@@ -95,7 +98,6 @@ class MediaManager
      */
     public function getThumbnail(Media $media) {
         $thumbnailEvent = new ThumbnailEvent($media);
-//        $thumbnailEvent->setTemplate($this->getMediaTypeConfiguration($media)[Configuration::LIST_ITEM_VIEW]);
         $thumbnailEvent->setMedia($media);
         $thumbnailEvent->setTemplate($this->getMediaTypeConfiguration($media)[Configuration::THUMBNAIL_VIEW]);
 

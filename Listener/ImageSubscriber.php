@@ -9,13 +9,16 @@
 namespace Lch\MediaBundle\Listener;
 
 
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Lch\MediaBundle\Entity\Image;
+use Doctrine\ORM\Events as DoctrineEvents;
 use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Manager\MediaManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 class ImageSubscriber implements EventSubscriberInterface
 {
@@ -77,7 +80,7 @@ class ImageSubscriber implements EventSubscriberInterface
                 'name'      => $image->getName(),
                 'url'       => $image->getFile(),
                 // TODO find a way to trigger thumbnail generation from here
-                'thumbnail' => '<img width="50" src="' . $image->getFile() . '" />'
+                'thumbnail' => '<img width="50" src="' . $this->getRelativeUrl($image->getFile()) . '" />'
             ]);
         }
     }
@@ -93,7 +96,7 @@ class ImageSubscriber implements EventSubscriberInterface
             return;
         }
         // TODO elaborate
-        $event->setThumbnailPath($image->getFile());
+        $event->setThumbnailPath($this->getRelativeUrl($image->getFile()));
     }
 
     /**
@@ -106,5 +109,9 @@ class ImageSubscriber implements EventSubscriberInterface
         if(!$image instanceof Image) {
             return;
         }
+    }
+
+    private function getRelativeUrl($fullPath) {
+        return explode('/web', $fullPath)[1];
     }
 }

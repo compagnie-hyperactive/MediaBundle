@@ -1,4 +1,8 @@
-<div class="col-xs-6 col-sm-4 col-md-3 media"
+{% set attrs = "" %}
+{% for key, attr in attributes %}
+    {% set attrs = attr ~ " " ~ key ~ '="' ~ attr ~ '"' %}
+{% endfor %}
+<div {{ attrs }} class="col-xs-6 col-sm-4 col-md-3 media"
      data-id="{{ listItemEvent.media.id }}"
      data-url="{{ listItemEvent.media.file }}"
      data-name="{{ listItemEvent.media.name }}">
@@ -8,5 +12,6 @@
     <div class="col-xs-8">
         <p>{{ listItemEvent.media.name }}</p>
         <p><strong>{{ listItemEvent.media.width }}</strong>px x <strong>{{ listItemEvent.media.height }}</strong>px</p>
+        <p><strong>{{ listItemEvent.media.file.getSize/1000 }} Ko</strong></p>
     </div>
 </div>

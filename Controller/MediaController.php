@@ -171,7 +171,10 @@ class MediaController extends Controller // implements MediaControllerInterface
         }
 
         // Check storability
-        $this->get('lch.media.uploader')->checkStorable($media);
+        if(!$this->get('lch.media.uploader')->checkStorable($media)) {
+            // TODO Specialize
+            throw new \Exception();
+        }
 
         $basePath = $this->container->getParameter('kernel.root_dir') . '/../web';
         $filePath = $basePath . $media->getFile();
