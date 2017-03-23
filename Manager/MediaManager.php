@@ -62,7 +62,7 @@ class MediaManager
      */
     public function upload(Media $media)
     {
-        if($this->mediaUploader->checkStorable($media)) {
+        if(!$this->mediaUploader->checkStorable($media)) {
             // TODO Specialize
             throw new \Exception();
         }

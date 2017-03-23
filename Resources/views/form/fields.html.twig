@@ -7,12 +7,11 @@
                 <div id="image__{{ rand }}">
                     {#<p>{{ form.vars['helper']|trans }}</p>#}
                     <div class="col-xs-12">
-                        {% if value is not empty %}
-                            {{ getListItem(value, { id:"imageThumb__" ~ rand }) }}
-                        {% else %}
-                        <div id="imageThumb__{{ rand }}" class="media">
+                        <div class="thumbnail-container">
+                            {% if value is not empty %}
+                                {{ getListItem(value, { id:"imageThumb__" ~ rand }) }}
+                            {% endif %}
                         </div>
-                        {% endif %}
                         <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value.id }}" {% endif %}/>
                         {#<p id="displayImageName__{{ rand }}">{% if value %}{{value.name}}{% endif %}</p>#}
                     </div>
@@ -48,7 +47,7 @@
                                     <p class="helper"><i class="glyphicon glyphicon-question-sign"></i>{{ form.vars.attr.helper|trans() }}</p>
                                 {% endif %}
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body clearfix">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active"><a href="#add-media__{{ rand }}" aria-controls="add-media" role="tab" data-toggle="tab">{{ "lch.media.add"|trans }}</a></li>
                                     <li role="presentation"><a href="#list-media__{{ rand }}" aria-controls="profile" role="tab" data-toggle="tab">{{ "lch.media.choose"|trans }}</a></li>

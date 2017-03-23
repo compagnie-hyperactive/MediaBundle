@@ -34,6 +34,9 @@ class MediaExtension extends \Twig_Extension
         $this->mediaTypes = $mediaTypes;
     }
 
+    /**
+     * @return array
+     */
     public function getFunctions()
     {
         return array(
@@ -48,24 +51,26 @@ class MediaExtension extends \Twig_Extension
         );
     }
 
+    /**
+     * @param Media $media
+     * @param null $width
+     * @param null $height
+     * @return string
+     */
     public function getThumbnail(Media $media, $width = null, $height = null)
     {
-//        return $this->twig->render($this->getMediaTypeConfiguration($media)[Configuration::THUMBNAIL_VIEW],
-//            ['thumbnailEvent' => $thumbnailEvent]);
         $templateEvent =  $this->mediaManager->getThumbnail($media);
-
         return $this->twig->render($templateEvent->getTemplate(), ['thumbnailEvent' => $templateEvent]);
-//        if (null === $image) {
-//            return '';
-//        }
-//
-//        $conf = $this->getImageConf($image, $width, $height);
-//
-//        return "<img src='".$conf['file']."'".$conf['width']."".$conf['height']." atl='".$image->getAlt()."' />";
     }
 
+    /**
+     * @param Media $media
+     * @param array $attributes
+     * @return string
+     */
     public function getListItem(Media $media, array $attributes = [])
     {
+        // TODO modifications here should be duplicate on MediaController::addAction
         $templateEvent =  $this->mediaManager->getListItem($media);
 
         return $this->twig->render($templateEvent->getTemplate(), [
@@ -73,15 +78,14 @@ class MediaExtension extends \Twig_Extension
                 'attributes' => $attributes
             ]
         );
-//        if (null === $image) {
-//            return '';
-//        }
-//
-//        $conf = $this->getImageConf($image, $width, $height);
-//
-//        return "<img src='".$conf['file']."'".$conf['width']."".$conf['height']." atl='".$image->getAlt()."' />";
     }
 
+    /**
+     * @param Image $image
+     * @param null $width
+     * @param null $height
+     * @return array
+     */
     protected function getImageConf(Image $image, $width = null, $height = null)
     {
         $renderWidth = '';

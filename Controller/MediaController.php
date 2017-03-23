@@ -109,12 +109,23 @@ class MediaController extends Controller // implements MediaControllerInterface
                 $postPersistEvent
             );
 
+            // Generate thumbnail
+            // TODO find an organization to avoid circular reference if calling service directly
+            $templateEvent = $this->get('lch.media.manager')->getListItem($postPersistEvent->getMedia());
+            $listItem = $this->renderView($templateEvent->getTemplate(), [
+                'listItemEvent' => $templateEvent,
+                'attributes' => []
+            ]);
+
             // Merge success tag + prepersist + postpersist (for ID)
             return new JsonResponse(
                 array_merge(['success'   => true],
                     array_merge(
                         $prePersistEvent->getData(),
-                        ['id' => $postPersistEvent->getMedia()->getId() ]
+                        [
+                            'id' => $postPersistEvent->getMedia()->getId(),
+                            'thumbnail' => $listItem
+                        ]
                     )
                 )
             );

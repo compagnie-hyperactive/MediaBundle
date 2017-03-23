@@ -38,9 +38,11 @@ $(document).ready(function(){
 
         if(e.target.hash == "#list-media__" + randId) {
             loadListMediaForm(randId, listRoute, mediaType);
+
+            // // Relayout istope
+            // $parentModal.isotope('reLayout');
         }
     })
-
 
     /**
      * Extract the random id generated
@@ -259,6 +261,16 @@ $(document).ready(function(){
                     html
                 );
 
+                // Isotope presentation
+                $listTab.isotope({
+                    itemSelector: '.media',
+                    percentPosition: true,
+                    masonry: {
+                        // use outer width of grid-sizer for columnWidth
+                        columnWidth: '.media'
+                    }
+                });
+
                 // Handle media selection in list
                 $listTab.find("div.media").on('click', function(e) {
                     $listTab.find("div.media").removeClass('chosen');
@@ -272,7 +284,7 @@ $(document).ready(function(){
                     var $chosen = $listTab.find("div.media.chosen");
                     var entity = {
                         id: $chosen.attr('data-id'),
-                        url: $chosen.attr('data-url'),
+                        // url: $chosen.attr('data-url'),
                         thumbnail: $chosen.html(),
                         name: $chosen.attr('data-name'),
                     }
@@ -287,14 +299,8 @@ $(document).ready(function(){
         var $mediaControl = $('div[id="'+inputName+randId+'"]');
         $mediaControl.find('input[type=hidden]').val(entity.id);
         var thumbId = thumbName + randId;
-        var thumbSelector = "div#" + thumbId;
-        $mediaControl.find(thumbSelector).html(entity.thumbnail);
-        // if ($mediaControl.find(thumbSelector  + ' img').length) {
-        //     $mediaControl.find(thumbSelector + ' img').attr('src', entity.url);
-        // } else {
-        //     $mediaControl.find(thumbSelector).html('<img src="'+entity.url+'" width="150"/>');
-        // }
-
+        // var thumbSelector = "div#" + thumbId;
+        $mediaControl.find("div.thumbnail-container").html(entity.thumbnail);
         $mediaControl.find('p[id^=display]').text(entity.name);
     }
 

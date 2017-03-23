@@ -78,9 +78,9 @@ class ImageSubscriber implements EventSubscriberInterface
             $event->setMedia($image);
             $event->setData([
                 'name'      => $image->getName(),
-                'url'       => $image->getFile(),
+                'url'       => $this->getRelativeUrl($image->getFile()),
                 // TODO find a way to trigger thumbnail generation from here
-                'thumbnail' => '<img width="50" src="' . $this->getRelativeUrl($image->getFile()) . '" />'
+//                'thumbnail' => '<img width="50" src="' . $this->getRelativeUrl($image->getFile()) . '" />'
             ]);
         }
     }
@@ -112,6 +112,13 @@ class ImageSubscriber implements EventSubscriberInterface
     }
 
     private function getRelativeUrl($fullPath) {
-        return explode('/web', $fullPath)[1];
+        // CHeck path is full, with "web" inside
+        if(strpos($fullPath, 'web') !== false) {
+            return explode('/web', $fullPath)[1];
+        }
+        // If not, already relative path
+        else {
+            return $fullPath;
+        }
     }
 }

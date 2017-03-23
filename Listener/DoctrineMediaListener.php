@@ -38,8 +38,16 @@ class DoctrineMediaListener
         $this->kernelRootDir = $kernelRootDir;
     }
 
-    public function postLoad(LifecycleEventArgs $args)
-    {
+    public function postPersist(LifecycleEventArgs $args) {
+        $this->handleFile($args);
+    }
+
+    public function postLoad(LifecycleEventArgs $args) {
+        $this->handleFile($args);
+    }
+
+
+    private function handleFile(LifecycleEventArgs $args) {
         $entity = $args->getEntity();
 
         if (!$entity instanceof Media || !$this->mediaUploader->checkStorable($entity)) {
@@ -47,7 +55,7 @@ class DoctrineMediaListener
         }
 
         if ($fileName = $entity->getFile()) {
-            $entity->setFile(new File($this->kernelRootDir.'/../web'.$fileName));
+            $entity->setFile(new File($fileName));
         }
     }
 }

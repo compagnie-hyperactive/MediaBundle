@@ -5,8 +5,7 @@ $contrast-color: #e5e5e5;
   border: 1px solid $contrast-color;
   padding: 5px;
   max-width: 200px;
-  margin-right: 5px;
-  margin-top: 0;
+  margin: 0 5px 5px 0;
 }
 
 .media-modal {
@@ -15,11 +14,15 @@ $contrast-color: #e5e5e5;
   }
 
   .media-list {
+    height: 100%;
     .media {
       &:hover, &.chosen {
         cursor: pointer;
         background-color: $contrast-color;
       }
     }
+  }
+  button.select {
+    margin:15px 0;
   }
 }

@@ -60,6 +60,12 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
 
+  lch.media.image.size.validator:
+    class: Lch\MediaBundle\Validator\Constraints\ImageSizeValidator
+#    arguments: [ '%kernel.root_dir%', '@lch.media.manager' ]
+    tags:
+      - { name: validator.constraint_validator, alias: alias_name }
+
   lch.media.image.subscriber:
     class: Lch\MediaBundle\Listener\ImageSubscriber
     arguments: ['@lch.media.manager', '%kernel.root_dir%']
@@ -72,6 +78,7 @@ services:
     arguments: ['@lch.media.uploader', '%kernel.root_dir%']
     tags:
         - { name: doctrine.event_listener, event: postLoad }
+        - { name: doctrine.event_listener, event: postPersist }
 
   lch.media.pdf.subscriber:
     class: Lch\MediaBundle\Listener\PdfSubscriber

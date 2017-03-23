@@ -1,11 +1,12 @@
 {% set attrs = "" %}
 {% for key, attr in attributes %}
-    {% set attrs = attr ~ " " ~ key ~ '="' ~ attr ~ '"' %}
+    {% set attrs = attrs ~ " " ~ key ~ '=' ~ attr %}
 {% endfor %}
 <div {{ attrs }} class="col-xs-6 col-sm-4 col-md-3 media"
      data-id="{{ listItemEvent.media.id }}"
      data-url="{{ listItemEvent.media.file }}"
-     data-name="{{ listItemEvent.media.name }}">
+     data-name="{{ listItemEvent.media.name }}"
+>
     <div class="col-xs-4">
         {{ getThumbnail(listItemEvent.media) }}
     </div>

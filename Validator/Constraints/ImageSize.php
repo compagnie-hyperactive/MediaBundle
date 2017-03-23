@@ -8,19 +8,19 @@ use Symfony\Component\Validator\Exception\InvalidOptionsException;
 /**
  * @Annotation
  */
-class ImageFormat extends Constraint
+class ImageSize extends Constraint
 {
     public $message = 'erreur format image';
 
     public $minWidth;
-    public $minWidthMessage = 'lch.media_bundle.image.width.min_message';
+    public $minWidthMessage = 'lch.media.image.width.min_message';
     public $maxWidth;
-    public $maxWidthMessage = 'lch.media_bundle.image.width.max_message';
+    public $maxWidthMessage = 'lch.media.image.width.max_message';
 
     public $minHeight;
-    public $minHeightMessage = 'lch.media_bundle.image.height.min_message';
+    public $minHeightMessage = 'lch.media.image.height.min_message';
     public $maxHeight;
-    public $maxHeightMessage = 'lch.media_bundle.image.height.max_message';
+    public $maxHeightMessage = 'lch.media.image.height.max_message';
 
     public function __construct($options = null)
     {

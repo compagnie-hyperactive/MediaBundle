@@ -64,8 +64,10 @@ class MediaUploader
             die(var_dump($e->getMessage()));
         }
 
-        // Return relative URL
-        return "/{$this->mediaRootDir}{$relativeFilePath}{$fileName}";
+//        // Return relative URL
+//        return "/{$this->mediaRootDir}{$relativeFilePath}{$fileName}";
+        // Return path
+        return "/{$filePath}/{$fileName}";
     }
 
     /**

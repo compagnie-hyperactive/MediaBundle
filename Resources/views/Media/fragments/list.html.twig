@@ -6,13 +6,12 @@
     {% else %}
         <p>{{ "lch.media.list.empty"|trans }}</p>
     {% endif %}
-
-    {% if choose is defined and choose == true %}
-        <div class="col-xs-12 text-right">
-            <button type='submit' class='btn btn-primary select'>
-                    <i class="glyphicon glyphicon-check"></i>
-                {{ "lch.media.choose"|trans }}
-            </button>
-        </div>
-    {% endif %}
 </div>
+{% if choose is defined and choose == true %}
+    <div class="col-xs-12 text-right">
+        <button type='submit' class='btn btn-primary select'>
+            <i class="glyphicon glyphicon-check"></i>
+            {{ "lch.media.choose"|trans }}
+        </button>
+    </div>
+{% endif %}
