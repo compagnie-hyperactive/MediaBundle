@@ -62,7 +62,7 @@ services:
 
   lch.media.image.size.validator:
     class: Lch\MediaBundle\Validator\Constraints\ImageSizeValidator
-#    arguments: [ '%kernel.root_dir%', '@lch.media.manager' ]
+    arguments: [ '@session', '@translator' ]
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
 

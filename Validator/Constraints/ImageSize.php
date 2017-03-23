@@ -3,79 +3,75 @@
 namespace Lch\MediaBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Exception\InvalidOptionsException;
 
 /**
  * @Annotation
  */
 class ImageSize extends Constraint
 {
-    public $message = 'erreur format image';
+    protected $message = 'erreur format image';
 
-    public $minWidth;
-    public $minWidthMessage = 'lch.media.image.width.min_message';
-    public $maxWidth;
-    public $maxWidthMessage = 'lch.media.image.width.max_message';
+    protected $widthMessage = 'lch.media.image.width.message';
+    protected $heightMessage = 'lch.media.image.height.message';
+    protected $minWidthMessage = 'lch.media.image.width.min.message';
+    protected $maxWidthMessage = 'lch.media.image.width.max.message';
+    protected $minHeightMessage = 'lch.media.image.height.min.message';
+    protected $maxHeightMessage = 'lch.media.image.height.max.message';
 
-    public $minHeight;
-    public $minHeightMessage = 'lch.media.image.height.min_message';
-    public $maxHeight;
-    public $maxHeightMessage = 'lch.media.image.height.max_message';
-
-    public function __construct($options = null)
+    /**
+     * @return string
+     */
+    public function getMessage(): string
     {
-        parent::__construct($options);
-
-        if (isset($options['minWidth'])) {
-            if (is_int($options['minWidth'])) {
-                $this->minWidth = $options['minWidth'];
-            } else {
-                throw new InvalidOptionsException("minWidth option should be an Integer", $options);
-            }
-        }
-
-        if (isset($options['maxWidth'])) {
-            if (is_int($options['maxWidth'])) {
-                $this->maxWidth = $options['maxWidth'];
-            } else {
-                throw new InvalidOptionsException("maxWidth option should be an Integer", $options);
-            }
-        }
-
-        if (isset($options['minHeight'])) {
-            if (is_int($options['minHeight'])) {
-                $this->minHeight = $options['minHeight'];
-            } else {
-                throw new InvalidOptionsException("minHeight option should be an Integer", $options);
-            }
-        }
-
-        if (isset($options['maxHeight'])) {
-            if (is_int($options['maxHeight'])) {
-                $this->maxHeight = $options['maxHeight'];
-            } else {
-                throw new InvalidOptionsException("maxHeight option should be an Integer", $options);
-            }
-        }
+        return $this->message;
     }
 
-    public function getMinWidth()
+    /**
+     * @return string
+     */
+    public function getWidthMessage(): string
     {
-        return $this->minWidth;
+        return $this->widthMessage;
     }
 
-    public function getMaxWidth()
+    /**
+     * @return string
+     */
+    public function getHeightMessage(): string
     {
-        return $this->maxWidth;
+        return $this->heightMessage;
     }
 
-    public function getMinHeight()
+    /**
+     * @return string
+     */
+    public function getMinWidthMessage(): string
     {
-        return $this->minHeight;
+        return $this->minWidthMessage;
     }
 
-    public function getMaxHeight()
+    /**
+     * @return string
+     */
+    public function getMaxWidthMessage(): string
     {
-        return $this->maxHeight;
+        return $this->maxWidthMessage;
     }
+
+    /**
+     * @return string
+     */
+    public function getMinHeightMessage(): string
+    {
+        return $this->minHeightMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMaxHeightMessage(): string
+    {
+        return $this->maxHeightMessage;
+    }
+
 }

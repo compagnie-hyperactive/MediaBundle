@@ -11,6 +11,7 @@ use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\MediaTemplateEventInterface;
 use Lch\MediaBundle\Event\StorageEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
+use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Loader\MediaUploader;
 use Lch\MediaBundle\Model\ImageInterface;
@@ -88,8 +89,41 @@ class MediaManager
 
     }
 
+    /**
+     * @param Media $media
+     * @return string
+     * @throws \Exception
+     */
     public function getUrl(Media $media) {
 
+        if(!$this->mediaUploader->checkStorable($media)) {
+            // TODO Specialize
+            throw new \Exception();
+        }
+
+        $urlEvent = new UrlEvent($media, $this->getRealRelativeUrl($media->getFile()));
+
+        $this->eventDispatcher->dispatch(
+            LchMediaEvents::URL,
+            $urlEvent
+        );
+
+        return $urlEvent->getUrl();
+    }
+
+    /**
+     * @param $fullPath
+     * @return mixed
+     */
+    public function getRealRelativeUrl($fullPath) {
+        // CHeck path is full, with "web" inside
+        if(strpos($fullPath, 'web') !== false) {
+            return explode('/web', $fullPath)[1];
+        }
+        // If not, already relative path
+        else {
+            return $fullPath;
+        }
     }
 
     /**
@@ -105,7 +139,7 @@ class MediaManager
             LchMediaEvents::THUMBNAIL,
             $thumbnailEvent
         );
-        
+
         // TODO: add one by default
 
         return $thumbnailEvent;

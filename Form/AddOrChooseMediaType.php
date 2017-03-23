@@ -33,10 +33,21 @@ class AddOrChooseMediaType extends AbstractType
      */
     const ENTITY_REFERENCE = 'entity_reference';
 
+    const MODAL_TITLE = 'modal_title';
+
     /**
      * other media parameters
      */
     const MEDIA_PARAMETERS = 'media_parameters';
+
+    const IMAGE_WIDTH = 'image_width';
+    const IMAGE_HEIGHT = 'image_height';
+
+    const MIN_IMAGE_WIDTH = 'min_image_width';
+    const MIN_IMAGE_HEIGHT = 'min_image_height';
+
+    const MAX_IMAGE_WIDTH = 'max_image_width';
+    const MAX_IMAGE_HEIGHT = 'max_image_height';
 
     /**
      * @var ObjectManager
@@ -105,10 +116,8 @@ class AddOrChooseMediaType extends AbstractType
             // TODO throw exception, media type not found
         }
 
-        $view->vars['modal_title'] = $options['modal_title'];
+        $view->vars[static::MODAL_TITLE] = $options[static::MODAL_TITLE];
 
-        // Media helper
-        $view->vars[static::HELPER] = $options[static::HELPER];
         // Media parameters
         $view->vars[static::MEDIA_PARAMETERS] = $options[static::MEDIA_PARAMETERS];
 
@@ -121,14 +130,26 @@ class AddOrChooseMediaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            static::ENTITY_REFERENCE => '',
+            'entity_reference' => '',
             'label' => 'lch.media.form.add',
             'modal_title' => 'lch.media.form.modal.title',
-            static::ADD_MEDIA_ROUTE => 'lch_media_add',
-            static::LIST_MEDIA_ROUTE => 'lch_media_list',
+            'add_media_route' => 'lch_media_add',
+            'list_media_route' => 'lch_media_list',
             'invalid_message' => 'The selected image does not exist',
-            static::MEDIA_PARAMETERS => [],
-            static::HELPER => 'lch.media.helper'
+            'media_parameters' => [],
+
+            /*****************
+             * Image specific
+             */
+            // Precise width and height
+            'image_width' => false,
+            'image_height' => false,
+
+            // Ranges
+            'min_image_width' => false,
+            'max_image_width' => false,
+            'min_image_height' => false,
+            'max_image_height' => false,
         ));
     }
 

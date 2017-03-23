@@ -1,9 +1,15 @@
 lch:
-    media_bundle:
-        image:
-            height:
-                min_message: "%field% doit avoir une hauteur d'au moins %minHeight%px"
-                max_message: "%field% doit avoir une hauteur d'au plus %maxHeight%px"
-            width:
-                min_message: "%field% doit avoir une largeur d'au moins %minWidth%px"
-                max_message: "%field% doit avoir une largeur d'au plus %maxWidth%px"
+  media:
+    image:
+        height:
+            message: "Le champ <strong>%field%</strong> doit avoir une hauteur de <strong>%target_height%</strong>px : %given_height%px constaté"
+            min:
+              message: "Le champ %field% doit avoir une hauteur minimale %target_height%px : %given_height%px constaté"
+            max:
+              message: "Le champ %field% doit avoir une hauteur maximale %target_height%px : %given_height%px constaté"
+        width:
+            message: "Le champ %field% doit avoir une largeur de %target_width%px : %given_width%px constaté"
+            min:
+              message: "Le champ %field% doit avoir une largeur minimale de %target_width%px : %given_width%px constaté"
+            max:
+              message: "Le champ %field% doit avoir une largeur maximale de %target_width%px : %given_width%px constaté"

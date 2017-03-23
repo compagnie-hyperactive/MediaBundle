@@ -5,7 +5,6 @@
             {{ form_label(form) }}
             <div class="col-xs-12 col-md-10">
                 <div id="image__{{ rand }}">
-                    {#<p>{{ form.vars['helper']|trans }}</p>#}
                     <div class="col-xs-12">
                         <div class="thumbnail-container">
                             {% if value is not empty %}
@@ -13,7 +12,6 @@
                             {% endif %}
                         </div>
                         <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value.id }}" {% endif %}/>
-                        {#<p id="displayImageName__{{ rand }}">{% if value %}{{value.name}}{% endif %}</p>#}
                     </div>
                     <div class="col-xs-12">
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#image-modal__{{ rand }}">
@@ -25,8 +23,8 @@
                             {% endif %}
                         </button>
                     </div>
-                    {{ block('form_errors') }}
                 </div>
+                {{ form_errors(form) }}
                 <div
                     class="modal fade media-modal"
                     id="image-modal__{{ rand }}"

@@ -47,6 +47,9 @@ class MediaExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getListItem', [$this, 'getListItem' ], [
                 'needs_environment' => false,
                 'is_safe' => ['html']
+            ]),
+            new \Twig_SimpleFunction('getUrl', [$this, 'getUrl' ], [
+                'needs_environment' => false
             ])
         );
     }
@@ -78,6 +81,10 @@ class MediaExtension extends \Twig_Extension
                 'attributes' => $attributes
             ]
         );
+    }
+
+    public function getUrl(Media $media) {
+        return $this->mediaManager->getUrl($media);
     }
 
     /**
