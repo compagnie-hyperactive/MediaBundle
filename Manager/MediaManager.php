@@ -25,17 +25,14 @@ class MediaManager
      * @var MediaUploader $mediaUploader
      */
     private $mediaUploader;
-
     /**
      * @var EntityManager
      */
     private $entityManager;
-
     /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
-
     /**
      * @var array
      */
@@ -54,6 +51,14 @@ class MediaManager
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->mediaTypes = $mediaTypes;
+    }
+
+    /**
+     * @return MediaUploader
+     */
+    public function getMediaUploader(): MediaUploader
+    {
+        return $this->mediaUploader;
     }
 
     /**

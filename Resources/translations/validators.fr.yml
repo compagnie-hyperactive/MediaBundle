@@ -1,8 +1,15 @@
 lch:
   media:
+    extension:
+      message: "Le fichier doit avoir une des extensions suivantes : "
+    weight:
+      min:
+        message: "Le fichier du champ %field% doit faire la taille minimale de %target_weight% Ko : %given_weight% Ko constaté"
+      max:
+        message: "Le fichier du champ %field% doit faire la taille maximale de %target_weight% Ko : %given_weight% Ko constaté"
     image:
         height:
-            message: "Le champ <strong>%field%</strong> doit avoir une hauteur de <strong>%target_height%</strong>px : %given_height%px constaté"
+            message: "Le champ %field% doit avoir une hauteur de %target_height%px : %given_height%px constaté"
             min:
               message: "Le champ %field% doit avoir une hauteur minimale %target_height%px : %given_height%px constaté"
             max:

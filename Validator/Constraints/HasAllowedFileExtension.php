@@ -10,5 +10,14 @@ use Symfony\Component\Validator\Exception\InvalidOptionsException;
  */
 class HasAllowedFileExtension extends Constraint
 {
-    public $message = 'Le fichier doit être au format ';
+
+    private $message = 'lch.media.extension.message';
+
+    /**
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
 }

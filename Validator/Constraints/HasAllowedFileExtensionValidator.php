@@ -18,11 +18,6 @@ class HasAllowedFileExtensionValidator extends ConstraintValidator
     private $rootDir;
 
     /**
-     * @var array $mediaTypes
-     */
-    private $mediaTypes;
-
-    /**
      * @var MediaManager
      */
     private $mediaManager;
@@ -41,38 +36,18 @@ class HasAllowedFileExtensionValidator extends ConstraintValidator
     /**
      * @param mixed $media
      * @param Constraint|HasAllowedFileExtension $hasAllowedFileExtensionConstraint
-     * @return bool
      * @throws \Exception
      */
     public function validate($media, Constraint $hasAllowedFileExtensionConstraint)
     {
-        if ((null !== $media) && ($media instanceOf Media) && in_array(Storable::class, class_uses($media))) {
-            $allowed = false;
-            $file = new File($this->rootDir.'/../web'.$media->getFile());
+        if ((null !== $media) && ($media instanceOf Media) && $this->mediaManager->getMediaUploader()->checkStorable($media)) {
 
-
-//            $allowedExtensions = [];
-//            foreach($this->mediaTypes as $mediaType) {
-//                // TODO find wwwwayyy better (due to Proxy class)
-//                if(strpos(get_class($media), $mediaType[Configuration::ENTITY]) !== false) {
-//                    $allowedExtensions = $mediaType[Configuration::EXTENSIONS];
-//                }
-//            }
             $allowedExtensions = $this->mediaManager->getMediaTypeConfiguration($media)[Configuration::EXTENSIONS];
 
-            // TODO throw exception if no extensions
-            if (in_array(strtolower($file->guessExtension()), $allowedExtensions)) {
-                $allowed = true;
-            }
-
-            if ($allowed === false) {
-                $this->context->buildViolation($hasAllowedFileExtensionConstraint->message . implode(', ', $allowedExtensions))
+            if (!in_array(strtolower($media->getFile()->guessExtension()), $allowedExtensions)) {
+                $this->context->buildViolation($hasAllowedFileExtensionConstraint->getMessage() . implode(', ', $allowedExtensions))
                     ->addViolation();
             }
-
-            return true;
         }
-
-        return false;
     }
 }

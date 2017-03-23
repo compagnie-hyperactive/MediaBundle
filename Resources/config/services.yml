@@ -60,6 +60,12 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
 
+  lch.media.weight.validator:
+    class: Lch\MediaBundle\Validator\Constraints\MediaWeightValidator
+    arguments: [ '%kernel.root_dir%', '@lch.media.manager' ]
+    tags:
+      - { name: validator.constraint_validator, alias: alias_name }
+
   lch.media.image.size.validator:
     class: Lch\MediaBundle\Validator\Constraints\ImageSizeValidator
     arguments: [ '@session', '@translator' ]

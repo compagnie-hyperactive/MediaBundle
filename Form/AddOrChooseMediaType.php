@@ -40,6 +40,9 @@ class AddOrChooseMediaType extends AbstractType
      */
     const MEDIA_PARAMETERS = 'media_parameters';
 
+    const MIN_MEDIA_WEIGHT = 'min_media_weight';
+    const MAX_MEDIA_WEIGHT = 'max_media_weight';
+
     const IMAGE_WIDTH = 'image_width';
     const IMAGE_HEIGHT = 'image_height';
 
@@ -138,6 +141,9 @@ class AddOrChooseMediaType extends AbstractType
             'invalid_message' => 'The selected image does not exist',
             'media_parameters' => [],
 
+            // Media weight, to be given in Ko
+            'min_media_weight' => false,
+            'max_media_weight' => false,
             /*****************
              * Image specific
              */

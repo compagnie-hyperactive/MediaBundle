@@ -26,6 +26,13 @@ lch_media:
       list_item_view: 'IpcBundle:back/Media/Resource/fragments:list.item.html.twig'
       extensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']
       
+
+Validators
+ - Media
+  - HasAllowedFileExtension : for extension check based on configuration
+ - Image
+  - ImageSize : for image size check (width, height, min width, min height)
+
 ## Download control
  1. Declare media (see above)
  2. Register a Listener/Subscriber to LchMediaEvents::STORAGE to change storage for your media (example : to add a "/private/" subfolder)
