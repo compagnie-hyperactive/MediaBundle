@@ -15,6 +15,7 @@ use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Loader\MediaUploader;
 use Lch\MediaBundle\Model\ImageInterface;
+use Lch\MediaBundle\Service\MediaTools;
 use Lch\MediaBundle\Twig\Extension\MediaExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,6 +26,12 @@ class MediaManager
      * @var MediaUploader $mediaUploader
      */
     private $mediaUploader;
+
+    /**
+     * @var MediaTools $mediaTools
+     */
+    private $mediaTools;
+
     /**
      * @var EntityManager
      */
@@ -41,13 +48,15 @@ class MediaManager
     /**
      * MediaManager constructor.
      * @param MediaUploader $mediaUploader
+     * @param MediaTools $mediaTools
      * @param EntityManager $entityManager
      * @param EventDispatcherInterface $eventDispatcher
      * @param array $mediaTypes
      */
-    public function __construct(MediaUploader $mediaUploader, EntityManager $entityManager, EventDispatcherInterface $eventDispatcher, array $mediaTypes)
+    public function __construct(MediaUploader $mediaUploader, MediaTools $mediaTools, EntityManager $entityManager, EventDispatcherInterface $eventDispatcher, array $mediaTypes)
     {
         $this->mediaUploader = $mediaUploader;
+        $this->mediaTools = $mediaTools;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->mediaTypes = $mediaTypes;
@@ -104,7 +113,7 @@ class MediaManager
             throw new \Exception();
         }
 
-        $urlEvent = new UrlEvent($media, $this->getRealRelativeUrl($media->getFile()));
+        $urlEvent = new UrlEvent($media, $this->mediaTools->getRealRelativeUrl($media->getFile()));
 
         $this->eventDispatcher->dispatch(
             LchMediaEvents::URL,
@@ -112,21 +121,6 @@ class MediaManager
         );
 
         return $urlEvent->getUrl();
-    }
-
-    /**
-     * @param $fullPath
-     * @return mixed
-     */
-    public function getRealRelativeUrl($fullPath) {
-        // CHeck path is full, with "web" inside
-        if(strpos($fullPath, 'web') !== false) {
-            return explode('/web', $fullPath)[1];
-        }
-        // If not, already relative path
-        else {
-            return $fullPath;
-        }
     }
 
     /**

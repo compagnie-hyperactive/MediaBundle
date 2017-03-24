@@ -1,4 +1,5 @@
 parameters:
+  lch.media.tools.class: Lch\MediaBundle\Service\MediaTools
   lch.media.uploader.class: Lch\MediaBundle\Loader\MediaUploader
   lch.media.downloader.class: Lch\MediaBundle\Loader\MediaDownloader
   lch.media.manager.class: Lch\MediaBundle\Manager\MediaManager
@@ -49,9 +50,13 @@ services:
       - { name: twig.extension }
     lazy: true
 
+  lch.media.tools:
+      class: '%lch.media.tools.class%'
+      lazy: true
+
   lch.media.manager:
     class: '%lch.media.manager.class%'
-    arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager', '@event_dispatcher', '%lch.media.types%' ]
+    arguments: [ '@lch.media.uploader', '@lch.media.tools', '@doctrine.orm.entity_manager', '@event_dispatcher', '%lch.media.types%' ]
     lazy: true
 
   lch.media.extension.validator:
@@ -74,7 +79,7 @@ services:
 
   lch.media.image.subscriber:
     class: Lch\MediaBundle\Listener\ImageSubscriber
-    arguments: ['@lch.media.manager', '%kernel.root_dir%']
+    arguments: ['@lch.media.manager', '@lch.media.tools', '%kernel.root_dir%']
     tags:
       - { name: kernel.event_subscriber }
     lazy: true

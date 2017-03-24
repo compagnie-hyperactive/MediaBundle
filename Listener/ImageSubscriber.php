@@ -9,16 +9,14 @@
 namespace Lch\MediaBundle\Listener;
 
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Lch\MediaBundle\Entity\Image;
-use Doctrine\ORM\Events as DoctrineEvents;
 use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Manager\MediaManager;
+use Lch\MediaBundle\Service\MediaTools;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\File\File;
 
 class ImageSubscriber implements EventSubscriberInterface
 {
@@ -29,11 +27,18 @@ class ImageSubscriber implements EventSubscriberInterface
     private $mediaManager;
 
     /**
+     * @var MediaTools
+     */
+    private $mediaTools;
+
+    /**
      * ImagePrePersistListener constructor.
      * @param MediaManager $mediaManager
+     * @param MediaTools $mediaTools
      */
-    public function __construct(MediaManager $mediaManager) {
+    public function __construct(MediaManager $mediaManager, MediaTools $mediaTools) {
         $this->mediaManager = $mediaManager;
+        $this->mediaTools = $mediaTools;
     }
 
 
@@ -78,7 +83,7 @@ class ImageSubscriber implements EventSubscriberInterface
             $event->setMedia($image);
             $event->setData([
                 'name'      => $image->getName(),
-                'url'       => $this->mediaManager->getRealRelativeUrl($image->getFile()),
+                'url'       => $this->mediaTools->getRealRelativeUrl($image->getFile()),
                 // TODO find a way to trigger thumbnail generation from here
 //                'thumbnail' => '<img width="50" src="' . $this->getRelativeUrl($image->getFile()) . '" />'
             ]);
@@ -96,7 +101,7 @@ class ImageSubscriber implements EventSubscriberInterface
             return;
         }
         // TODO elaborate
-        $event->setThumbnailPath($this->mediaManager->getRealRelativeUrl($image->getFile()));
+        $event->setThumbnailPath($this->mediaTools->getRealRelativeUrl($image->getFile()));
     }
 
     /**
