@@ -65,9 +65,7 @@ class MediaUploader
         }
 
 //        // Return relative URL
-//        return "/{$this->mediaRootDir}{$relativeFilePath}{$fileName}";
-        // Return path
-        return "/{$filePath}/{$fileName}";
+        return "/{$this->mediaRootDir}{$relativeFilePath}{$fileName}";
     }
 
     /**

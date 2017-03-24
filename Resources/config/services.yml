@@ -84,6 +84,7 @@ services:
     arguments: ['@lch.media.uploader', '%kernel.root_dir%']
     tags:
         - { name: doctrine.event_listener, event: postLoad }
+        - { name: doctrine.event_listener, event: prePersist }
         - { name: doctrine.event_listener, event: postPersist }
 
   lch.media.pdf.subscriber:

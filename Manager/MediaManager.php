@@ -84,9 +84,7 @@ class MediaManager
 
         $this->eventDispatcher->dispatch(LchMediaEvents::STORAGE, $storageEvent);
 
-        $fileName = $this->mediaUploader->upload($media, $storageEvent->getRelativeFilePath(), $storageEvent->getFileName());
-
-        return $fileName;
+        return $this->mediaUploader->upload($media, $storageEvent->getRelativeFilePath(), $storageEvent->getFileName());
     }
 
 

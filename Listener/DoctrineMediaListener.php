@@ -38,6 +38,26 @@ class DoctrineMediaListener
         $this->kernelRootDir = $kernelRootDir;
     }
 
+    /**
+     * Before persists, keep only relative path
+     * @param LifecycleEventArgs $args
+     */
+    public function prePersist(LifecycleEventArgs $args) {
+//        $entity = $args->getEntity();
+//
+//        if (!$entity instanceof Media || !$this->mediaUploader->checkStorable($entity)) {
+//            return;
+//        }
+//
+//        if ($entity->getFile() instanceof File) {
+//            $entity->setFile($this->getRealRelativeUrl($entity->getFile()->getPathname()));
+//        }
+    }
+
+    /**
+     * Once persisted, reload File
+     * @param LifecycleEventArgs $args
+     */
     public function postPersist(LifecycleEventArgs $args) {
         $this->handleFile($args);
     }
@@ -54,8 +74,24 @@ class DoctrineMediaListener
             return;
         }
 
-        if ($fileName = $entity->getFile()) {
-            $entity->setFile(new File($fileName));
+        if (!$entity->getFile() instanceof File && $fileName = $this->getRealRelativeUrl($entity->getFile())) {
+            $entity->setFile(new File("{$this->kernelRootDir}/../web{$fileName}"));
+        }
+    }
+
+
+    /**
+     * @param $fullPath
+     * @return mixed
+     */
+    private function getRealRelativeUrl($fullPath) {
+        // CHeck path is full, with "web" inside
+        if(strpos($fullPath, 'web') !== false) {
+            return explode('/web', $fullPath)[1];
+        }
+        // If not, already relative path
+        else {
+            return $fullPath;
         }
     }
 }
