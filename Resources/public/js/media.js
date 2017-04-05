@@ -11,38 +11,42 @@
 $(document).ready(function(){
     // TODO find better way to check already handled
     var idModal = 'image-modal__';
-    var idModalSave = 'image-modal-save__';
+    // var idModalSave = 'image-modal-save__';
     var inputName = 'image__';
     var thumbName = 'imageThumb__';
 
-    $('body').on('show.bs.modal', 'div[id^='+idModal+']', function (e) {
-        var id = $(this).attr('id');
-        var randId = extractRandId(id);
-        var addRoute = $(this).attr('data-route-add');
-        var mediaType = $(this).attr('data-media-type');
-        loadAddMediaForm(randId, addRoute, mediaType);
-    });
+    /**
+     * On media modal show
+     */
+    $('body')
+        .on('show.bs.modal', 'div[id^='+idModal+']', function (e) {
+            var id = $(this).attr('id');
+            var randId = extractRandId(id);
+            var addRoute = $(this).attr('data-route-add');
+            var mediaType = $(this).attr('data-media-type');
+            loadAddMediaForm(randId, addRoute, mediaType);
+        })
+        .on('shown.bs.tab', 'div[id^='+idModal+'] a[data-toggle="tab"]', function (e) {
+            var $parentModal = $(this).parents('div[id^='+idModal+']');
+            var id = $parentModal.attr('id');
+            var randId = extractRandId(id);
+            var listRoute = $parentModal.attr('data-route-list');
+            var mediaType = $parentModal.attr('data-media-type');
 
-    $('body').on('click', 'button[id^='+idModalSave+']', function(e){
-        var id = $(this).attr('id');
-        var randId = extractRandId(id);
-        save();
-    });
+            if(e.target.hash == "#list-media__" + randId) {
+                loadListMediaForm(randId, listRoute, mediaType);
 
-    $('body').on('shown.bs.tab', 'div[id^='+idModal+'] a[data-toggle="tab"]', function (e) {
-        var $parentModal = $(this).parents('div[id^='+idModal+']');
-        var id = $parentModal.attr('id');
-        var randId = extractRandId(id);
-        var listRoute = $parentModal.attr('data-route-list');
-        var mediaType = $parentModal.attr('data-media-type');
+                // // Relayout istope
+                // $parentModal.isotope('reLayout');
+            }
+        });
 
-        if(e.target.hash == "#list-media__" + randId) {
-            loadListMediaForm(randId, listRoute, mediaType);
+    // $('body').on('click', 'button[id^='+idModalSave+']', function(e){
+    //     var id = $(this).attr('id');
+    //     var randId = extractRandId(id);
+    //     save();
+    // });
 
-            // // Relayout istope
-            // $parentModal.isotope('reLayout');
-        }
-    })
 
     /**
      * Extract the random id generated
@@ -211,7 +215,7 @@ $(document).ready(function(){
                         contentType: false,
                         processData: false,
                         success: function(result) {
-                            if("success" in result) {
+                            if(result instanceof Object && "success" in result) {
                                 setChosenMedia(result, randId);
                                 $modal.modal('toggle');
                             } else {
