@@ -9,6 +9,7 @@ use Lch\MediaBundle\Event\PostPersistEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,10 +23,11 @@ class MediaController extends Controller // implements MediaControllerInterface
     /**
      * @param Request $request
      * @param string $type
+     * @param bool $choose
      * @return Response
      * @throws \Exception
      */
-    public function listAction(Request $request, $type = Media::ALL) {
+    public function listAction(Request $request, $type = Media::ALL, $choose = true) {
 
         $registeredMediaTypes = $this->getParameter('lch.media.types');
 
@@ -51,7 +53,7 @@ class MediaController extends Controller // implements MediaControllerInterface
         }
         return $this->render($template, [
             'medias' => $medias,
-            'choose' => true
+            'choose' => $choose
         ]);
     }
 
@@ -59,6 +61,7 @@ class MediaController extends Controller // implements MediaControllerInterface
      * @param Request $request
      * @param $type
      * @return JsonResponse|Response
+     * @throws Exception
      */
     public function addAction(Request $request, $type)
     {
@@ -124,7 +127,8 @@ class MediaController extends Controller // implements MediaControllerInterface
                         $prePersistEvent->getData(),
                         [
                             'id' => $postPersistEvent->getMedia()->getId(),
-                            'thumbnail' => $listItem
+                            'thumbnail' => $listItem,
+                            'type' => $type
                         ]
                     )
                 )
@@ -214,5 +218,4 @@ class MediaController extends Controller // implements MediaControllerInterface
         // Serve file
         return $response;
     }
-
 }
