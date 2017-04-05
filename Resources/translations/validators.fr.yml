@@ -1,7 +1,7 @@
 lch:
   media:
     extension:
-      message: "Le fichier doit avoir une des extensions suivantes : "
+      message: "Le fichier doit avoir une des extensions suivantes : %extensions%"
     weight:
       min:
         message: "Le fichier du champ %field% doit faire la taille minimale de %target_weight% Ko : %given_weight% Ko constaté"

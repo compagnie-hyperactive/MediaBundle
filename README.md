@@ -30,8 +30,11 @@ lch_media:
 Validators
  - Media
   - HasAllowedFileExtension : for extension check based on configuration
+  - Weight : min/max, exact weight
  - Image
   - ImageSize : for image size check (width, height, min width, min height)
+
+All validators work both on class and property level. So you need to define them on class once for all
 
 ## Download control
  1. Declare media (see above)

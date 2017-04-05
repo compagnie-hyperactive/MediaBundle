@@ -28,4 +28,14 @@ class MediaWeight extends Constraint
     {
         return $this->maxWeightMessage;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTargets() {
+        return [
+            self::CLASS_CONSTRAINT,
+            self::PROPERTY_CONSTRAINT
+        ];
+    }
 }

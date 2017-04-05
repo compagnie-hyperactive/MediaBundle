@@ -49,29 +49,32 @@ class MediaWeightValidator extends ConstraintValidator
                 throw new ValidatorException('Constraint should be used on an MediaWeight constraint type');
             }
 
-            $targetImageType = $this->context->getRoot()->get($this->context->getPropertyName());
-            $targetImageTypeOptions = $targetImageType->getConfig()->getOptions();
+            // Only if property name specified (I.E. in form child with properties set)
+            if(null !== $this->context->getPropertyName()) {
+                $targetImageType = $this->context->getRoot()->get($this->context->getPropertyName());
+                $targetImageTypeOptions = $targetImageType->getConfig()->getOptions();
 
-            // Min weight
-            if($targetImageTypeOptions[AddOrChooseMediaType::MIN_MEDIA_WEIGHT] && $targetImageTypeOptions[AddOrChooseMediaType::MIN_MEDIA_WEIGHT] > ($media->getFile()->getSize()/1000)) {
-                $this->context
-                    ->buildViolation($weightConstraint->getMinWeightMessage())
-                    ->setParameter('%target_weight%', $targetImageTypeOptions[AddOrChooseMediaType::MIN_MEDIA_WEIGHT])
-                    ->setParameter('%given_weight%', ($media->getFile()->getSize()/1000))
-                    ->setParameter('%field%', $this->context->getPropertyName())
-                    ->atPath($this->context->getPropertyName())
-                    ->addViolation();
-            }
+                // Min weight
+                if ($targetImageTypeOptions[AddOrChooseMediaType::MIN_MEDIA_WEIGHT] && $targetImageTypeOptions[AddOrChooseMediaType::MIN_MEDIA_WEIGHT] > ($media->getFile()->getSize() / 1000)) {
+                    $this->context
+                        ->buildViolation($weightConstraint->getMinWeightMessage())
+                        ->setParameter('%target_weight%', $targetImageTypeOptions[AddOrChooseMediaType::MIN_MEDIA_WEIGHT])
+                        ->setParameter('%given_weight%', ($media->getFile()->getSize() / 1000))
+                        ->setParameter('%field%', $this->context->getPropertyName())
+                        ->atPath($this->context->getPropertyName())
+                        ->addViolation();
+                }
 
-            // Max weight
-            if($targetImageTypeOptions[AddOrChooseMediaType::MAX_MEDIA_WEIGHT] && $targetImageTypeOptions[AddOrChooseMediaType::MAX_MEDIA_WEIGHT] < ($media->getFile()->getSize()/1000)) {
-                $this->context
-                    ->buildViolation($weightConstraint->getMaxWeightMessage())
-                    ->setParameter('%target_weight%', $targetImageTypeOptions[AddOrChooseMediaType::MAX_MEDIA_WEIGHT])
-                    ->setParameter('%given_weight%', ($media->getFile()->getSize()/1000))
-                    ->setParameter('%field%', $this->context->getPropertyName())
-                    ->atPath($this->context->getPropertyName())
-                    ->addViolation();
+                // Max weight
+                if ($targetImageTypeOptions[AddOrChooseMediaType::MAX_MEDIA_WEIGHT] && $targetImageTypeOptions[AddOrChooseMediaType::MAX_MEDIA_WEIGHT] < ($media->getFile()->getSize() / 1000)) {
+                    $this->context
+                        ->buildViolation($weightConstraint->getMaxWeightMessage())
+                        ->setParameter('%target_weight%', $targetImageTypeOptions[AddOrChooseMediaType::MAX_MEDIA_WEIGHT])
+                        ->setParameter('%given_weight%', ($media->getFile()->getSize() / 1000))
+                        ->setParameter('%field%', $this->context->getPropertyName())
+                        ->atPath($this->context->getPropertyName())
+                        ->addViolation();
+                }
             }
         }
     }

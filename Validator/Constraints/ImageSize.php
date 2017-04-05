@@ -74,4 +74,14 @@ class ImageSize extends Constraint
         return $this->maxHeightMessage;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getTargets() {
+        return [
+            self::CLASS_CONSTRAINT,
+            self::PROPERTY_CONSTRAINT
+        ];
+    }
+
 }
