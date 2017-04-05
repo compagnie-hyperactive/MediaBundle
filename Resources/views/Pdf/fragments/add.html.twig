@@ -1,6 +1,9 @@
+{{ form_errors(mediaForm) }}
 {{ form_start(mediaForm) }}
-    <p class="fileHelper"></p>
     {{ form_row(mediaForm.file) }}
     {{ form_row(mediaForm.name) }}
-    {{ form_rest(mediaForm) }}
+<div class="text-right col-xs-12">
+    {{ form_row(mediaForm.submit) }}
+</div>
+{{ form_rest(mediaForm) }}
 {{ form_end(mediaForm) }}
