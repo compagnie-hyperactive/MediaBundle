@@ -19,6 +19,13 @@ lch_media_add:
     options:
         expose: true
 
+lch_media_delete:
+    path: /delete/{type}/{id}
+    defaults: { _controller: LchMediaBundle:Media:remove }
+    methods:  [ DELETE ]
+    options:
+        expose: true
+
 #lch_media_image_add:
 #    path: /image/add
 #    defaults: { _controller: LchMediaBundle:Image:add }

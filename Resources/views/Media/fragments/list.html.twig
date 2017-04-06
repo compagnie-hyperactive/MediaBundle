@@ -7,7 +7,7 @@
         <p>{{ "lch.media.list.empty"|trans }}</p>
     {% endif %}
 </div>
-{% if choose is defined and choose == true %}
+{% if libraryMode == false %}
     <div class="col-xs-12 text-right">
         <button type='submit' class='btn btn-primary select'>
             <i class="glyphicon glyphicon-check"></i>

@@ -5,7 +5,9 @@ namespace Lch\MediaBundle\Controller;
 use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Event\DownloadEvent;
+use Lch\MediaBundle\Event\PostDeleteEvent;
 use Lch\MediaBundle\Event\PostPersistEvent;
+use Lch\MediaBundle\Event\PreDeleteEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,11 +25,11 @@ class MediaController extends Controller // implements MediaControllerInterface
     /**
      * @param Request $request
      * @param string $type
-     * @param bool $choose
+     * @param bool $libraryMode
      * @return Response
      * @throws \Exception
      */
-    public function listAction(Request $request, $type = Media::ALL, $choose = true) {
+    public function listAction(Request $request, $type = Media::ALL, $libraryMode = false) {
 
         $registeredMediaTypes = $this->getParameter('lch.media.types');
 
@@ -53,7 +55,7 @@ class MediaController extends Controller // implements MediaControllerInterface
         }
         return $this->render($template, [
             'medias' => $medias,
-            'choose' => $choose
+            'libraryMode' => $libraryMode
         ]);
     }
 
@@ -164,9 +166,46 @@ class MediaController extends Controller // implements MediaControllerInterface
         // TODO: Implement editAction() method.
     }
 
-    public function removeAction()
+    public function removeAction(Request $request, int $id, string $type)
     {
-        // TODO: Implement removeAction() method.
+        if(!isset($this->getParameter('lch.media.types')[$type])) {
+            // TODO throw exception type not defined
+        }
+
+
+        $mediaClass = $this->getParameter('lch.media.types')[$type][Configuration::ENTITY];
+        $media = $this->getDoctrine()->getRepository($mediaClass)->find($id);
+
+        if(!$media instanceof Media) {
+            // TODO throw exception media not found
+        }
+
+        try {
+            $preDeleteEvent = new PreDeleteEvent($media);
+            $this->get('event_dispatcher')->dispatch(
+                LchMediaEvents::PRE_DELETE,
+                $preDeleteEvent
+            );
+
+            $this->getDoctrine()->getManager()->remove($media);
+            $this->getDoctrine()->getManager()->flush();
+
+            $postDeleteEvent = new PostDeleteEvent($preDeleteEvent->getMedia());
+            $this->get('event_dispatcher')->dispatch(
+                LchMediaEvents::POST_DELETE,
+                $postDeleteEvent
+            );
+        }
+        catch(\Exception $exception) {
+            return new JsonResponse([
+                    'error' => true,
+                    'error' => $exception->getCode(),
+                    'message' => $exception->getMessage()
+                ]
+            );
+        }
+
+        return new JsonResponse(['success' => true]);
     }
 
     /**

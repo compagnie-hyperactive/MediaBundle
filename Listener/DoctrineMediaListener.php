@@ -38,21 +38,6 @@ class DoctrineMediaListener
         $this->kernelRootDir = $kernelRootDir;
     }
 
-    /**
-     * Before persists, keep only relative path
-     * @param LifecycleEventArgs $args
-     */
-    public function prePersist(LifecycleEventArgs $args) {
-//        $entity = $args->getEntity();
-//
-//        if (!$entity instanceof Media || !$this->mediaUploader->checkStorable($entity)) {
-//            return;
-//        }
-//
-//        if ($entity->getFile() instanceof File) {
-//            $entity->setFile($this->getRealRelativeUrl($entity->getFile()->getPathname()));
-//        }
-    }
 
     /**
      * Once persisted, reload File

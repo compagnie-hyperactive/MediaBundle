@@ -22,6 +22,63 @@ $(function(){
         window.location.href = Routing.generate('lch_admin_media_library', {type: $(this).val()});
     });
 
+
+    /**
+     * Handle modal interaction (show, hide, delete)
+     */
+    var $modal = $("#details-modal");
+
+    // Show
+    $('.media-list').on('click', '.media', function() {
+        // Fill media data
+        $modal.find('button[type="submit"]')
+            .attr('data-id', $(this).attr('data-id'))
+            .attr('data-type', $(this).attr('data-type'))
+        ;
+        $modal.find('p.alert-danger')
+            .text("")
+            .addClass('hidden')
+        ;
+
+        $("#details-modal").modal('show');
+    });
+
+    // Delete
+    $modal.find('button[type="submit"]').click(function(e) {
+        if($(this).attr('data-id') && $(this).attr('data-type')) {
+
+            var $mediaItem = $(".media-list .media[data-id='" + $(this).attr('data-id') + "']");
+            // Delete
+            jQuery.ajax({
+                url: Routing.generate('lch_media_delete', {id: $(this).attr('data-id'), type: $("#media-type-selector select").val() }),
+                type: 'DELETE',
+                success: function (data) {
+                    if(data instanceof Object && "success" in data) {
+                        // Close modal
+                        $modal.modal('hide');
+
+                        // Remove item from list
+                        $mediaList
+                            .isotope( 'remove', $mediaItem )
+                            .isotope('layout')
+                        ;
+                    }
+                    else {
+                        $modal.find('p.alert-danger')
+                            .text(data.error + " - " + data.message)
+                            .removeClass('hidden')
+                        ;
+                    }
+                    // alert(JSON.parse(data));
+                    // var $lastMediaInserted = $(html).find('.media').last();
+                    // $mediaList
+                    //     .prepend($lastMediaInserted)
+                    //     .isotope( 'prepended', $lastMediaInserted )
+                    // ;
+                }
+            });
+        }
+    });
     /**
      * Handle form submission and media creation
      */
@@ -39,7 +96,7 @@ $(function(){
                 if(result instanceof Object && "success" in result) {
                     // Reload list
                     jQuery.ajax({
-                        url: Routing.generate('lch_media_list', {type: result.type, choose: false}),
+                        url: Routing.generate('lch_media_list', {type: result.type, libraryMode: true}),
                         type: 'GET',
                         success: function (html) {
                             var $lastMediaInserted = $(html).find('.media').last();

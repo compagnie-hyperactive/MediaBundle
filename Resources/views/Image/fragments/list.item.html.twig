@@ -2,10 +2,16 @@
 {% for key, attr in attributes %}
     {% set attrs = attrs ~ " " ~ key ~ '=' ~ attr %}
 {% endfor %}
+{% set size = listItemEvent.media.file.getSize()/1000 %}
+
 <div {{ attrs }} class="col-xs-6 col-sm-4 col-md-3 media"
      data-id="{{ listItemEvent.media.id }}"
+     data-type="{{ getClass(listItemEvent.media) }}"
      data-url="{{ listItemEvent.media.file }}"
      data-name="{{ listItemEvent.media.name }}"
+     data-width="{{ listItemEvent.media.width }}"
+     data-height="{{ listItemEvent.media.height }}"
+     data-size="{{ size }}"
 >
     <div class="col-xs-4">
         {{ getThumbnail(listItemEvent.media) }}
@@ -13,6 +19,6 @@
     <div class="col-xs-8">
         <p>{{ listItemEvent.media.name }}</p>
         <p><strong>{{ listItemEvent.media.width }}</strong>px x <strong>{{ listItemEvent.media.height }}</strong>px</p>
-        <p><strong>{{ listItemEvent.media.file.getSize/1000 }} Ko</strong></p>
+        <p><strong>{{ size }} Ko</strong></p>
     </div>
 </div>

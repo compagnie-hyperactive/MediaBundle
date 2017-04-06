@@ -13,16 +13,17 @@ $contrast-color: #e5e5e5;
     padding: 20px 0;
   }
 
-  .media-list {
-    height: 100%;
-    .media {
-      &:hover, &.chosen {
-        cursor: pointer;
-        background-color: $contrast-color;
-      }
-    }
-  }
   button.select {
     margin:15px 0;
+  }
+}
+
+.media-list {
+  height: 100%;
+  .media {
+    &:hover, &.chosen {
+      cursor: pointer;
+      background-color: $contrast-color;
+    }
   }
 }
