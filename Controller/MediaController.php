@@ -33,6 +33,12 @@ class MediaController extends Controller // implements MediaControllerInterface
 
         $registeredMediaTypes = $this->getParameter('lch.media.types');
 
+        if($request->request->has('search')) {
+            $searchParameters = $request->request->get('search');
+        } else {
+            $searchParameters = [];
+        }
+
         if($type == Media::ALL) {
             $authorizedMediaTypes = $registeredMediaTypes;
         } else if(isset($registeredMediaTypes[$type])) {
@@ -43,9 +49,10 @@ class MediaController extends Controller // implements MediaControllerInterface
             throw new \Exception();
         }
         // TODO add events for listing filtering, pass types found to event
-        $medias = $this->get('lch.media.manager')->getFilteredMedias($authorizedMediaTypes);
+        $medias = $this->get('lch.media.manager')->getFilteredMedias($authorizedMediaTypes, $searchParameters);
 
         // TODO add pagination, infinite scroll
+
         // TODO handle generalisation for view
         // Choose CKEditor template if params in query
         if($request->query->has("CKEditor")) {
@@ -63,7 +70,7 @@ class MediaController extends Controller // implements MediaControllerInterface
      * @param Request $request
      * @param $type
      * @return JsonResponse|Response
-     * @throws Exception
+     * @throws \Exception
      */
     public function addAction(Request $request, $type)
     {
@@ -256,5 +263,13 @@ class MediaController extends Controller // implements MediaControllerInterface
 
         // Serve file
         return $response;
+    }
+
+    public function searchAction(Request $request) {
+        return $this->forward('LchMediaBundle:Media:list', [
+            'request' => $request,
+            'type' => $request->request->get('type'),
+            'libraryMode' => $request->request->get('libraryMode'),
+        ]);
     }
 }

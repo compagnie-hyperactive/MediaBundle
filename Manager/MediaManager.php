@@ -9,6 +9,8 @@ use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\MediaTemplateEventInterface;
+use Lch\MediaBundle\Event\PostSearchEvent;
+use Lch\MediaBundle\Event\PreSearchEvent;
 use Lch\MediaBundle\Event\StorageEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\Event\UrlEvent;
@@ -179,20 +181,45 @@ class MediaManager
 
     /**
      * @param array $authorizedMediasTypes
+     * @param array $parameters
      * @return array
      */
-    public function getFilteredMedias(array $authorizedMediasTypes) {
+    public function getFilteredMedias(array $authorizedMediasTypes, array $parameters) {
         $authorizedMediasQueryBuilder = $this->entityManager->createQueryBuilder();
 
         $medias = [];
 
         foreach($authorizedMediasTypes as $alias => $authorizedMediasType) {
+
+            // Pre search event
+            $preSearchEvent = new PreSearchEvent($authorizedMediasQueryBuilder, $parameters);
+            $this->eventDispatcher->dispatch(
+                LchMediaEvents::PRE_SEARCH,
+                $preSearchEvent
+            );
+
             $authorizedMediasQueryBuilder
                 ->select($alias)
                 ->from($authorizedMediasType[Configuration::ENTITY], $alias)
+                ->where('1=1')
             ;
-            // TODO order, add tags for filtering?
-            $medias = array_merge($medias, $authorizedMediasQueryBuilder->getQuery()->getResult());
+
+            // Search on common media properties
+            if(isset($parameters[Media::NAME])) {
+                $authorizedMediasQueryBuilder
+                    ->andWhere($authorizedMediasQueryBuilder->expr()->like("{$alias}.name", ':name'))
+                    ->setParameter('name', "%{$parameters[Media::NAME]}%")
+                ;
+            }
+
+            // Post search event
+            $postSearchEvent = new PostSearchEvent($preSearchEvent->getQueryBuilder(), $parameters);
+            $this->eventDispatcher->dispatch(
+                LchMediaEvents::PRE_SEARCH,
+                $postSearchEvent
+            );
+
+            $medias = array_merge($medias, $postSearchEvent->getQueryBuilder()->getQuery()->getResult());
         }
         return $medias;
     }

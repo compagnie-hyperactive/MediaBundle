@@ -18,7 +18,7 @@ $(function(){
     /**
      * Handle type change
      */
-    $('#media-type-selector select').change(function() {
+    $('#media-type-selector').find('select').change(function() {
         window.location.href = Routing.generate('lch_admin_media_library', {type: $(this).val()});
     });
 
@@ -69,20 +69,17 @@ $(function(){
                             .removeClass('hidden')
                         ;
                     }
-                    // alert(JSON.parse(data));
-                    // var $lastMediaInserted = $(html).find('.media').last();
-                    // $mediaList
-                    //     .prepend($lastMediaInserted)
-                    //     .isotope( 'prepended', $lastMediaInserted )
-                    // ;
                 }
             });
         }
     });
+
+
+
     /**
      * Handle form submission and media creation
      */
-    $('form').submit(function() {
+    $('#media-form-container').find('form').submit(function() {
         var formData = new FormData($(this)[0]);
 
         jQuery.ajax({
@@ -119,6 +116,39 @@ $(function(){
                 // $modal.find('div.modal-body').html(
                 //     xhr.responseText
                 // );
+            }
+        });
+
+        return false;
+    });
+
+    // Search
+    $("#media-search").find('form').submit(function() {
+        var $form = $(this)[0];
+
+        var data = {}
+        var searchParams = {};
+
+        // Loop on length-1 elements to avoid storing submit button which is form element
+        for(var i=0;i<($form.elements.length)-1;i++) {
+            searchParams[$form.elements[i].name] = $form.elements[i].value;
+            // formData.append($form.elements[i].name, $form.elements[i].value);
+        }
+        data.search = searchParams;
+
+        //Add list parameters
+        data.type = $("#media-type-selector").find("select").val();
+        data.libraryMode = true;
+
+
+        // Reload list
+        jQuery.ajax({
+            url: Routing.generate('lch_media_search'),
+            data: data,
+            type: 'POST',
+            success: function (html) {
+                $mediaList.isotope( 'remove', $(".media-list").find(".media") );
+                $mediaList.isotope('insert', $(html).find(".media"));
             }
         });
 

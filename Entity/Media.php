@@ -15,6 +15,8 @@ abstract class Media
     const ALL = 'all';
     const DOWNLOAD = 'download';
 
+    const NAME = 'media-name';
+
     /**
      * @var int
      *
