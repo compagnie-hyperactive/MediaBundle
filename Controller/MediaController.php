@@ -62,6 +62,7 @@ class MediaController extends Controller // implements MediaControllerInterface
         }
         return $this->render($template, [
             'medias' => $medias,
+            'type' => $type,
             'libraryMode' => $libraryMode
         ]);
     }
@@ -133,7 +134,7 @@ class MediaController extends Controller // implements MediaControllerInterface
             return new JsonResponse(
                 array_merge(['success'   => true],
                     array_merge(
-                        $prePersistEvent->getData(),
+                        is_array($prePersistEvent->getData()) ? $prePersistEvent->getData() : [],
                         [
                             'id' => $postPersistEvent->getMedia()->getId(),
                             'thumbnail' => $listItem,

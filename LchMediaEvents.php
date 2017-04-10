@@ -13,6 +13,7 @@ final class LchMediaEvents
     const POST_PERSIST      = 'lch.media.post_persist';
     const POST_SEARCH       = 'lch.media.post_search';
     const REVERSE_TRANSFORM = 'lch.media.reverse_transform';
+    const SEARCH_FORM       = 'lch.media.search.form';
     const STORAGE           = 'lch.media.storage';
     const THUMBNAIL         = 'lch.media.thumbnail';
     const TRANSFORM         = 'lch.media.transform';

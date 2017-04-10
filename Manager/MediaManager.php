@@ -11,6 +11,7 @@ use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\MediaTemplateEventInterface;
 use Lch\MediaBundle\Event\PostSearchEvent;
 use Lch\MediaBundle\Event\PreSearchEvent;
+use Lch\MediaBundle\Event\SearchFormEvent;
 use Lch\MediaBundle\Event\StorageEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\Event\UrlEvent;
@@ -222,5 +223,21 @@ class MediaManager
             $medias = array_merge($medias, $postSearchEvent->getQueryBuilder()->getQuery()->getResult());
         }
         return $medias;
+    }
+    
+    public function getSearchFields(string $type) {
+
+        $searchFormEvent = new SearchFormEvent($type);
+        if(isset($this->mediaTypes[$type][Configuration::SEARCH_FORM_VIEW])) {
+            $searchFormEvent->setTemplate($this->mediaTypes[$type][Configuration::SEARCH_FORM_VIEW]);
+        }
+
+        $this->eventDispatcher->dispatch(
+            LchMediaEvents::SEARCH_FORM,
+            $searchFormEvent
+        );
+
+
+        return $searchFormEvent;
     }
 }

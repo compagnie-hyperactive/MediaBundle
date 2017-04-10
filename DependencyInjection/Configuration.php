@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
     const ADD_VIEW = 'add_view';
     const THUMBNAIL_VIEW = 'thumbnail_view';
     const LIST_ITEM_VIEW = 'list_item_view';
+    const SEARCH_FORM_VIEW = 'search_form_view';
     const EXTENSIONS = 'extensions';
     const VIEW_TRANSFORMER = 'view_transformer';
     /**
@@ -63,6 +64,9 @@ class Configuration implements ConfigurationInterface
                                 // TODO add check twig exists ifTrue
                             ->end()
                             ->scalarNode(static::LIST_ITEM_VIEW)
+                                // TODO add check twig exists ifTrue
+                            ->end()
+                            ->scalarNode(static::SEARCH_FORM_VIEW)
                                 // TODO add check twig exists ifTrue
                             ->end()
                             ->arrayNode(static::EXTENSIONS)

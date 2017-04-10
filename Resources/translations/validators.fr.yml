@@ -1,5 +1,7 @@
 lch:
   media:
+    tag:
+      unique: "Un tag avec ce nom existe déjà"
     extension:
       message: "Le fichier doit avoir une des extensions suivantes : %extensions%"
     weight:

@@ -50,7 +50,11 @@ class MediaExtension extends \Twig_Extension
             ]),
             new \Twig_SimpleFunction('getUrl', [$this, 'getUrl' ], [
                 'needs_environment' => false
-            ])
+            ]),
+            new \Twig_SimpleFunction('getSearchFields', [$this, 'getSearchFields' ], [
+                'needs_environment' => false,
+                'is_safe' => ['html']
+            ]),
         );
     }
 
@@ -85,6 +89,22 @@ class MediaExtension extends \Twig_Extension
 
     public function getUrl(Media $media) {
         return $this->mediaManager->getUrl($media);
+    }
+
+
+    public function getSearchFields(string $type) {
+        $searchFormEvent =  $this->mediaManager->getSearchFields($type);
+
+        if(null != $searchFormEvent->getTemplate()) {
+            return $this->twig->render($searchFormEvent->getTemplate(), [
+                    'searchFormEvent' => $searchFormEvent
+                ]
+            );
+        }
+        else {
+            return '';
+        }
+
     }
 
     /**

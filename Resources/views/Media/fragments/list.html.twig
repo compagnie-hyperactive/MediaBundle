@@ -4,6 +4,7 @@
             <label for="media-name">{{ "lch.media.list.search.name.label"|trans }}</label>
             <input type="text" class="form-control" id="media-name" name="media-name" placeholder="{{ "lch.media.list.search.name.placeholder"|trans }}">
         </div>
+        {{ getSearchFields(type) }}
         <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>{{ "lch.media.list.search.submit.label"|trans }}</button>
     </form>
 </div>

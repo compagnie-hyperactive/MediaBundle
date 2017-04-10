@@ -96,6 +96,8 @@ $(function(){
                         url: Routing.generate('lch_media_list', {type: result.type, libraryMode: true}),
                         type: 'GET',
                         success: function (html) {
+                            // Remove empty list text if any
+                            $mediaList.find('.text-center.alert.alert-warning').remove();
                             var $lastMediaInserted = $(html).find('.media').last();
                             $mediaList
                                 .prepend($lastMediaInserted)
