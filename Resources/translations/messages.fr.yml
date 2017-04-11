@@ -14,11 +14,10 @@ lch:
       modal:
         save:
           label: Enregistrer l'image
-#      add:
-#        button: Ajouter
-#      name: Nom
-#      alt: Texte Alternatif
-#      file: Fichier
-#      modal:
-#        close: Fermer
-#        save: Enregistrer
+    list:
+      search:
+        name:
+          label: Nom
+          placeholder: Nom à rechercher
+        submit:
+          label: Rechercher
