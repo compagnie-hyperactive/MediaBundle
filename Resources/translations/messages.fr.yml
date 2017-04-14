@@ -15,6 +15,7 @@ lch:
         save:
           label: Enregistrer l'image
     list:
+      empty: La liste de médias est vide
       search:
         name:
           label: Nom

@@ -24,7 +24,7 @@ class MediaController extends Controller // implements MediaControllerInterface
 
     /**
      * @param Request $request
-     * @param string $type
+     * @param mixed $type
      * @param bool $libraryMode
      * @return Response
      * @throws \Exception
@@ -39,12 +39,31 @@ class MediaController extends Controller // implements MediaControllerInterface
             $searchParameters = [];
         }
 
+        // If type not set, select all
+        if(null === $type) {
+            $type = Media::ALL;
+        }
+
+        // If all selected
         if($type == Media::ALL) {
             $authorizedMediaTypes = $registeredMediaTypes;
-        } else if(isset($registeredMediaTypes[$type])) {
+        }
+
+        // One registered
+        else if(isset($registeredMediaTypes[$type])) {
             // Array creation with only type allowed
             $authorizedMediaTypes = [$type => $registeredMediaTypes[$type]];
-        } else {
+        }
+
+        // An array is registered
+        else if(is_array($type)) {
+            foreach($type as $typeSelected) {
+                $authorizedMediaTypes = [$typeSelected => $registeredMediaTypes[$typeSelected]];
+            }
+        }
+
+        // Nothing usable. Exception
+        else {
             // TODO specialize exception
             throw new \Exception();
         }
@@ -55,12 +74,12 @@ class MediaController extends Controller // implements MediaControllerInterface
 
         // TODO handle generalisation for view
         // Choose CKEditor template if params in query
-        if($request->query->has("CKEditor")) {
-            $template = '@LchMedia/Media/fragments/list.ckeditor.html.twig';
-        } else {
+//        if($request->query->has("CKEditor")) {
+//            $template = '@LchMedia/Media/fragments/list.ckeditor.html.twig';
+//        } else {
             $template = '@LchMedia/Media/fragments/list.html.twig';
-        }
-        return $this->render($template, [
+//        }
+        return $this->render('@LchMedia/Media/fragments/list.html.twig', [
             'medias' => $medias,
             'type' => $type,
             'libraryMode' => $libraryMode

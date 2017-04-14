@@ -13,6 +13,7 @@ use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
+use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Manager\MediaManager;
 use Lch\MediaBundle\Service\MediaTools;
@@ -46,7 +47,8 @@ class ImageSubscriber implements EventSubscriberInterface
         return [
             LchMediaEvents::PRE_PERSIST => 'onImagePrePersist',
             LchMediaEvents::THUMBNAIL => 'onImageThumbnail',
-            LchMediaEvents::LIST_ITEM => 'onImageListItem'
+            LchMediaEvents::LIST_ITEM => 'onImageListItem',
+            LchMediaEvents::URL => 'onImageUrl'
         ];
     }
 
@@ -114,5 +116,19 @@ class ImageSubscriber implements EventSubscriberInterface
         if(!$image instanceof Image) {
             return;
         }
+    }
+
+    /**
+     * @param UrlEvent $event
+     */
+    public function onImageUrl(UrlEvent $event) {
+        $image = $event->getMedia();
+
+        // Only for images
+        if(!$image instanceof Image) {
+            return;
+        }
+
+        $event->setUrl($this->mediaTools->getRealRelativeUrl($image->getFile()));
     }
 }

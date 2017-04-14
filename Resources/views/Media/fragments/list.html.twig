@@ -1,10 +1,13 @@
+{% block ckeditor_css %}{% endblock ckeditor_css %}
 <div id="media-search" class="col-xs-12 clearfix">
     <form class="form-inline" action="{{ path('lch_media_search') }}" method="POST">
         <div class="form-group">
             <label for="media-name">{{ "lch.media.list.search.name.label"|trans }}</label>
             <input type="text" class="form-control" id="media-name" name="media-name" placeholder="{{ "lch.media.list.search.name.placeholder"|trans }}">
         </div>
-        {{ getSearchFields(type) }}
+        {% if type != 'all' %}
+            {{ getSearchFields(type) }}
+        {% endif %}
         <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>{{ "lch.media.list.search.submit.label"|trans }}</button>
     </form>
 </div>

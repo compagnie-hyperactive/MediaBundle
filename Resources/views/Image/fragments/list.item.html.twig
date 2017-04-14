@@ -4,10 +4,11 @@
 {% endfor %}
 {% set size = listItemEvent.media.file.getSize()/1000 %}
 
-<div {{ attrs }} class="col-xs-12 media"
+<div {{ attrs }} class="col-xs-6 col-sm-4 col-md-3 media"
      data-id="{{ listItemEvent.media.id }}"
      data-type="{{ getClass(listItemEvent.media) }}"
-     data-url="{{ listItemEvent.media.file }}"
+     {#data-url="{{ listItemEvent.media.file }}"#}
+     data-url="{{ getUrl(listItemEvent.media) }}"
      data-name="{{ listItemEvent.media.name }}"
      data-width="{{ listItemEvent.media.width }}"
      data-height="{{ listItemEvent.media.height }}"
