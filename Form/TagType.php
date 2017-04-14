@@ -32,6 +32,6 @@ class TagType extends AbstractType
 
     public function getName()
     {
-        static::NAME;
+        return static::NAME;
     }
 }

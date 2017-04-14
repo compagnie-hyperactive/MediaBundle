@@ -52,6 +52,8 @@ class AddOrChooseMediaType extends AbstractType
     const MAX_IMAGE_WIDTH = 'max_image_width';
     const MAX_IMAGE_HEIGHT = 'max_image_height';
 
+    const RAND = 'rand';
+
     /**
      * @var ObjectManager
      */
@@ -123,6 +125,9 @@ class AddOrChooseMediaType extends AbstractType
 
         // Media parameters
         $view->vars[static::MEDIA_PARAMETERS] = $options[static::MEDIA_PARAMETERS];
+
+        // Random generation
+        $view->vars[static::RAND] = rand(0,100000);
 
         parent::finishView($view, $form, $options);
     }

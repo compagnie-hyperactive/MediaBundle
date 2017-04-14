@@ -1,20 +1,23 @@
 {% block lch_add_choose_media_widget %}
-    {% set rand = random() %}
     {% spaceless %}
-        <div class="col-xs-12 no-gutter media-selector-container" data-random="{{ rand }}">
+        {% if(form.vars.attr.width is defined) %}
+            <div style="float: left; width: {{ form.vars.attr.width }}%" class="media-selector-container" data-random="{{ form.vars['rand']}}">
+        {% else %}
+            <div class="col-xs-12 no-gutter media-selector-container" data-random="{{ form.vars['rand']}}">
+        {% endif %}
             {{ form_label(form) }}
             <div class="col-xs-12 col-md-10">
-                <div id="image__{{ rand }}">
+                <div id="image__{{ form.vars['rand']}}">
                     <div class="col-xs-12">
                         <div class="thumbnail-container">
                             {% if value is not empty %}
-                                {{ getListItem(value, { id:"imageThumb__" ~ rand }) }}
+                                {{ getListItem(value, { id:"imageThumb__" ~ form.vars['rand']}) }}
                             {% endif %}
                         </div>
                         <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value.id }}" {% endif %}/>
                     </div>
                     <div class="col-xs-12">
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#image-modal__{{ rand }}">
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#image-modal__{{ form.vars['rand']}}">
                             <i class="glyphicon glyphicon-picture"></i>
                             {% if value is not empty %}
                                 {{ 'lch.media.edit'|trans }}
@@ -27,7 +30,7 @@
                 {{ form_errors(form) }}
                 <div
                     class="modal fade media-modal"
-                    id="image-modal__{{ rand }}"
+                    id="image-modal__{{ form.vars['rand']}}"
                     tabindex="-1"
                     role="dialog"
                     aria-labelledby="myModalLabel"
@@ -47,17 +50,17 @@
                             </div>
                             <div class="modal-body clearfix">
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#add-media__{{ rand }}" aria-controls="add-media" role="tab" data-toggle="tab">{{ "lch.media.add"|trans }}</a></li>
-                                    <li role="presentation"><a href="#list-media__{{ rand }}" aria-controls="profile" role="tab" data-toggle="tab">{{ "lch.media.choose"|trans }}</a></li>
+                                    <li role="presentation" class="active"><a href="#add-media__{{ form.vars['rand']}}" aria-controls="add-media" role="tab" data-toggle="tab">{{ "lch.media.add"|trans }}</a></li>
+                                    <li role="presentation"><a href="#list-media__{{ form.vars['rand']}}" aria-controls="profile" role="tab" data-toggle="tab">{{ "lch.media.choose"|trans }}</a></li>
                                 </ul>
                                 <!-- Tab panes -->
                                 <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active clearfix" id="add-media__{{ rand }}">
+                                    <div role="tabpanel" class="tab-pane active clearfix" id="add-media__{{ form.vars['rand']}}">
                                         <div class="col-xs-12 text-center">
                                             <img src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
                                         </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane clearfix" id="list-media__{{ rand }}">
+                                    <div role="tabpanel" class="tab-pane clearfix" id="list-media__{{ form.vars['rand']}}">
                                         <div class="col-xs-12 text-center">
                                             <img src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
                                         </div>
