@@ -36,7 +36,7 @@ trait MediaTaggable
      * @param ArrayCollection $tags
      * @return MediaTaggable
      */
-    public function setTags(ArrayCollection $tags): MediaTaggable
+    public function setTags(ArrayCollection $tags)
     {
         $this->tags = $tags;
         return $this;
