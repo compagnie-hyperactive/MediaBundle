@@ -283,7 +283,7 @@ $(document).ready(function(){
 
 
                 // Handle media final choosing
-                $listTab.find("button[type='submit']").on('click', function(e) {
+                $listTab.find("button.select[type='submit']").on('click', function(e) {
                     e.preventDefault();
                     var $chosen = $listTab.find("div.media.chosen");
                     var entity = {

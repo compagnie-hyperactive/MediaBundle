@@ -8,10 +8,10 @@
         {% if type != 'all' %}
             {{ getSearchFields(type) }}
         {% endif %}
-        <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>{{ "lch.media.list.search.submit.label"|trans }}</button>
+        <button id="search-button" type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>{{ "lch.media.list.search.submit.label"|trans }}</button>
     </form>
 </div>
-<div class="media-list col-xs-12 clearfix">
+<div class="media-list col-xs-12 clearfix isotope">
     {% if medias|length > 0 %}
         {% for media in medias %}
             {{ getListItem(media) }}
