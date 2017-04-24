@@ -257,10 +257,7 @@ class MediaController extends Controller // implements MediaControllerInterface
             throw new \Exception();
         }
 
-        $basePath = $this->container->getParameter('kernel.root_dir') . '/../web';
-        $filePath = $basePath . $media->getFile();
-
-        $file = new File($filePath);
+        $file = new File($media->getFile()->getRealPath());
 
         // Authorization check
         $this->denyAccessUnlessGranted(Media::DOWNLOAD, $media);
