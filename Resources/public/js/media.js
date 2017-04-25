@@ -265,15 +265,18 @@ $(document).ready(function(){
                     html
                 );
 
-                // Isotope presentation
-                $listTab.isotope({
-                    itemSelector: '.media',
-                    percentPosition: true,
-                    masonry: {
-                        // use outer width of grid-sizer for columnWidth
-                        columnWidth: '.media'
-                    }
-                });
+                if (!$listTab.hasClass('isotope')) {
+                    // Isotope presentation
+                    $listTab.isotope({
+                        itemSelector: '.media',
+                        percentPosition: true,
+                        masonry: {
+                            // use outer width of grid-sizer for columnWidth
+                            columnWidth: '.media'
+                        }
+                    });
+                }
+
 
                 // Handle media selection in list
                 $listTab.find("div.media").on('click', function(e) {

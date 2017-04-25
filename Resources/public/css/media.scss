@@ -16,6 +16,14 @@ $contrast-color: #e5e5e5;
   button.select {
     margin:15px 0;
   }
+
+  ul.nav {
+    li:not(.active) {
+      a:hover {
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .media-list {
