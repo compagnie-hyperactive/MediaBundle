@@ -270,12 +270,13 @@ class MediaController extends Controller // implements MediaControllerInterface
         );
 
         // prepare BinaryFileResponse
+        $fileName = "{$downloadEvent->getMedia()->getName()}.{$downloadEvent->getFile()->getExtension()}";
         $response = new BinaryFileResponse($downloadEvent->getFile()->getRealPath());
         $response->trustXSendfileTypeHeader();
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $downloadEvent->getFile()->getFilename(),
-            iconv('UTF-8', 'ASCII//TRANSLIT', $downloadEvent->getFile()->getFilename())
+            $fileName,
+            iconv('UTF-8', 'ASCII//TRANSLIT', $fileName)
         );
 
         // Serve file
