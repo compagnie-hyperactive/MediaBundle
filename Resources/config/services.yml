@@ -4,6 +4,8 @@ parameters:
   lch.media.manager.class: Lch\MediaBundle\Manager\MediaManager
   lch.media.twig.extension.class: Lch\MediaBundle\Twig\Extension\MediaExtension
   lch.media.image.manager.class: Lch\MediaBundle\Manager\ImageManager
+  lch.media.image.regenerate_thumbnails.command.class: Lch\MediaBundle\Command\RegenerateThumbnailsCommand
+
   lch.media.types:
       image:
         form:       'Lch\MediaBundle\Form\ImageType'
@@ -95,6 +97,13 @@ services:
     arguments: ['@lch.media.image.manager', '%kernel.root_dir%']
     tags:
       - { name: kernel.event_subscriber }
+    lazy: true
+
+  lch.media.image.regenerate_thumbnail.command:
+    class: '%lch.media.image.regenerate_thumbnails.command.class%'
+    arguments: ['@doctrine.orm.entity_manager', '@lch.media.image.manager', '%lch.media.types%']
+    tags:
+      - { name: console.command }
     lazy: true
 
   lch.media.doctrine.listener:

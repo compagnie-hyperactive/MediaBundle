@@ -87,10 +87,6 @@ class MediaManager
         $this->eventDispatcher->dispatch(LchMediaEvents::PRE_STORAGE, $preStorageEvent);
 
         $filePath = $this->mediaUploader->upload($media, $preStorageEvent->getRelativeFilePath(), $preStorageEvent->getFileName());
-
-        // Throw event to act after storage
-        $postStorageEvent = new PostStorageEvent($preStorageEvent->getMedia(), $filePath);
-        $this->eventDispatcher->dispatch(LchMediaEvents::POST_STORAGE, $postStorageEvent);
         
         return $filePath;
     }

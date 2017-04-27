@@ -18,36 +18,10 @@ class PostStorageEvent extends Event
     use Mediable;
 
     /**
-     * @var string
-     */
-    private $definitiveFilePath;
-
-    /**
      * StorageEvent constructor.
-     * @param string $definitiveFilePath
      * @param Media $media
      */
-    public function __construct(Media $media, $definitiveFilePath) {
+    public function __construct(Media $media) {
         $this->media = $media;
-        $this->definitiveFilePath = $definitiveFilePath;
-        $this->media = $media;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefinitiveFilePath()
-    {
-        return $this->definitiveFilePath;
-    }
-
-    /**
-     * @param string $definitiveFilePath
-     * @return PostStorageEvent
-     */
-    public function setDefinitiveFilePath($definitiveFilePath)
-    {
-        $this->definitiveFilePath = $definitiveFilePath;
-        return $this;
     }
 }

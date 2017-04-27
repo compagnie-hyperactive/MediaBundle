@@ -11,6 +11,7 @@ namespace Lch\MediaBundle\Manager;
 
 use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\DependencyInjection\Configuration;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class ImageManager
 {
@@ -32,19 +33,22 @@ class ImageManager
     }
 
     /**
-     * @param Image $image
-     * @param $definitivePath
+     * @param Image $image     
      * @throws \Exception
      */
-    public function generateThumbnails(Image $image, $definitivePath) {
+    public function generateThumbnails(Image $image) {
         // Get thumbnails info
         $imageTypeInfo = $this->mediaManager->getMediaTypeConfiguration($image);
 
         // Only if thumbnails wanted
         if(isset($imageTypeInfo[Configuration::THUMBNAIL_SIZES])) {
             foreach($imageTypeInfo[Configuration::THUMBNAIL_SIZES] as $thumbnailSlug => $size) {
-                $imagePath = "{$this->mediaManager->getMediaUploader()->getWebRootDir()}{$definitivePath}";
+//                $imagePath = "{$this->mediaManager->getMediaUploader()->getWebRootDir()}{$definitivePath}";
+                $imagePath = $image->getFile()->getRealPath();
 
+                if(!file_exists($imagePath)) {
+                    throw new FileNotFoundException('Image doesn\'t exist');
+                }
                 // Imagick case
                 if (extension_loaded('imagick')) {
                     // load image

@@ -7,6 +7,7 @@ use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Event\DownloadEvent;
 use Lch\MediaBundle\Event\PostDeleteEvent;
 use Lch\MediaBundle\Event\PostPersistEvent;
+use Lch\MediaBundle\Event\PostStorageEvent;
 use Lch\MediaBundle\Event\PreDeleteEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\LchMediaEvents;
@@ -140,6 +141,10 @@ class MediaController extends Controller // implements MediaControllerInterface
                 LchMediaEvents::POST_PERSIST,
                 $postPersistEvent
             );
+
+            // Throw event to act after storage
+            $postStorageEvent = new PostStorageEvent($postPersistEvent->getMedia());
+            $this->get('event_dispatcher')->dispatch(LchMediaEvents::POST_STORAGE, $postStorageEvent);
 
             // Generate thumbnail
             // TODO find an organization to avoid circular reference if calling service directly

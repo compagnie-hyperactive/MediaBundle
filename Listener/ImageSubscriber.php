@@ -144,6 +144,6 @@ class ImageSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->imageManager->generateThumbnails($image, $event->getDefinitiveFilePath());
+        $this->imageManager->generateThumbnails($image);
     }
 }
