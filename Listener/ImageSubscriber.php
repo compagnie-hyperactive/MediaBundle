@@ -98,7 +98,7 @@ class ImageSubscriber implements EventSubscriberInterface
             return;
         }
         // TODO elaborate
-        $event->setThumbnailPath($this->imageManager->getMediaManager()->getRealRelativeUrl($image->getFile()));
+        $event->setThumbnailPath($this->imageManager->getThumbnailUrl($image, 'list_thumbnail'));
     }
 
     /**
