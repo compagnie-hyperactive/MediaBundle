@@ -46,11 +46,15 @@ class LchMediaExtension extends Extension
             foreach($config[Configuration::TYPES] as $type => $data) {
                 if(isset($nativeTypes[$type])) {
                     $mergedTypes[$type] = array_merge($nativeTypes[$type], $data);
+
+                    // Handle native thumbnails sizes
+                    if(isset($nativeTypes[$type][Configuration::THUMBNAIL_SIZES]) && isset($data[Configuration::THUMBNAIL_SIZES])) {
+                        $mergedTypes[$type][Configuration::THUMBNAIL_SIZES] = array_merge($nativeTypes[$type][Configuration::THUMBNAIL_SIZES], $mergedTypes[$type][Configuration::THUMBNAIL_SIZES]);
+                    }
                 } else {
                     $mergedTypes[$type] = $data;
                 }
             }
-
             $container->setParameter($typesParametersAlias, $mergedTypes);
         }
     }

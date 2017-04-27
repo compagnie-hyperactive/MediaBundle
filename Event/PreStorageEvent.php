@@ -13,7 +13,7 @@ use Lch\MediaBundle\Behavior\Mediable;
 use Lch\MediaBundle\Entity\Media;
 use Symfony\Component\EventDispatcher\Event;
 
-class StorageEvent extends Event
+class PreStorageEvent extends Event
 {
     use Mediable;
 
@@ -47,9 +47,9 @@ class StorageEvent extends Event
 
     /**
      * @param string $relativeFilePath
-     * @return StorageEvent
+     * @return PreStorageEvent
      */
-    public function setRelativeFilePath(string $relativeFilePath): StorageEvent
+    public function setRelativeFilePath(string $relativeFilePath): PreStorageEvent
     {
         $this->relativeFilePath = $relativeFilePath;
         return $this;
@@ -65,9 +65,9 @@ class StorageEvent extends Event
 
     /**
      * @param string $fileName
-     * @return StorageEvent
+     * @return PreStorageEvent
      */
-    public function setFileName(string $fileName): StorageEvent
+    public function setFileName(string $fileName): PreStorageEvent
     {
         $this->fileName = $fileName;
         return $this;

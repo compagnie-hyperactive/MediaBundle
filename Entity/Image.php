@@ -14,6 +14,8 @@ use Lch\MediaBundle\Validator\Constraints\ImageSize;
 abstract class Image extends Media
 {
     use Storable;
+
+    const SIZE = 'size';
     
     /**
      * @var string $alt the alternative text

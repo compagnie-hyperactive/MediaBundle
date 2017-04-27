@@ -19,20 +19,33 @@ class UrlEvent extends Event
      * @var Media
      */
     private $media;
-
     /**
      * @var string
      */
     private $url;
+    /**
+     * @var array
+     */
+    private $mediaParameters;
 
     /**
      * UrlEvent constructor.
      * @param Media $media
      * @param string $url
+     * @param array $mediaParameters
      */
-    public function __construct(Media $media, string $url) {
+    public function __construct(Media $media, string $url, $mediaParameters = []) {
         $this->media = $media;
         $this->url = $url;
+        $this->mediaParameters = $mediaParameters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMediaParameters()
+    {
+        return $this->mediaParameters;
     }
 
     /**

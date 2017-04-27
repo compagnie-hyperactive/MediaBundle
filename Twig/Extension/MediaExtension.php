@@ -87,8 +87,14 @@ class MediaExtension extends \Twig_Extension
         );
     }
 
-    public function getUrl(Media $media) {
-        return $this->mediaManager->getUrl($media);
+    /**
+     * @param Media $media
+     * @param array $mediaParameters
+     * @return string
+     * @throws \Exception
+     */
+    public function getUrl(Media $media, $mediaParameters = []) {
+        return $this->mediaManager->getUrl($media, $mediaParameters);
     }
 
 

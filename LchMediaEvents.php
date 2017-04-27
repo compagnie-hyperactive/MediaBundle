@@ -14,7 +14,8 @@ final class LchMediaEvents
     const POST_SEARCH       = 'lch.media.post_search';
     const REVERSE_TRANSFORM = 'lch.media.reverse_transform';
     const SEARCH_FORM       = 'lch.media.search.form';
-    const STORAGE           = 'lch.media.storage';
+    const PRE_STORAGE           = 'lch.media.pre_storage';
+    const POST_STORAGE      = 'lch.media.post_storage';
     const THUMBNAIL         = 'lch.media.thumbnail';
     const TRANSFORM         = 'lch.media.transform';
     const URL               = 'lch.media.url';

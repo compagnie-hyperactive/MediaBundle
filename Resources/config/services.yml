@@ -1,9 +1,9 @@
 parameters:
-  lch.media.tools.class: Lch\MediaBundle\Service\MediaTools
   lch.media.uploader.class: Lch\MediaBundle\Loader\MediaUploader
   lch.media.downloader.class: Lch\MediaBundle\Loader\MediaDownloader
   lch.media.manager.class: Lch\MediaBundle\Manager\MediaManager
   lch.media.twig.extension.class: Lch\MediaBundle\Twig\Extension\MediaExtension
+  lch.media.image.manager.class: Lch\MediaBundle\Manager\ImageManager
   lch.media.types:
       image:
         form:       'Lch\MediaBundle\Form\ImageType'
@@ -11,6 +11,10 @@ parameters:
         thumbnail_view: 'LchMediaBundle:Image/fragments:thumbnail.html.twig'
         list_item_view: 'LchMediaBundle:Image/fragments:list.item.html.twig'
         extensions: ['jpg', 'jpeg', 'png', 'gif']
+        thumbnail_sizes:
+          list_thumbnail:
+            width: 50
+            height: 50
 
       pdf:
         form:       'Lch\MediaBundle\Form\PdfType'
@@ -50,13 +54,14 @@ services:
       - { name: twig.extension }
     lazy: true
 
-  lch.media.tools:
-      class: '%lch.media.tools.class%'
-      lazy: true
-
   lch.media.manager:
     class: '%lch.media.manager.class%'
-    arguments: [ '@lch.media.uploader', '@lch.media.tools', '@doctrine.orm.entity_manager', '@event_dispatcher', '%lch.media.types%' ]
+    arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager', '@event_dispatcher', '%lch.media.types%' ]
+    lazy: true
+
+  lch.media.image.manager:
+    class: '%lch.media.image.manager.class%'
+    arguments: [ '@lch.media.manager' ]
     lazy: true
 
   lch.media.extension.validator:
@@ -87,7 +92,7 @@ services:
 
   lch.media.image.subscriber:
     class: Lch\MediaBundle\Listener\ImageSubscriber
-    arguments: ['@lch.media.manager', '@lch.media.tools', '%kernel.root_dir%']
+    arguments: ['@lch.media.image.manager', '%kernel.root_dir%']
     tags:
       - { name: kernel.event_subscriber }
     lazy: true

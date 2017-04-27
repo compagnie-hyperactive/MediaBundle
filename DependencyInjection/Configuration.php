@@ -30,7 +30,9 @@ class Configuration implements ConfigurationInterface
     const LIST_ITEM_VIEW = 'list_item_view';
     const SEARCH_FORM_VIEW = 'search_form_view';
     const EXTENSIONS = 'extensions';
-    const VIEW_TRANSFORMER = 'view_transformer';
+    const THUMBNAIL_SIZES = 'thumbnail_sizes';
+    const WIDTH = 'width';
+    const HEIGHT = 'height';
     /**
      * {@inheritdoc}
      */
@@ -71,6 +73,18 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->arrayNode(static::EXTENSIONS)
                                 ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode(static::THUMBNAIL_SIZES)
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode(static::WIDTH)
+                                            ->isRequired()
+                                        ->end()
+                                        ->scalarNode(static::HEIGHT)
+                                            ->isRequired()
+                                        ->end()
+                                    ->end()
+                                ->end()
                             ->end()
                         ->end()
                     ->end()

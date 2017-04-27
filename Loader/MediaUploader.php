@@ -51,7 +51,7 @@ class MediaUploader
             throw new \Exception();
         }
 
-        $filePath = "{$this->kernelRootDir}/../web/{$this->mediaRootDir}{$relativeFilePath}";
+        $filePath = $this->getMediaRootDir() . $relativeFilePath;
 
         if(!file_exists($filePath)) {
             mkdir($filePath, 0755, true);
@@ -79,5 +79,16 @@ class MediaUploader
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMediaRootDir() {
+        return $this->getWebRootDir() . "{$this->mediaRootDir}/";
+    }
+
+    public function getWebRootDir() {
+        return "{$this->kernelRootDir}/../web/";
     }
 }

@@ -69,6 +69,7 @@ class MediaSubscriber implements EventSubscriberInterface
 
         $fs = new Filesystem();
 
+        // TODO adapt with thumbnails
         $fs->remove($file->getPathname());
     }
 }

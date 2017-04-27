@@ -10,9 +10,10 @@ use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\MediaTemplateEventInterface;
 use Lch\MediaBundle\Event\PostSearchEvent;
+use Lch\MediaBundle\Event\PostStorageEvent;
 use Lch\MediaBundle\Event\PreSearchEvent;
 use Lch\MediaBundle\Event\SearchFormEvent;
-use Lch\MediaBundle\Event\StorageEvent;
+use Lch\MediaBundle\Event\PreStorageEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
@@ -31,11 +32,6 @@ class MediaManager
     private $mediaUploader;
 
     /**
-     * @var MediaTools $mediaTools
-     */
-    private $mediaTools;
-
-    /**
      * @var EntityManager
      */
     private $entityManager;
@@ -51,15 +47,13 @@ class MediaManager
     /**
      * MediaManager constructor.
      * @param MediaUploader $mediaUploader
-     * @param MediaTools $mediaTools
      * @param EntityManager $entityManager
      * @param EventDispatcherInterface $eventDispatcher
      * @param array $mediaTypes
      */
-    public function __construct(MediaUploader $mediaUploader, MediaTools $mediaTools, EntityManager $entityManager, EventDispatcherInterface $eventDispatcher, array $mediaTypes)
+    public function __construct(MediaUploader $mediaUploader, EntityManager $entityManager, EventDispatcherInterface $eventDispatcher, array $mediaTypes)
     {
         $this->mediaUploader = $mediaUploader;
-        $this->mediaTools = $mediaTools;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->mediaTypes = $mediaTypes;
@@ -91,12 +85,17 @@ class MediaManager
         // Create file name
         $fileName = md5(uniqid()).'.' . $media->getFile()->guessExtension();
 
-        // Throw event to act on storage
-        $storageEvent = new StorageEvent($media, $relativeFilePath, $fileName);
+        // Throw event to act before storage
+        $preStorageEvent = new PreStorageEvent($media, $relativeFilePath, $fileName);
+        $this->eventDispatcher->dispatch(LchMediaEvents::PRE_STORAGE, $preStorageEvent);
 
-        $this->eventDispatcher->dispatch(LchMediaEvents::STORAGE, $storageEvent);
+        $filePath = $this->mediaUploader->upload($media, $preStorageEvent->getRelativeFilePath(), $preStorageEvent->getFileName());
 
-        return $this->mediaUploader->upload($media, $storageEvent->getRelativeFilePath(), $storageEvent->getFileName());
+        // Throw event to act after storage
+        $postStorageEvent = new PostStorageEvent($preStorageEvent->getMedia(), $filePath);
+        $this->eventDispatcher->dispatch(LchMediaEvents::POST_STORAGE, $postStorageEvent);
+        
+        return $filePath;
     }
 
 
@@ -106,17 +105,19 @@ class MediaManager
 
     /**
      * @param Media $media
+     * @param array $mediaParameters
      * @return string
      * @throws \Exception
      */
-    public function getUrl(Media $media) {
+    public function getUrl(Media $media, $mediaParameters = []) {
 
         if(!$this->mediaUploader->checkStorable($media)) {
             // TODO Specialize
             throw new \Exception();
         }
 
-        $urlEvent = new UrlEvent($media, $this->mediaTools->getRealRelativeUrl($media->getFile()));
+        // We use by default the full width image
+        $urlEvent = new UrlEvent($media, $this->getRealRelativeUrl($media->getFile()), $mediaParameters);
 
         $this->eventDispatcher->dispatch(
             LchMediaEvents::URL,
@@ -239,5 +240,20 @@ class MediaManager
 
 
         return $searchFormEvent;
+    }
+
+    /**
+     * @param $fullPath
+     * @return string
+     */
+    public function getRealRelativeUrl($fullPath) {
+        // CHeck path is full, with "web" inside
+        if(strpos($fullPath, 'web') !== false) {
+            return explode('/web', $fullPath)[1];
+        }
+        // If not, already relative path
+        else {
+            return $fullPath;
+        }
     }
 }

@@ -11,35 +11,32 @@ namespace Lch\MediaBundle\Listener;
 
 use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\Event\ListItemEvent;
+use Lch\MediaBundle\Event\PostStorageEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
+use Lch\MediaBundle\Manager\ImageManager;
 use Lch\MediaBundle\Manager\MediaManager;
 use Lch\MediaBundle\Service\MediaTools;
+use Lch\MediaBundle\DependencyInjection\Configuration;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ImageSubscriber implements EventSubscriberInterface
 {
 
     /**
-     * @var MediaManager
+     * @var ImageManager
      */
-    private $mediaManager;
-
-    /**
-     * @var MediaTools
-     */
-    private $mediaTools;
+    private $imageManager;
+    
 
     /**
      * ImagePrePersistListener constructor.
-     * @param MediaManager $mediaManager
-     * @param MediaTools $mediaTools
+     * @param ImageManager $imageManager     
      */
-    public function __construct(MediaManager $mediaManager, MediaTools $mediaTools) {
-        $this->mediaManager = $mediaManager;
-        $this->mediaTools = $mediaTools;
+    public function __construct(ImageManager $imageManager) {
+        $this->imageManager = $imageManager;
     }
 
 
@@ -48,7 +45,8 @@ class ImageSubscriber implements EventSubscriberInterface
             LchMediaEvents::PRE_PERSIST => 'onImagePrePersist',
             LchMediaEvents::THUMBNAIL => 'onImageThumbnail',
             LchMediaEvents::LIST_ITEM => 'onImageListItem',
-            LchMediaEvents::URL => 'onImageUrl'
+            LchMediaEvents::URL => 'onImageUrl',
+            LchMediaEvents::POST_STORAGE => 'onImagePostStorage'
         ];
     }
 
@@ -79,7 +77,7 @@ class ImageSubscriber implements EventSubscriberInterface
                 $image->setAlt(pathinfo($image->getFile(), PATHINFO_BASENAME));
             }
 
-            $fileName = $this->mediaManager->upload($image);
+            $fileName = $this->imageManager->getMediaManager()->upload($image);
             $image->setFile($fileName);
 
             $event->setMedia($image);
@@ -121,7 +119,27 @@ class ImageSubscriber implements EventSubscriberInterface
     /**
      * @param UrlEvent $event
      */
-    public function onImageUrl(UrlEvent $event) {
+    public function onImageUrl(UrlEvent $event)
+    {
+        $image = $event->getMedia();
+
+        // Only for images
+        if (!$image instanceof Image) {
+            return;
+        }
+
+        $mediaParameters = $event->getMediaParameters();
+
+
+        // Specific size is asked
+        if (isset($mediaParameters[Image::SIZE])) {
+            if ("" !== ($thumbnailUrl = $this->imageManager->getThumbnailUrl($image, $mediaParameters[Image::SIZE]))) {
+                $event->setUrl($thumbnailUrl);
+            }
+        }
+    }
+
+    public function onImagePostStorage(PostStorageEvent $event) {
         $image = $event->getMedia();
 
         // Only for images
@@ -129,6 +147,6 @@ class ImageSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->setUrl($this->mediaTools->getRealRelativeUrl($image->getFile()));
+        $this->imageManager->generateThumbnails($image, $event->getDefinitiveFilePath());
     }
 }
