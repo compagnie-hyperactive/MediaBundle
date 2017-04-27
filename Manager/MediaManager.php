@@ -18,9 +18,6 @@ use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Loader\MediaUploader;
-use Lch\MediaBundle\Model\ImageInterface;
-use Lch\MediaBundle\Service\MediaTools;
-use Lch\MediaBundle\Twig\Extension\MediaExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

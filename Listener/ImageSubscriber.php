@@ -17,9 +17,6 @@ use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Manager\ImageManager;
-use Lch\MediaBundle\Manager\MediaManager;
-use Lch\MediaBundle\Service\MediaTools;
-use Lch\MediaBundle\DependencyInjection\Configuration;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ImageSubscriber implements EventSubscriberInterface
@@ -83,7 +80,7 @@ class ImageSubscriber implements EventSubscriberInterface
             $event->setMedia($image);
             $event->setData([
                 'name'      => $image->getName(),
-                'url'       => $this->mediaTools->getRealRelativeUrl($image->getFile()),
+                'url'       => $this->imageManager->getMediaManager()->getRealRelativeUrl($image->getFile()),
                 // TODO find a way to trigger thumbnail generation from here
 //                'thumbnail' => '<img width="50" src="' . $this->getRelativeUrl($image->getFile()) . '" />'
             ]);
@@ -101,7 +98,7 @@ class ImageSubscriber implements EventSubscriberInterface
             return;
         }
         // TODO elaborate
-        $event->setThumbnailPath($this->mediaTools->getRealRelativeUrl($image->getFile()));
+        $event->setThumbnailPath($this->imageManager->getMediaManager()->getRealRelativeUrl($image->getFile()));
     }
 
     /**
