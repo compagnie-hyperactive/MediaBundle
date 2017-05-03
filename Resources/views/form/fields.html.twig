@@ -45,7 +45,7 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="myModalLabel">{{ form.vars['modal_title']|trans }}</h4>
                                 {% if(form.vars.attr.helper is defined) %}
-                                    <p class="helper"><i class="glyphicon glyphicon-question-sign"></i>{{ form.vars.attr.helper|trans() }}</p>
+                                    <p class="helper"><i class="glyphicon glyphicon-question-sign"></i>{{ form.vars.attr.helper|trans()|raw }}</p>
                                 {% endif %}
                             </div>
                             <div class="modal-body clearfix library-parent">
