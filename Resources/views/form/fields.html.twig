@@ -6,12 +6,12 @@
             <div class="col-xs-12 no-gutter media-selector-container" data-random="{{ form.vars['rand']}}">
         {% endif %}
             {{ form_label(form) }}
-            <div class="col-xs-12 col-md-10">
+            <div class="col-xs-12 {% if(form.vars.attr.width is not defined) %}col-md-10{% endif %}">
                 <div id="image__{{ form.vars['rand']}}">
                     <div class="col-xs-12">
                         <div class="thumbnail-container">
                             {% if value is not empty %}
-                                {{ getListItem(value, { id:"imageThumb__" ~ form.vars['rand']}) }}
+                                {{ getListItem(value, { id:"imageThumb__" ~ form.vars['rand'], fullSize: true}) }}
                             {% endif %}
                         </div>
                         <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value.id }}" {% endif %}/>
