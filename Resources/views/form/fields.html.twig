@@ -57,12 +57,12 @@
                                 <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane active clearfix" id="add-media__{{ form.vars['rand']}}">
                                         <div class="col-xs-12 text-center">
-                                            <img src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
+                                            <img class="loader" src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
                                         </div>
                                     </div>
                                     <div role="tabpanel" class="tab-pane clearfix isotope" id="list-media__{{ form.vars['rand']}}">
                                         <div class="col-xs-12 text-center">
-                                            <img src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
+                                            <img class="loader" src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
                                         </div>
                                     </div>
                                 </div>
@@ -73,5 +73,6 @@
             </div>
             <hr class="col-xs-10 col-xs-offset-1">
         </div>
+        <img class="loader hidden" src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
     {% endspaceless %}
 {% endblock %}

@@ -187,25 +187,17 @@ $(document).ready(function(){
                 //     }
                 });
 
+                // TODO find a way to make it work even if there was problem on first load
                 $('form[name='+formName+']').on('submit', function(e) {
                     e.preventDefault();
-
-                    // TODO handle alt and name server side
-                    // var $fileAlt = $('div#'+idModal+randId+' #lch_media_bundle_image_alt');
-                    // if ($fileAlt.val() == '') {
-                    //     $fileAlt.val(fileValue);
-                    // }
-                    //
-                    // var $fileName = $('div#'+idModal+randId+' #lch_media_bundle_image_name');
-                    // if ($fileName.val() == '') {
-                    //     $fileName.val(fileValue);
-                    // }
-
-                    // var formdata = (window.FormData) ? new FormData($(this)) : null;
-                    // var data = (formdata !== null) ? formdata : $(this).serialize();
+                    // Add loader in button
+                    var $button = $(this).find('[type="submit"]');
+                    var $loader = $('img.loader.hidden').first();
+                    $loader.removeClass('hidden');
+                    $button.find('i').remove();
+                    $button.prepend($loader);
 
                     var formData = new FormData($(this)[0]);
-                    // var formData = $(this).serialize();
 
                     jQuery.ajax({
                         url : $(html).attr('action'),
@@ -224,7 +216,7 @@ $(document).ready(function(){
                                     .html(result)
                                 ;
                             }
-                            
+
                         },
                         error: function (xhr, status, error) {
                             // $modal.find('div.modal-body').empty();
