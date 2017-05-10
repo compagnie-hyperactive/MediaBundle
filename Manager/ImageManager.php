@@ -66,11 +66,32 @@ class ImageManager
                     $imageSize = $i->getImageGeometry();
 
                     // Setup crop start point
-                    if ($strategy == Configuration::STRATEGY_CROP) {
+                    if ($strategy == Configuration::CROP_STRATEGY) {
                         $cropStartPoint = ["x" => 0, "y" => 0];
                         $i->cropImage($size[Configuration::WIDTH], $size[Configuration::HEIGHT], $cropStartPoint['x'], $cropStartPoint['y']);
                     }
-                    else if ($strategy == Configuration::STRATEGY_RESIZE){
+                    else if ($strategy == Configuration::RESIZE_STRATEGY){
+                        /**
+                         * TODO: treat different resize cases
+                         *
+                         *     Demand    Picture
+                         * 1:  W > H   |  W > H
+                         * 2:  W > H   |  W < H
+                         * 3:  W > H   |  W = H
+                         * 4:  W > H   | (W or H) < Demand
+                         * 4': W > H   | (W and H) < Demand
+
+                         * 5:  W < H   |  W < H
+                         * 6:  W < H   |  W > H
+                         * 7:  W < H   |  W = H
+                         * 8:  W < H   | (W or H) < Demand
+                         * 8': W < H   | (W and H) < Demand
+                         *
+                         * 9:  W = H   |  W != H
+                         * 10: W = H   |  W = H
+                         *
+                         */
+
                         //Resize picture keep aspect ratio, upscale allowed.
                         if ($imageSize['width'] > $imageSize['height']){
                             $i->scaleImage($size[Configuration::WIDTH],0);

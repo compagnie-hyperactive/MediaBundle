@@ -35,8 +35,8 @@ class Configuration implements ConfigurationInterface
     const HEIGHT = 'height';
 
     const STRATEGY = 'strategy';
-    const STRATEGY_RESIZE = 'resize';
-    const STRATEGY_CROP = 'crop';
+    const RESIZE_STRATEGY = 'resize';
+    const CROP_STRATEGY = 'crop';
 
     /**
      * {@inheritdoc}
@@ -89,9 +89,9 @@ class Configuration implements ConfigurationInterface
                                             ->isRequired()
                                         ->end()
                                         ->scalarNode(static::STRATEGY)
-                                            ->defaultValue(static::STRATEGY_RESIZE)
+                                            ->defaultValue(static::RESIZE_STRATEGY)
                                             ->validate()
-                                            ->ifNotInArray(array(static::STRATEGY_RESIZE, static::STRATEGY_CROP))
+                                            ->ifNotInArray(array(static::RESIZE_STRATEGY, static::CROP_STRATEGY))
                                                 ->thenInvalid('Invalid image strategy specified: %s')
                                             ->end()
                                         ->end()
