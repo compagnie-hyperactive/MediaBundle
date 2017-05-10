@@ -24,6 +24,7 @@ class Configuration implements ConfigurationInterface
     const TYPES = 'types';
 
     const ENTITY = 'entity';
+    const NAME = 'name';
     const FORM = 'form';
     const ADD_VIEW = 'add_view';
     const THUMBNAIL_VIEW = 'thumbnail_view';
@@ -57,6 +58,9 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode(static::TYPES)
                     ->prototype('array')
                         ->children()
+                            ->scalarNode(static::NAME)
+                                ->isRequired()
+                            ->end()
                             ->scalarNode(static::ENTITY)
                                 ->isRequired()
                                 // TODO add check class exists ifTrue
