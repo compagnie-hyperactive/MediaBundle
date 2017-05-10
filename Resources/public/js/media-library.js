@@ -53,6 +53,9 @@ $(function(){
                 .addClass('hidden')
             ;
 
+            $modal.find('ul#media-details').html("");
+            $modal.find('ul#media-details').append('<li>URL du média : <strong>' + $(this).attr('data-url') + '</strong></li>');
+
             $("#details-modal").modal('show');
         });
 
