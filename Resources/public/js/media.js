@@ -276,6 +276,17 @@ $(document).ready(function(){
                     $(this).addClass('chosen');
                 });
 
+                $listTab.find("div.media").dblclick(function(){
+                    var $chosen = $listTab.find("div.media.chosen");
+                    var entity = {
+                        id: $chosen.attr('data-id'),
+                        // url: $chosen.attr('data-url'),
+                        thumbnail: $chosen.html(),
+                        name: $chosen.attr('data-name'),
+                    };
+                    setChosenMedia(entity, randId);
+                    $modal.modal('toggle');
+                });
 
                 // Handle media final choosing
                 $listTab.find("button.select[type='submit']").on('click', function(e) {
@@ -286,7 +297,7 @@ $(document).ready(function(){
                         // url: $chosen.attr('data-url'),
                         thumbnail: $chosen.html(),
                         name: $chosen.attr('data-name'),
-                    }
+                    };
                     setChosenMedia(entity, randId);
                     $modal.modal('toggle');
                 });
