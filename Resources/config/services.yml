@@ -17,6 +17,7 @@ parameters:
           list_thumbnail:
             width: 50
             height: 50
+            strategy: resize
 
       pdf:
         form:       'Lch\MediaBundle\Form\PdfType'

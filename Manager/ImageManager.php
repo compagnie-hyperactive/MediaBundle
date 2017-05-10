@@ -42,9 +42,17 @@ class ImageManager
 
         // Only if thumbnails wanted
         if(isset($imageTypeInfo[Configuration::THUMBNAIL_SIZES])) {
+
             foreach($imageTypeInfo[Configuration::THUMBNAIL_SIZES] as $thumbnailSlug => $size) {
 //                $imagePath = "{$this->mediaManager->getMediaUploader()->getWebRootDir()}{$definitivePath}";
                 $imagePath = $image->getFile()->getRealPath();
+
+                //Resizing strategy
+                if (empty($size[Configuration::STRATEGY])){
+                    throw new FileNotFoundException('Resize image strategy is not defined for size "'.$thumbnailSlug.'"');
+                }
+                
+                $strategy = $size[Configuration::STRATEGY];
 
                 if(!file_exists($imagePath)) {
                     throw new FileNotFoundException('Image doesn\'t exist');
@@ -58,8 +66,19 @@ class ImageManager
                     $imageSize = $i->getImageGeometry();
 
                     // Setup crop start point
-                    $cropStartPoint = ["x" => 0, "y" => 0];
-                    $i->cropImage($size[Configuration::WIDTH], $size[Configuration::HEIGHT], $cropStartPoint['x'], $cropStartPoint['y']);
+                    if ($strategy == Configuration::STRATEGY_CROP) {
+                        $cropStartPoint = ["x" => 0, "y" => 0];
+                        $i->cropImage($size[Configuration::WIDTH], $size[Configuration::HEIGHT], $cropStartPoint['x'], $cropStartPoint['y']);
+                    }
+                    else if ($strategy == Configuration::STRATEGY_RESIZE){
+                        //Resize picture keep aspect ratio, upscale allowed.
+                        if ($imageSize['width'] > $imageSize['height']){
+                            $i->scaleImage($size[Configuration::WIDTH],0);
+                        }
+                        else {
+                            $i->scaleImage(0, $size[Configuration::HEIGHT]);
+                        }
+                    }
 
                     $imagePathinfo = pathinfo($imagePath);
 
