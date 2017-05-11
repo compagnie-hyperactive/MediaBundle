@@ -2,6 +2,7 @@ parameters:
   lch.media.uploader.class: Lch\MediaBundle\Loader\MediaUploader
   lch.media.downloader.class: Lch\MediaBundle\Loader\MediaDownloader
   lch.media.manager.class: Lch\MediaBundle\Manager\MediaManager
+  lch.media.pdf.manager.class: Lch\MediaBundle\Manager\PdfManager
   lch.media.twig.extension.class: Lch\MediaBundle\Twig\Extension\MediaExtension
   lch.media.image.manager.class: Lch\MediaBundle\Manager\ImageManager
   lch.media.image.regenerate_thumbnails.command.class: Lch\MediaBundle\Command\RegenerateThumbnailsCommand
@@ -64,6 +65,11 @@ services:
 
   lch.media.image.manager:
     class: '%lch.media.image.manager.class%'
+    arguments: [ '@lch.media.manager','@lch.media.uploader' ]
+    lazy: true
+
+  lch.media.pdf.manager:
+    class: '%lch.media.pdf.manager.class%'
     arguments: [ '@lch.media.manager' ]
     lazy: true
 
@@ -88,7 +94,7 @@ services:
 
   lch.media.subscriber:
     class: Lch\MediaBundle\Listener\MediaSubscriber
-    arguments: ['@lch.media.uploader', '%kernel.root_dir%']
+    arguments: ['@lch.media.uploader','@lch.media.pdf.manager','%kernel.root_dir%']
     tags:
       - { name: kernel.event_subscriber }
     lazy: true
