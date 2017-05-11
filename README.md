@@ -13,6 +13,7 @@ lch_media:
 
   types:
     image:
+      name:       'ipc.front.image.name'
       entity:     'IpcBundle\Entity\Media\Image'
       form:       'IpcBundle\Form\Media\ImageType'
       add_view:   'IpcBundle:back/Media/Image/fragments:add.html.twig'
