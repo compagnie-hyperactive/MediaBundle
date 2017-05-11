@@ -44,6 +44,9 @@ class MediaExtension extends \Twig_Extension
                 'needs_environment' => false,
                 'is_safe' => ['html']
             ]),
+            new \Twig_SimpleFunction('getThumbnailUrl', [$this, 'getThumbnailUrl' ], [
+                'needs_environment' => false,
+            ]),
             new \Twig_SimpleFunction('getListItem', [$this, 'getListItem' ], [
                 'needs_environment' => false,
                 'is_safe' => ['html']
@@ -60,14 +63,25 @@ class MediaExtension extends \Twig_Extension
 
     /**
      * @param Media $media
-     * @param null $width
-     * @param null $height
+    
      * @return string
      */
-    public function getThumbnail(Media $media, $width = null, $height = null)
+    public function getThumbnail(Media $media, $mediaParameters = [])
     {
-        $templateEvent =  $this->mediaManager->getThumbnail($media);
+        $templateEvent =  $this->mediaManager->getThumbnail($media, $mediaParameters);
         return $this->twig->render($templateEvent->getTemplate(), ['thumbnailEvent' => $templateEvent]);
+    }
+
+
+    /**
+     * @param Media $media
+
+     * @return string
+     */
+    public function getThumbnailUrl(Media $media, $mediaParameters = [])
+    {
+        $templateEvent =  $this->mediaManager->getThumbnail($media, $mediaParameters);
+        return $templateEvent->getThumbnailPath();
     }
 
     /**

@@ -54,24 +54,32 @@ class PdfManager
         }
         // Imagick case
         if (extension_loaded('imagick')) {
-            // load pdf
-            $i = new \Imagick($mediaPath);
-            //set new format
-            $i->setImageFormat('png');
-            $mediaPathInfo = pathinfo($mediaPath);
 
-            // Get size
-            $imageSize = $i->getImageGeometry();
-            //Resize picture keep aspect ratio, upscale allowed.
-            if ($imageSize['width'] > $imageSize['height']){
-                $i->scaleImage(75,0);
-            }
-            else {
-                $i->scaleImage(0, 75);
-            }
+            $sizes = [
+                "thumbnail" => 75,
+                "preview" => 500
+            ];
 
-            $fileName = $this->thumbnailNamingStrategy($mediaPathInfo,'thumbnail',[]);
-            $i->writeImages($fileName,false);
+            foreach($sizes as $slug => $max) {
+                // load pdf
+                $i = new \Imagick($mediaPath . "[0]");
+                //set new format
+                $i->setImageFormat('png');
+                $mediaPathInfo = pathinfo($mediaPath);
+
+                // Get size
+                $imageSize = $i->getImageGeometry();
+
+                // Resize picture keep aspect ratio, upscale allowed.
+                if ($imageSize['width'] > $imageSize['height']){
+                    $i->scaleImage($max,0);
+                }
+                else {
+                    $i->scaleImage(0, $max);
+                }
+                $fileName = $this->thumbnailNamingStrategy($mediaPathInfo, $slug, []);
+                $i->writeImages($fileName,false);
+            }
         }
     }
 
@@ -81,10 +89,9 @@ class PdfManager
      * @return string
      * @throws \Exception
      */
-    public function getThumbnailUrl(Media $media, string $size) {
-        $mediaTypeData = $this->getMediaManager()->getMediaTypeConfiguration($media);
+    public function getThumbnailUrl(Media $media, string $size = 'thumbnail') {
 
-        $thumbnailPath = $this->thumbnailNamingStrategy(pathinfo($media->getFile()->getRealPath()), 'thumbnail',[]);
+        $thumbnailPath = $this->thumbnailNamingStrategy(pathinfo($media->getFile()->getRealPath()), $size);
 
         if(file_exists($thumbnailPath)) {
             return $this->getMediaManager()->getRealRelativeUrl($thumbnailPath);
@@ -100,7 +107,7 @@ class PdfManager
      * @param array $size
      * @return string the thumbnail name
      */
-    private function thumbnailNamingStrategy(array $mediaPathinfo, string $thumbnailSlug, array $size) {
+    private function thumbnailNamingStrategy(array $mediaPathinfo, string $thumbnailSlug, array $size = []) {
         return "{$mediaPathinfo['dirname']}/{$mediaPathinfo['filename']}_{$thumbnailSlug}.png";
     }
 }

@@ -5,7 +5,8 @@ parameters:
   lch.media.pdf.manager.class: Lch\MediaBundle\Manager\PdfManager
   lch.media.twig.extension.class: Lch\MediaBundle\Twig\Extension\MediaExtension
   lch.media.image.manager.class: Lch\MediaBundle\Manager\ImageManager
-  lch.media.image.regenerate_thumbnails.command.class: Lch\MediaBundle\Command\RegenerateThumbnailsCommand
+  lch.media.image.regenerate_thumbnails.command.class: Lch\MediaBundle\Command\RegenerateImageThumbnailsCommand
+  lch.media.pdf.regenerate_thumbnails.command.class: Lch\MediaBundle\Command\RegeneratePdfThumbnailsCommand
 
   lch.media.types:
       image:
@@ -109,6 +110,13 @@ services:
   lch.media.image.regenerate_thumbnail.command:
     class: '%lch.media.image.regenerate_thumbnails.command.class%'
     arguments: ['@doctrine.orm.entity_manager', '@lch.media.image.manager', '%lch.media.types%']
+    tags:
+      - { name: console.command }
+    lazy: true
+
+  lch.media.pdf.regenerate_thumbnail.command:
+    class: '%lch.media.pdf.regenerate_thumbnails.command.class%'
+    arguments: ['@doctrine.orm.entity_manager', '@lch.media.pdf.manager', '%lch.media.types%']
     tags:
       - { name: console.command }
     lazy: true

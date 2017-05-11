@@ -55,6 +55,9 @@ $(function(){
 
             $modal.find('ul#media-details').html("");
             $modal.find('ul#media-details').append('<li>URL du média : <strong>' + $(this).attr('data-url') + '</strong></li>');
+            if($(this).data('preview')) {
+                $modal.find('.modal-body').append('<div class="text-center" style="border: 1px solid #ddd"><img src="' + $(this).data('preview') + '" /></div>');
+            }
 
             $("#details-modal").modal('show');
         });

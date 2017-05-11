@@ -1,3 +1,8 @@
-<div class="{% if attributes.fullSize is defined and attributes.fullSize == true %}col-xs-12{% else %}col-xs-6 col-sm-4 col-md-3{% endif %} media"  data-id="{{ listItemEvent.media.id }}" data-url="{{ listItemEvent.media.file }}" data-name="{{ listItemEvent.media.name }}">
+<div class="{% if attributes.fullSize is defined and attributes.fullSize == true %}col-xs-12{% else %}col-xs-6 col-sm-4 col-md-3{% endif %} media"
+     data-id="{{ listItemEvent.media.id }}"
+     data-url="{{ listItemEvent.media.file }}"
+     data-name="{{ listItemEvent.media.name }}"
+     data-preview="{{ getUrl(listItemEvent.media, {'size': 'preview'}) }}"
+>
     {{ getThumbnail(listItemEvent.media) }}
 </div>

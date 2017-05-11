@@ -122,11 +122,13 @@ class MediaManager
 
     /**
      * @param Media $media
+     * @param array $mediaParameters
      * @return MediaTemplateEventInterface
      */
-    public function getThumbnail(Media $media) {
+    public function getThumbnail(Media $media, array $mediaParameters) {
         $thumbnailEvent = new ThumbnailEvent($media);
         $thumbnailEvent->setMedia($media);
+        $thumbnailEvent->setThumbnailParameters($mediaParameters);
         $thumbnailEvent->setTemplate($this->getMediaTypeConfiguration($media)[Configuration::THUMBNAIL_VIEW]);
 
         $this->eventDispatcher->dispatch(

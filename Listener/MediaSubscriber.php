@@ -12,6 +12,7 @@ namespace Lch\MediaBundle\Listener;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Entity\Pdf;
 use Lch\MediaBundle\Event\PostDeleteEvent;
+use Lch\MediaBundle\Event\PostStorageEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Loader\MediaUploader;
@@ -57,7 +58,8 @@ class MediaSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents() {
         return [
             LchMediaEvents::POST_DELETE => 'onMediaPostDelete',
-            LchMediaEvents::THUMBNAIL => 'onMediaThumbnail'
+            LchMediaEvents::THUMBNAIL => 'onMediaThumbnail',
+            LchMediaEvents::POST_STORAGE => 'onMediaPostStorage'
         ];
     }
 
@@ -98,11 +100,28 @@ class MediaSubscriber implements EventSubscriberInterface
                 $media->getFile()->getExtension() == 'PDF')
         ){
 
-            $this->pdfManager->generateThumbnail($media);
-
-            if ($this->pdfManager->getThumbnailUrl($media,'')){
-                $thumbnailEvent->setThumbnailPath($this->pdfManager->getThumbnailUrl($media,''));
+//            $this->pdfManager->generateThumbnail($media);
+            if(isset($thumbnailEvent->getThumbnailParameters()['size'])) {
+                $size = $thumbnailEvent->getThumbnailParameters()['size'];
+            } else {
+                $size = 'thumbnail';
             }
+
+            if ("" !== ($mediaThumbnail = $this->pdfManager->getThumbnailUrl($media, $size))){
+                $thumbnailEvent->setThumbnailPath($mediaThumbnail);
+            }
+        }
+    }
+
+    public function onMediaPostStorage(PostStorageEvent $event) {
+        $media = $event->getMedia();
+
+        if ($media instanceof Media && (
+                $media->getFile()->getExtension() == 'pdf'
+                ||
+                $media->getFile()->getExtension() == 'PDF')
+        ){
+            $this->pdfManager->generateThumbnail($media);
         }
     }
 }
