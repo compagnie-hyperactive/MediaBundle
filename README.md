@@ -10,6 +10,8 @@ Features:
 
 ## Installation and pre-requisites
 
+The bundle use [Bootstrap](http://getbootstrap.com/) and [jQuery](https://jquery.com/). Be sure those 2 dependencies are fullfilled, especially on admin screens (media selection/creation)
+
 `composer require lch/media-bundle`
 
 ## Configuration and usage
@@ -208,7 +210,7 @@ _Note : as indicated [below](#events), most of logic is **event related**. Thumb
 
 You can find below a graphical render for several methods listed above :
 
-![Media Twig extension methods](https://compagnie-hyperactive.github.io/MediaBundle/images/extension.png)
+![Media Twig extension methods](https://compagnie-hyperactive.github.io/MediaBundle/images/extensions.png)
 
 ### Events
 
@@ -234,7 +236,7 @@ You can find below the complete event list thrown by the bundle (listed in `Lch\
 The bundle provides 2 form types for easing media selection/creation. First of all, be assured to add the correct form theme file in your admin twig files, which is `LchMediaBundle:form:fields.html.twig`
 
 
-#### AddOrChooseMediaType
+#### AddOrChooseMediaType
 
 Here is a classical use :
 
@@ -254,7 +256,12 @@ Here is a classical use :
         ;
 ```
 
-Although it's quite clear, note that `entity_reference` is the media class you want to link here
+Although it's quite clear, note that `entity_reference` is the media class you want to link here. Regarding validation, you can pass
+- `image_width` and `image_height` for **exact** image size required
+- `min_image_width`, `max_image_width`, `min_image_height`, `max_image_height` for image size boundaries
+- `min_media_weight` and `max_media_weight` for media size
+
+Have a look to [validators section](#validators) in order to have more details.
 
 #### AddOrChooseMultipleMediasType
 
