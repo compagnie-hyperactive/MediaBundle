@@ -25,6 +25,8 @@ Out of the box, MediaBundle defines 2 types : image and pdf. You can use those t
 
 Minimal class for above declared image could be :
 
+```php
+<?php
     namespace YourBundle\Bundle\Entity\Media;
 
     use Doctrine\ORM\Mapping as ORM;
@@ -43,6 +45,7 @@ Minimal class for above declared image could be :
         use Blameable,
             Timestampable;
     }
+```
 
 It extends `Lch\MediaBundle\Entity\Image`
 
@@ -51,6 +54,8 @@ It extends `Lch\MediaBundle\Entity\Image`
 Minimal form class could be :
 
 
+```php
+<?php
     namespace YourBundle\Form\Media;
 
     use Symfony\Component\Form\FormBuilderInterface;
@@ -91,6 +96,7 @@ Minimal form class could be :
             return BaseImageType::class;
         }
     }
+```
 
 
 
