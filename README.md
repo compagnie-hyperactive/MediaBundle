@@ -10,6 +10,12 @@ This bundle brings to you a comprehensive and code-close way of handling media f
 
 Out of the box, MediaBundle defines 2 types : image and pdf. You can use those types as base for you custom ones.
 
+Below is shown types and available fields :
+
+
+![Media relations and fields](https://compagnie-hyperactive.github.io/MediaBundle/images/media-relations.png)
+
+
 1. You need to define your **media types** in `config.yml`. You can define as many type you need, using the following syntax :
 
 ```yml  
