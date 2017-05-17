@@ -8,15 +8,21 @@ This bundle brings to you a comprehensive and code-close way of handling media f
 
 ## Configuration and usage
 
-Out of the box, MediaBundle defines 2 types : **image** and **pdf**. You can use those types as base for you custom ones.
+1. [General explanations](#general-explanations)
+2. [Media types declaration](#media-types-declaration)
 
+### General explanations
+
+Out of the box, MediaBundle defines 2 types : **image** and **pdf**. You can use those types as base for you custom ones.
 
 Below is shown types and available fields :
 
 ![Media relations and fields](https://compagnie-hyperactive.github.io/MediaBundle/images/media-relations.png)
 
 
-1. You need to define your **media types** in `config.yml`. You can define as many type you need, using the following syntax :
+### Media types declaration
+
+You need to define your **media types** in `config.yml`. You can define as many type you need, using the following syntax :
 
 ```yml
     lch_media:
@@ -31,7 +37,7 @@ Below is shown types and available fields :
           extensions: ['jpg', 'jpeg', 'png', 'gif'] # allowed extensions
 ```
 
-### Entity
+#### Entity
 
 Minimal class for above declared image could be :
 
@@ -59,7 +65,7 @@ Minimal class for above declared image could be :
 
 It extends `Lch\MediaBundle\Entity\Image`. If you want to start from scratch, you have to extends from `Media` and use `Storable` behavior in order to trigger all stuff link to file storage in the bundle.
 
-### Form
+#### Form
 
 Minimal form class could be :
 
@@ -113,7 +119,7 @@ Minimal form class could be :
     }
 ```
 
-### Add view
+#### Add view
 
 You can find below the add view for generic Image defined by the bundle :
 
@@ -134,7 +140,7 @@ You can find below the add view for generic Image defined by the bundle :
 
 If you define your own, you have to use `mediaForm` as the form variable.
 
-### Thumbnail view
+#### Thumbnail view
 
 You can find below the thumbnail view for generic Image defined by the bundle :
 
@@ -142,9 +148,9 @@ You can find below the thumbnail view for generic Image defined by the bundle :
 <img src="{{ thumbnailEvent.thumbnailPath }}" alt="{{ thumbnailEvent.media.alt }}" />
 ```
 
-_Note :As indicated below, most of logic is event related. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
+_Note : as indicated below, most of logic is event related. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
 
-### List item view
+#### List item view
 
 You can find below the list item view for generic Image defined by the bundle :
 
@@ -175,7 +181,7 @@ You can find below the list item view for generic Image defined by the bundle :
 </div>
 ```
 
-_Note :As indicated below, most of logic is event related. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
+_Note : as indicated below, most of logic is event related. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
 
 
 
