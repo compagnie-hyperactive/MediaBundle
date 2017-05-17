@@ -12,8 +12,7 @@ Out of the box, MediaBundle defines 2 types : image and pdf. You can use those t
 
 Below is shown types and available fields :
 
-
-![Media relations and fields](https://compagnie-hyperactive.github.io/MediaBundle/images/media-relations.png)
+<div style="text-align:center"><img alt="Media relations and fields" src="https://compagnie-hyperactive.github.io/MediaBundle/images/media-relations.png" /></div>
 
 
 1. You need to define your **media types** in `config.yml`. You can define as many type you need, using the following syntax :
