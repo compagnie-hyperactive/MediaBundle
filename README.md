@@ -22,7 +22,7 @@ Below is shown types and available fields :
 
 ### Media types declaration
 
-You need to define your **media types** in `config.yml`. You can define as many type you need, using the following syntax :
+You need to define your **media types** in `config.yml`. You can define as many types as you need, using the following syntax :
 
 ```yml
     lch_media:
@@ -34,8 +34,10 @@ You need to define your **media types** in `config.yml`. You can define as many 
           add_view:         'YourBundle/Media/Image/fragments:add.html.twig' # the add form view to be used when adding media
           thumbnail_view:   'YourBundle/Media/Resource/fragments:thumbnail.html.twig' # the view used for displaying thumbnail
           list_item_view:   'YourBundle/Media/Resource/fragments:list.item.html.twig' # the view used for displaying list item in selection lists
-          extensions: ['jpg', 'jpeg', 'png', 'gif'] # allowed extensions
+          extensions:       ['jpg', 'jpeg', 'png', 'gif'] # allowed extensions
 ```
+
+Let's review an example for each given key :
 
 #### Entity
 
@@ -183,8 +185,26 @@ You can find below the list item view for generic Image defined by the bundle :
 
 _Note : as indicated below, most of logic is event related. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
 
+### Twig extension & tools
 
+### Events
 
+You can find below the complete event list thrown by the bundle (listed in `Lch\Media\LchMediaEvents`) :
+ - `LchMediaEvents::DOWNLOAD` : fired **before** preparing response to deliver file, but **after** security check
+ - `LchMediaEvents::LIST_ITEM` : fired by `MediaManager`
+ - `LchMediaEvents::PRE_DELETE` :
+ - `LchMediaEvents::PRE_PERSIST` :
+ - `LchMediaEvents::PRE_SEARCH` :
+ - `LchMediaEvents::POST_DELETE` :
+ - `LchMediaEvents::POST_PERSIST` :
+ - `LchMediaEvents::POST_SEARCH` :
+ - `LchMediaEvents::REVERSE_TRANSFORM` :
+ - `LchMediaEvents::SEARCH_FORM` :
+ - `LchMediaEvents::PRE_STORAGE` :
+ - `LchMediaEvents::POST_STORAGE` :
+ - `LchMediaEvents::THUMBNAIL` :
+ - `LchMediaEvents::TRANSFORM` :
+ - `LchMediaEvents::URL` :
 
 Add media form theme
   form_themes:
