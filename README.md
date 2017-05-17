@@ -10,6 +10,8 @@ This bundle brings to you a comprehensive and code-close way of handling media f
 
 1. [General explanations](#general-explanations)
 2. [Media types declaration](#media-types-declaration)
+3. [Twig extensions & tools](#twig-extension--tools)
+4. [Events](#events)
 
 ### General explanations
 
@@ -150,7 +152,7 @@ You can find below the thumbnail view for generic Image defined by the bundle :
 <img src="{{ thumbnailEvent.thumbnailPath }}" alt="{{ thumbnailEvent.media.alt }}" />
 ```
 
-_Note : as indicated below, most of logic is event related. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
+_Note : as indicated [below](#events), most of logic is **event related**. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
 
 #### List item view
 
@@ -183,14 +185,17 @@ You can find below the list item view for generic Image defined by the bundle :
 </div>
 ```
 
-_Note : as indicated below, most of logic is event related. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
+_Note : as indicated [below](#events), most of logic is **event related**. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
 
 ### Twig extension & tools
+
+- {{ getListItem(media, attributes) }} : display a list item
+-
 
 ### Events
 
 You can find below the complete event list thrown by the bundle (listed in `Lch\Media\LchMediaEvents`) :
- - `LchMediaEvents::DOWNLOAD` : fired **before** preparing response to deliver file, but **after** security check
+ - `LchMediaEvents::DOWNLOAD` : fired by `MediaController` **before** preparing response to deliver file, but **after** security check
  - `LchMediaEvents::LIST_ITEM` : fired by `MediaManager`
  - `LchMediaEvents::PRE_DELETE` :
  - `LchMediaEvents::PRE_PERSIST` :
