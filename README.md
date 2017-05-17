@@ -12,7 +12,7 @@ Out of the box, MediaBundle defines 2 types : image and pdf. You can use those t
 
 Below is shown types and available fields :
 
-<div style="text-align:center"><img alt="Media relations and fields" src="https://compagnie-hyperactive.github.io/MediaBundle/images/media-relations.png" /></div>
+![Media relations and fields](https://compagnie-hyperactive.github.io/MediaBundle/images/media-relations.png)
 
 
 1. You need to define your **media types** in `config.yml`. You can define as many type you need, using the following syntax :
@@ -21,10 +21,12 @@ Below is shown types and available fields :
     lch_media:
       types:
         image:
-          name:       'your_project.image.name' # the translated name for front presentation
-          entity:     'YourBundle\Entity\Media\Image' # the entity to be used
-          form:       'YourBundle\Form\Media\ImageType' # the form to be used when adding media
-          add_view:   'YourBundle/Media/Image/fragments:add.html.twig' # the add form view to be used when adding media
+          name:             'your_project.image.name' # the translated name for front presentation
+          entity:           'YourBundle\Entity\Media\Image' # the entity to be used
+          form:             'YourBundle\Form\Media\ImageType' # the form to be used when adding media
+          add_view:         'YourBundle/Media/Image/fragments:add.html.twig' # the add form view to be used when adding media
+          thumbnail_view:   'YourBundle/Media/Resource/fragments:thumbnail.html.twig' # the view used for displaying thumbnail
+          list_item_view:   'YourBundle/Media/Resource/fragments:list.item.html.twig' # the view used for displaying list item in selection lists
           extensions: ['jpg', 'jpeg', 'png', 'gif'] # allowed extensions
 ```
 
@@ -54,7 +56,7 @@ Minimal class for above declared image could be :
     }
 ```
 
-It extends `Lch\MediaBundle\Entity\Image`
+It extends `Lch\MediaBundle\Entity\Image`. If you want to start from scratch, you have to extends from `Media` and use `Storable` behavior in order to trigger all stuff link to file storage in the bundle.
 
 ### Form
 
@@ -112,27 +114,11 @@ Minimal form class could be :
 
 
 
-
-
-
-
-
-
-
 Add media form theme
   form_themes:
   # Order is important here
     - 'LchMediaBundle:form:fields.html.twig'    
 
-
-lch_media:
-  types:
-    image:
-      name:       'ipc.front.image.name'
-      entity:     'IpcBundle\Entity\Media\Image'
-      form:       'IpcBundle\Form\Media\ImageType'
-      add_view:   'IpcBundle:back/Media/Image/fragments:add.html.twig'
-      extensions: ['jpg', 'jpeg', 'png', 'gif']
 
     resource:
       entity:     'IpcBundle\Entity\Media\Resource'
