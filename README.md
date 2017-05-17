@@ -12,14 +12,16 @@ Out of the box, MediaBundle defines 2 types : image and pdf. You can use those t
 
 1. You need to define your **media types** in `config.yml`. You can define as many type you need, using the following syntax :
 
-        lch_media:
-          types:
-            image:
-              name:       'your_project.image.name' # the translated name for front presentation
-              entity:     'YourBundle\Entity\Media\Image' # the entity to be used
-              form:       'YourBundle\Form\Media\ImageType' # the form to be used when adding media
-              add_view:   'YourBundle/Media/Image/fragments:add.html.twig' # the add form view to be used when adding media
-              extensions: ['jpg', 'jpeg', 'png', 'gif'] # allowed extensions
+```yml  
+    lch_media:
+      types:
+        image:
+          name:       'your_project.image.name' # the translated name for front presentation
+          entity:     'YourBundle\Entity\Media\Image' # the entity to be used
+          form:       'YourBundle\Form\Media\ImageType' # the form to be used when adding media
+          add_view:   'YourBundle/Media/Image/fragments:add.html.twig' # the add form view to be used when adding media
+          extensions: ['jpg', 'jpeg', 'png', 'gif'] # allowed extensions
+```
 
 ### Entity
 
