@@ -1,6 +1,12 @@
 # MediaBundle
 
-This bundle brings to you a comprehensive and code-close way of handling media for Symfony 3
+This bundle brings to you a comprehensive and code-close way of handling media for Symfony 3.
+Features:
+- Defines [media types](#media-types-declaration) in `config.yml`
+- Provides [events](#events) to hook on all process (CRUD)
+- Provide [form types](#form-types) to interact easily in you admin (pick an existing media/creates a new one)
+- Provides Twig extension to ease media display and manipulation in Twig files (get URLs, thumbnails...)
+- Provides [validators](#validators) to restrain media to boundaries (size, resolution for images, extensions...)
 
 ## Installation and pre-requisites
 
@@ -10,8 +16,13 @@ This bundle brings to you a comprehensive and code-close way of handling media f
 
 1. [General explanations](#general-explanations)
 2. [Media types declaration](#media-types-declaration)
-3. [Twig extensions & tools](#twig-extension--tools)
+3. [Twig extensions and tools](#twig-extension--tools)
 4. [Events](#events)
+5. [Form types](#form-types)
+6. [Validators](#validators)
+7. [Image sizes](#image-sizes)
+8. [Practical use cases](#practical-use-cases)
+    1. [Download control](#download-control)
 
 ### General explanations
 
@@ -156,7 +167,7 @@ _Note : as indicated [below](#events), most of logic is **event related**. Thumb
 
 #### List item view
 
-You can find below the list item view for generic Image defined by the bundle :
+You can find below the list item view for generic Image defined by the bundle. You will find further explanations on [twig methods below](#twig-extension--tools)
 
 ```twig
 {% set attrs = "" %}
@@ -189,32 +200,64 @@ _Note : as indicated [below](#events), most of logic is **event related**. Thumb
 
 ### Twig extension & tools
 
-- {{ getListItem(media, attributes) }} : display a list item
--
+- `{{ getListItem(media, attributes) }}` : display a list item
+- `{{ getThumbnail(media, attributes) }}` : display the media thumbnail (called in getListItem)
+- `{{ getThumbnailUrl(media, attributes) }}` : return the thumbnail URL only (where getThumbnail will return an HTML <img> tag)
+- `{{ getUrl(media, attributes) }}` : returns the URL for the given media. direct media URL by default, but you can easily hook on DOWNLOAD event to return something more complicated (such as downloader for private resources)
+
+
+You can find below a graphical render for several methods listed above :
+
+![Media Twig extension methods](https://compagnie-hyperactive.github.io/MediaBundle/images/extension.png)
 
 ### Events
 
 You can find below the complete event list thrown by the bundle (listed in `Lch\Media\LchMediaEvents`) :
  - `LchMediaEvents::DOWNLOAD` : fired by `MediaController` **before** preparing response to deliver file, but **after** security check
- - `LchMediaEvents::LIST_ITEM` : fired by `MediaManager`
- - `LchMediaEvents::PRE_DELETE` :
- - `LchMediaEvents::PRE_PERSIST` :
- - `LchMediaEvents::PRE_SEARCH` :
- - `LchMediaEvents::POST_DELETE` :
- - `LchMediaEvents::POST_PERSIST` :
- - `LchMediaEvents::POST_SEARCH` :
- - `LchMediaEvents::REVERSE_TRANSFORM` :
- - `LchMediaEvents::SEARCH_FORM` :
- - `LchMediaEvents::PRE_STORAGE` :
- - `LchMediaEvents::POST_STORAGE` :
- - `LchMediaEvents::THUMBNAIL` :
- - `LchMediaEvents::TRANSFORM` :
- - `LchMediaEvents::URL` :
+ - `LchMediaEvents::LIST_ITEM` : fired by `MediaManager` when Twig method `{{ getListItem(media, attributes) }}` is called
+ - `LchMediaEvents::PRE_DELETE` : fired by `MediaController` **before** media deletion
+ - `LchMediaEvents::PRE_PERSIST` : fired by `MediaController` **before** media persistance
+ - `LchMediaEvents::PRE_SEARCH` : fired by `MediaManager` on every list calls
+ - `LchMediaEvents::POST_DELETE` : fired by `MediaController` **after** media deletion
+ - `LchMediaEvents::POST_PERSIST` : fired by `MediaController` **after** media persists
+ - `LchMediaEvents::POST_SEARCH` : fired by `MediaManager` on every list calls
+ - `LchMediaEvents::REVERSE_TRANSFORM` : used by `AddOrChooseMediaType` form type
+ - `LchMediaEvents::SEARCH_FORM` : fired by `MediaManager` on list call to get specific input type in order to contextualize search form to media type
+ - `LchMediaEvents::PRE_STORAGE` : fired by `MediaController` **before** media file storage
+ - `LchMediaEvents::POST_STORAGE` : fired by `MediaController` **after** media file storage
+ - `LchMediaEvents::THUMBNAIL` : fired by `MediaManager` when Twig method `{{ getThumbnail(media, attributes) }}` is called
+ - `LchMediaEvents::TRANSFORM` : used by `AddOrChooseMediaType` form type
+ - `LchMediaEvents::URL` : fired by `MediaManager` when Twig method `{{ getUrl(media, attributes) }}` is called
 
-Add media form theme
-  form_themes:
-  # Order is important here
-    - 'LchMediaBundle:form:fields.html.twig'    
+
+### Form types
+The bundle provides 2 form types for easing media selection/creation. First of all, be assured to add the correct form theme file in your admin twig files, which is `LchMediaBundle:form:fields.html.twig`
+
+
+#### AddOrChooseMediaType
+
+Here is a classical use :
+
+```php
+    $builder
+        ->add('myImage', AddOrChooseMediaType::class, [
+                'entity_reference' => Image::class,
+                'label' => static::ROOT_TRANSLATION_PATH . ".my_image.label",
+                'modal_title' => static::ROOT_TRANSLATION_PATH . '.my_image.modal.title',
+                'image_width' => 1499,
+                'image_height' => 415,
+                'required' => false,
+                'attr'  => [
+                    'helper' => static::ROOT_TRANSLATION_PATH . '.my_image.helper'
+                ]
+            ])
+        ;
+```
+
+Although it's quite clear, note that `entity_reference` is the media class you want to link here
+
+#### AddOrChooseMultipleMediasType
+
 
 
     resource:
@@ -226,7 +269,7 @@ Add media form theme
       extensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']
       
 
-Validators
+### Validators
  - Media
   - HasAllowedFileExtension : for extension check based on configuration
   - Weight : min/max, exact weight
@@ -235,7 +278,12 @@ Validators
 
 All validators work both on class and property level. So you need to define them on class once for all
 
-## Download control
+
+### Image sizes
+
+### Practical use cases
+
+#### Download control
  1. Declare media (see above)
  2. Register a Listener/Subscriber to LchMediaEvents::STORAGE to change storage for your media (example : to add a "/private/" subfolder)
  3. Add matching route, to force Symfony to handle request : 
