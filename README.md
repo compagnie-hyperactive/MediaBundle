@@ -8,7 +8,8 @@ This bundle brings to you a comprehensive and code-close way of handling media f
 
 ## Configuration and usage
 
-Out of the box, MediaBundle defines 2 types : image and pdf. You can use those types as base for you custom ones.
+Out of the box, MediaBundle defines 2 types : **image** and **pdf**. You can use those types as base for you custom ones.
+
 
 Below is shown types and available fields :
 
@@ -17,7 +18,7 @@ Below is shown types and available fields :
 
 1. You need to define your **media types** in `config.yml`. You can define as many type you need, using the following syntax :
 
-```yml  
+```yml
     lch_media:
       types:
         image:
@@ -62,7 +63,6 @@ It extends `Lch\MediaBundle\Entity\Image`. If you want to start from scratch, yo
 
 Minimal form class could be :
 
-
 ```php
 <?php
     namespace YourBundle\Form\Media;
@@ -85,13 +85,17 @@ Minimal form class could be :
         const ROOT_TRANSLATION_PATH = 'your.back.media.form.image';
 
         /**
-        *
+        * @inheritdoc
         */
         public function buildForm(FormBuilderInterface $builder, array $options)
         {
+            // Explicit parent call is required for constant overriding
             parent::buildForm($builder, $options);
         }
 
+        /**
+        * @inheritdoc
+        */
         public function configureOptions(OptionsResolver $resolver)
         {
             $resolver->setDefaults([
@@ -99,7 +103,9 @@ Minimal form class could be :
             ]);
         }
 
-
+        /**
+        * @inheritdoc
+        */
         public function getParent()
         {
             return BaseImageType::class;
@@ -107,9 +113,69 @@ Minimal form class could be :
     }
 ```
 
+### Add view
 
+You can find below the add view for generic Image defined by the bundle :
 
+```twig
+    {% form_theme mediaForm 'bootstrap_3_layout.html.twig' %}
 
+    {{ form_errors(mediaForm) }}
+    {{ form_start(mediaForm) }}
+        {{ form_row(mediaForm.file) }}
+        {{ form_row(mediaForm.name) }}
+        {{ form_row(mediaForm.alt) }}
+        <div class="text-right col-xs-12">
+            {{ form_row(mediaForm.submit) }}
+        </div>
+        {{ form_rest(mediaForm) }}
+    {{ form_end(mediaForm) }}
+```
+
+If you define your own, you have to use `mediaForm` as the form variable.
+
+### Thumbnail view
+
+You can find below the thumbnail view for generic Image defined by the bundle :
+
+```twig
+<img src="{{ thumbnailEvent.thumbnailPath }}" alt="{{ thumbnailEvent.media.alt }}" />
+```
+
+_Note :As indicated below, most of logic is event related. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
+
+### List item view
+
+You can find below the list item view for generic Image defined by the bundle :
+
+```twig
+{% set attrs = "" %}
+{% for key, attr in attributes %}
+    {% set attrs = attrs ~ " " ~ key ~ '=' ~ attr %}
+{% endfor %}
+{% set size = listItemEvent.media.file.getSize()/1000 %}
+
+<div {{ attrs }} class="{% if attributes.fullSize is defined and attributes.fullSize == true %}col-xs-12{% else %}col-xs-6 col-sm-4 col-md-3{% endif %} media"
+     data-id="{{ listItemEvent.media.id }}"
+     data-type="{{ getClass(listItemEvent.media) }}"
+     data-url="{{ getUrl(listItemEvent.media) }}"
+     data-name="{{ listItemEvent.media.name }}"
+     data-width="{{ listItemEvent.media.width }}"
+     data-height="{{ listItemEvent.media.height }}"
+     data-size="{{ size }}"
+>
+    <div class="col-xs-4">
+        {{ getThumbnail(listItemEvent.media) }}
+    </div>
+    <div class="col-xs-8">
+        <p>{{ listItemEvent.media.name }}</p>
+        <p><strong>{{ listItemEvent.media.width }}</strong>px x <strong>{{ listItemEvent.media.height }}</strong>px</p>
+        <p><strong>{{ size }} Ko</strong></p>
+    </div>
+</div>
+```
+
+_Note :As indicated below, most of logic is event related. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
 
 
 
