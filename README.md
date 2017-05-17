@@ -1,8 +1,111 @@
 # MediaBundle
 
-## Installation
+This bundle brings to you a comprehensive and code-close way of handling media for Symfony 3
 
-## Configuration
+## Installation and pre-requisites
+
+`composer require lch/media-bundle`
+
+## Configuration and usage
+
+Out of the box, MediaBundle defines 2 types : image and pdf. You can use those types as base for you custom ones.
+
+1. You need to define your **media types** in `config.yml`. You can define as many type you need, using the following syntax :
+
+        lch_media:
+          types:
+            image:
+              name:       'your_project.image.name' # the translated name for front presentation
+              entity:     'YourBundle\Entity\Media\Image' # the entity to be used
+              form:       'YourBundle\Form\Media\ImageType' # the form to be used when adding media
+              add_view:   'YourBundle/Media/Image/fragments:add.html.twig' # the add form view to be used when adding media
+              extensions: ['jpg', 'jpeg', 'png', 'gif'] # allowed extensions
+
+### Entity
+
+Minimal class for above declared image could be :
+
+    namespace YourBundle\Bundle\Entity\Media;
+
+    use Doctrine\ORM\Mapping as ORM;
+    use Knp\DoctrineBehaviors\Model\Blameable\Blameable;
+    use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
+    use Lch\MediaBundle\Entity\Image as BaseImage;
+
+    /**
+     * Image
+     *
+     * @ORM\Table(name="image")
+     * @ORM\Entity(repositoryClass="YourBundle\Repository\Media\ImageRepository")
+     */
+    class Image extends BaseImage
+    {
+        use Blameable,
+            Timestampable;
+    }
+
+It extends `Lch\MediaBundle\Entity\Image`
+
+### Form
+
+Minimal form class could be :
+
+
+    namespace YourBundle\Form\Media;
+
+    use Symfony\Component\Form\FormBuilderInterface;
+    use Symfony\Component\OptionsResolver\OptionsResolver;
+    use Lch\MediaBundle\Form\ImageType as BaseImageType;
+
+    // Extends BaseImageType here for overriding constants
+    class ImageType extends BaseImageType
+    {
+        /**
+        * BaseImageType defines a NAME constant for generic image type. You override it here with your type name
+        */
+        const NAME = 'your_image_type';
+
+        /**
+        * Same for root translation path to be used in your particular type case
+        */
+        const ROOT_TRANSLATION_PATH = 'your.back.media.form.image';
+
+        /**
+        *
+        */
+        public function buildForm(FormBuilderInterface $builder, array $options)
+        {
+            parent::buildForm($builder, $options);
+        }
+
+        public function configureOptions(OptionsResolver $resolver)
+        {
+            $resolver->setDefaults([
+                'data_class' => 'YourBundle\Entity\Media\Image'
+            ]);
+        }
+
+
+        public function getParent()
+        {
+            return BaseImageType::class;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Add media form theme
   form_themes:
   # Order is important here
@@ -10,7 +113,6 @@ Add media form theme
 
 
 lch_media:
-
   types:
     image:
       name:       'ipc.front.image.name'
