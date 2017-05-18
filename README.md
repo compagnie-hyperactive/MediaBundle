@@ -263,18 +263,67 @@ Although it's quite clear, note that `entity_reference` is the media class you w
 
 Have a look to [validators section](#validators) in order to have more details.
 
+Then, assuming you added form_theme as stated above, the twig parent form type become :
+
+```twig
+{% block your_content %}
+{ form_start(form) }}
+    {{ form_errors(form) }}
+    {# ... #}
+    {{ form_row(form.myImage) }}
+    {# ... #}
+{% endblock your_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# Medias #}
+    <script src="{{ asset('bundles/lchmedia/js/isotope.js') }}"></script>
+    <script src="{{ asset('bundles/lchmedia/js/media.js') }}"></script>
+    <script src="{{ asset('bundles/lchmedia/js/media-search.js') }}"></script>
+{% endblock javascripts %}
+```
+
+You have to add those 3 javascript files in order to make things work.
+- The list use [isotope](https://isotope.metafizzy.co/) to make elegant item presentation
+- All logic (list/creation) is handled in AJAX in `media.js`
+- `media-search.js` contains JS logic around search (externalized to be used on a specific library page)
+
+Result (after custom styling):
+
+![Media button](https://compagnie-hyperactive.github.io/MediaBundle/images/media-button.png)
+![Media chooser](https://compagnie-hyperactive.github.io/MediaBundle/images/media-chooser.png)
+![Media addition](https://compagnie-hyperactive.github.io/MediaBundle/images/media-addition.png)
+
 #### AddOrChooseMultipleMediasType
 
+This type is useful to select a collection of media. It only makes the `AddOrChooseMediaType` repeatable
 
+```php
+    $builder
+        ->add('resources', AddOrChooseMultipleMediasType::class, [
+            'label' => static::ROOT_TRANSLATION_PATH . '.public_documents.label',
+            'allow_add' => true,
+            'allow_delete' => true,
+            'prototype' => true,
+            'entry_type' => AddOrChooseMediaType::class,
+            'entry_options' => [
+                'entity_reference' => Resource::class,
+                'label' => "your_project.test.label",
+                'modal_title' => static::ROOT_TRANSLATION_PATH . '.public_documents.document.modal.title',
+                'attr'  => [
+                    'helper' => static::ROOT_TRANSLATION_PATH . '.public_documents.document.helper'
+                ]
+            ],
+            'attr' => array(
+                'class' => 'public-documents',
+                'helper' => static::ROOT_TRANSLATION_PATH . '.public_documents.helper',
+            ),
+        ])
+    ;
+```
 
-    resource:
-      entity:     'IpcBundle\Entity\Media\Resource'
-      form:       'IpcBundle\Form\Media\ResourceType'
-      add_view:   'IpcBundle:back/Media/Resource/fragments:add.html.twig'
-      thumbnail_view: 'IpcBundle:back/Media/Resource/fragments:thumbnail.html.twig'
-      list_item_view: 'IpcBundle:back/Media/Resource/fragments:list.item.html.twig'
-      extensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']
-      
+We suggest using the excellent [Symfony collection](https://github.com/ninsuo/symfony-collection) plugin to handle collection easily
+
 
 ### Validators
  - Media
