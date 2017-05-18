@@ -9,9 +9,10 @@ Features:
 - Provides [validators](#validators) to restrain media to boundaries (size, resolution for images, extensions...)
 
 ## Installation and pre-requisites
+So far, Imagick is used to generate thumbnails and images sizes sets. A future development will ad GD to maximize various server compliance
+On the GUI side, the bundle use [Bootstrap](http://getbootstrap.com/) and [jQuery](https://jquery.com/). Be sure those 2 dependencies are fullfilled, especially on admin screens (media selection/creation)
 
-The bundle use [Bootstrap](http://getbootstrap.com/) and [jQuery](https://jquery.com/). Be sure those 2 dependencies are fullfilled, especially on admin screens (media selection/creation)
-
+For installing, use simply :
 `composer require lch/media-bundle`
 
 ## Configuration and usage
@@ -22,8 +23,9 @@ The bundle use [Bootstrap](http://getbootstrap.com/) and [jQuery](https://jquery
 4. [Events](#events)
 5. [Form types](#form-types)
 6. [Validators](#validators)
-7. [Image sizes](#image-sizes)
-8. [Practical use cases](#practical-use-cases)
+7. [Storage strategy](#storage-strategy)
+8. [Image sizes](#image-sizes)
+9. [Practical use cases](#practical-use-cases)
     1. [Download control](#download-control)
 
 ### General explanations
@@ -50,6 +52,10 @@ You need to define your **media types** in `config.yml`. You can define as many 
           thumbnail_view:   'YourBundle/Media/Resource/fragments:thumbnail.html.twig' # the view used for displaying thumbnail
           list_item_view:   'YourBundle/Media/Resource/fragments:list.item.html.twig' # the view used for displaying list item in selection lists
           extensions:       ['jpg', 'jpeg', 'png', 'gif'] # allowed extensions
+          thumbnail_sizes:
+            news:
+              width: 396
+              height: 227
 ```
 
 Let's review an example for each given key :
@@ -199,6 +205,14 @@ You can find below the list item view for generic Image defined by the bundle. Y
 ```
 
 _Note : as indicated [below](#events), most of logic is **event related**. Thumbnail generation is one those things, so access to thumbnail data goes through event object_
+
+#### Extensions
+
+Here you define extensions allowed for this media type, as an array.
+
+#### Thumbnail sizes
+
+More informations in [dedicated section](#image-sizes)
 
 ### Twig extension & tools
 
@@ -417,18 +431,35 @@ All validators work both on class and property level. So you need to define them
 ```
 
 
+### Storage strategy
+
+TODO
+
 ### Image sizes
+
+Using Imagick, the bundle does 2 things :
+
+1. Generating thumbnails for all images
+2. Generating viewable thumbnails for PDF files (thumbnails for list item and previewer)
+
+Using the correct key (`thumbnail_sizes`) in media type declaration in `config.yml`, you can produce as many thumbnails you need.
+
+_Note : so far, we use the image longer dimension and adapt the other one to keep homothetic transforms. Therefore, resulting images might not be in the exact good resolution. To be completed..._
+
 
 ### Practical use cases
 
 #### Download control
- 1. Declare media (see above)
+ 1. Declare media (see [above](#media-types-declaration))
  2. Register a Listener/Subscriber to LchMediaEvents::STORAGE to change storage for your media (example : to add a "/private/" subfolder)
- 3. Add matching route, to force Symfony to handle request : 
+ 3. Add matching route, to force Symfony to handle request :
+ ```yml
   ipc_media_download:
       path: /uploads/resources/{id}
       defaults: { _controller: LchMediaBundle:Media:download, class: '%lch_media.types.resource.entity%' }
       methods:  [ GET ]
-      
+ ```
  4. Add a Voter to restrain service   
  5. Option : Register a Listener/Subscriber to LchMediaEvents::DOWNLOAD to control what to serve (add watermark...)
+
+ TODO : to be completed with detailled event usage examples
