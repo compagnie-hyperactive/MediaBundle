@@ -375,13 +375,46 @@ Repeatable media selector :
 ![Media button](https://compagnie-hyperactive.github.io/MediaBundle/images/multiple-media-selector.png)
 
 ### Validators
- - Media
-  - HasAllowedFileExtension : for extension check based on configuration
-  - Weight : min/max, exact weight
- - Image
-  - ImageSize : for image size check (width, height, min width, min height)
 
-All validators work both on class and property level. So you need to define them on class once for all
+You will find in `Lch\MediaBundle\Validator` several built-in validators :
+- HasAllowedFileExtension : for extension check based on configuration
+- Weight : min/max, exact weight
+- Image
+    - ImageSize : for image size check (width, height, min width, min height)
+
+All validators work both on class and property level. So you need to define them on your media classes once for all :
+
+```php
+    <?php
+
+    namespace YourBundle\Entity\Media;
+
+    use Doctrine\ORM\Mapping as ORM;
+    use Knp\DoctrineBehaviors\Model\Blameable\Blameable;
+    use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
+    use Lch\MediaBundle\Behavior\MediaTaggable;
+    use Lch\MediaBundle\Behavior\Storable;
+    use Lch\MediaBundle\Entity\Media;
+    use Lch\MediaBundle\Validator\Constraints as MediaAsset;
+
+    /**
+     * Resource
+     *
+     * @ORM\Table(name="resource")
+     * @ORM\Entity(repositoryClass="YourBundle\Repository\Media\ResourceRepository")
+     * @MediaAsset\HasAllowedFileExtension()
+     * @MediaAsset\MediaWeight()
+     */
+    class Resource extends Media
+    {
+        // Remember to use the Storable to ensure physical file is correctly stored
+        use Storable,
+            MediaTaggable,
+            Blameable,
+            Timestampable
+            ;
+    }
+```
 
 
 ### Image sizes
