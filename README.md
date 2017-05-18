@@ -288,11 +288,18 @@ You have to add those 3 javascript files in order to make things work.
 - All logic (list/creation) is handled in AJAX in `media.js`
 - `media-search.js` contains JS logic around search (externalized to be used on a specific library page)
 
-Result (after custom styling):
+##### Result (after custom styling):
 
+Button chooser in parent form :
 ![Media button](https://compagnie-hyperactive.github.io/MediaBundle/images/media-button.png)
+
+After click on button, media popin appears with media chooser among available (limited to `entity_reference` you provided)
 ![Media chooser](https://compagnie-hyperactive.github.io/MediaBundle/images/media-chooser.png)
+
+You can also add a media from here (limited to `entity_reference` you provided, and using `form` and `add_view` you provided for media type in `config.yml`)
 ![Media addition](https://compagnie-hyperactive.github.io/MediaBundle/images/media-addition.png)
+
+_Note : as you can see in `LchMediaBundle:form:fields.html.twig`, we postfixed all relevant HTML input ids with a random unique number, therefore safely **allowing multiple media type usage** in same form_.
 
 #### AddOrChooseMultipleMediasType
 
@@ -322,8 +329,50 @@ This type is useful to select a collection of media. It only makes the `AddOrCho
     ;
 ```
 
-We suggest using the excellent [Symfony collection](https://github.com/ninsuo/symfony-collection) plugin to handle collection easily
 
+We suggest using the excellent [Symfony collection](https://github.com/ninsuo/symfony-collection) plugin to handle collection easily. We still have to elaborate JS part a lot, so for now you have to repeat **the random number change** when dynamically adding media button.
+
+Example below linked to above `AddOrChooseMultipleMediasType` (with symfony collection)
+
+```javascript
+    $('.public-documents').collection({
+            up: '<a href="#" class="btn btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>',
+            down: '<a href="#" class="btn btn-default"><i class="glyphicon glyphicon-chevron-down"></i></a>',
+            add: '<a href="#" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i></a>',
+            remove: '<a href="#" class="btn btn-default"><i class="glyphicon glyphicon-minus"></i></a>',
+            duplicate: '<a href="#" class="btn btn-default"><i class="glyphicon glyphicon-duplicate"></i></a>',
+
+            // Change the random number to ensure uniqueness
+            after_add: function(collection, element) {
+                var $mediaSelector = element.find('.media-selector-container');
+                var oldRandomId = $mediaSelector.attr('data-random');
+                var newRandomId = Math.floor(100000000 + Math.random() * 900000000);
+
+                // Update IDs
+                $mediaSelector.find("[id$='"+ oldRandomId +"']").each(function () {
+                    var rootId = $(this).attr('id').split('__')[0];
+                    $(this).attr('id', rootId + "__" + newRandomId);
+                });
+
+                // Update hrefs
+                $mediaSelector.find("a[href$='"+ oldRandomId +"']").each(function () {
+                    var rootId = $(this).attr('href').split('__')[0];
+                    $(this).attr('href', rootId + "__" + newRandomId);
+                });
+
+                // then change the data-random
+                $mediaSelector.attr('data-random', newRandomId);
+
+                return true;
+            }
+        })
+    );
+```
+
+##### Result (after custom styling):
+
+Repeatable media selector :
+![Media button](https://compagnie-hyperactive.github.io/MediaBundle/images/multiple-media-selector.png)
 
 ### Validators
  - Media
