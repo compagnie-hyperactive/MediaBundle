@@ -189,7 +189,7 @@ class MediaManager
         foreach($authorizedMediasTypes as $alias => $authorizedMediasType) {
 
             // Pre search event
-            $preSearchEvent = new PreSearchEvent($authorizedMediasType, $authorizedMediasQueryBuilder, $parameters);
+            $preSearchEvent = new PreSearchEvent($authorizedMediasType, $alias, $authorizedMediasQueryBuilder, $parameters);
             $this->eventDispatcher->dispatch(
                 LchMediaEvents::PRE_SEARCH,
                 $preSearchEvent
@@ -210,7 +210,7 @@ class MediaManager
             }
 
             // Post search event
-            $postSearchEvent = new PostSearchEvent($authorizedMediasType, $preSearchEvent->getQueryBuilder(), $parameters);
+            $postSearchEvent = new PostSearchEvent($authorizedMediasType, $alias, $preSearchEvent->getQueryBuilder(), $parameters);
             $this->eventDispatcher->dispatch(
                 LchMediaEvents::POST_SEARCH,
                 $postSearchEvent

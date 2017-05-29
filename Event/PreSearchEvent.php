@@ -19,6 +19,10 @@ class PreSearchEvent extends Event
      */
     private $mediaType;
     /**
+     * @var string $alias
+     */
+    private $alias;
+    /**
      * @var QueryBuilder
      */
     private $queryBuilder;
@@ -27,10 +31,19 @@ class PreSearchEvent extends Event
      */
     private $parameters;
 
-    public function __construct(array $mediaType, QueryBuilder $queryBuilder, array $parameters) {
+    public function __construct(array $mediaType, string $alias, QueryBuilder $queryBuilder, array $parameters) {
         $this->mediaType = $mediaType;
+        $this->alias = $alias;
         $this->queryBuilder = $queryBuilder;
         $this->parameters = $parameters;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**
