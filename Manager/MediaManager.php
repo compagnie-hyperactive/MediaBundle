@@ -191,7 +191,10 @@ class MediaManager
         foreach($authorizedMediasTypes as $alias => $authorizedMediasType) {
 
             // Initiates alias before event
-            $authorizedMediasQueryBuilder->addSelect($alias);
+            $authorizedMediasQueryBuilder
+                ->addSelect($alias)
+                ->from($authorizedMediasType[Configuration::ENTITY], $alias)
+            ;
 
             // Pre search event
             $preSearchEvent = new PreSearchEvent($authorizedMediasType, $alias, $authorizedMediasQueryBuilder, $parameters);
@@ -200,27 +203,24 @@ class MediaManager
                 $preSearchEvent
             );
 
-            $authorizedMediasQueryBuilder
-                ->from($authorizedMediasType[Configuration::ENTITY], $alias)
-                ->where('1=1')
-            ;
 
             // Search on common media properties
             if(isset($parameters[Media::NAME])) {
-                $authorizedMediasQueryBuilder
-                    ->andWhere($authorizedMediasQueryBuilder->expr()->like("{$alias}.name", ':name'))
+                $preSearchEvent->getQueryBuilder()
+                    ->orWhere($preSearchEvent->getQueryBuilder()->expr()->like("{$alias}.name", ':name'))
                     ->setParameter('name', "%{$parameters[Media::NAME]}%")
                 ;
             }
 
-            // Post search event
-            $postSearchEvent = new PostSearchEvent($authorizedMediasType, $alias, $preSearchEvent->getQueryBuilder(), $parameters);
-            $this->eventDispatcher->dispatch(
-                LchMediaEvents::POST_SEARCH,
-                $postSearchEvent
-            );
+            // TODO make post event
+//            // Post search event
+//            $postSearchEvent = new PostSearchEvent($authorizedMediasType, $alias, $preSearchEvent->getQueryBuilder(), $parameters);
+//            $this->eventDispatcher->dispatch(
+//                LchMediaEvents::POST_SEARCH,
+//                $postSearchEvent
+//            );
 
-            $medias = array_merge($medias, $postSearchEvent->getQueryBuilder()->getQuery()->getResult());
+            $medias = array_merge($medias, $preSearchEvent->getQueryBuilder()->getQuery()->getResult());
         }
         return $medias;
     }
