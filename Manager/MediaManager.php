@@ -182,11 +182,16 @@ class MediaManager
      * @return array
      */
     public function getFilteredMedias(array $authorizedMediasTypes, array $parameters) {
-        $authorizedMediasQueryBuilder = $this->entityManager->createQueryBuilder();
+        $authorizedMediasQueryBuilder = $this->entityManager
+            ->createQueryBuilder()
+        ;
 
         $medias = [];
 
         foreach($authorizedMediasTypes as $alias => $authorizedMediasType) {
+
+            // Initiates alias before event
+            $authorizedMediasQueryBuilder->addSelect($alias);
 
             // Pre search event
             $preSearchEvent = new PreSearchEvent($authorizedMediasType, $alias, $authorizedMediasQueryBuilder, $parameters);
@@ -196,7 +201,6 @@ class MediaManager
             );
 
             $authorizedMediasQueryBuilder
-                ->select($alias)
                 ->from($authorizedMediasType[Configuration::ENTITY], $alias)
                 ->where('1=1')
             ;
