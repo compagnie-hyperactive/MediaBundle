@@ -15,6 +15,10 @@ use Symfony\Component\EventDispatcher\Event;
 class PostSearchEvent extends Event
 {
     /**
+     * @var array
+     */
+    private $mediaType;
+    /**
      * @var QueryBuilder
      */
     private $queryBuilder;
@@ -24,9 +28,18 @@ class PostSearchEvent extends Event
      */
     private $parameters;
 
-    public function __construct(QueryBuilder $queryBuilder, array $parameters) {
+    public function __construct(array $mediaType, QueryBuilder $queryBuilder, array $parameters) {
+        $this->mediaType = $mediaType;
         $this->queryBuilder = $queryBuilder;
         $this->parameters = $parameters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMediaType()
+    {
+        return $this->mediaType;
     }
 
     /**
