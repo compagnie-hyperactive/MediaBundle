@@ -212,7 +212,7 @@ class MediaManager
             // Post search event
             $postSearchEvent = new PostSearchEvent($authorizedMediasType, $preSearchEvent->getQueryBuilder(), $parameters);
             $this->eventDispatcher->dispatch(
-                LchMediaEvents::PRE_SEARCH,
+                LchMediaEvents::POST_SEARCH,
                 $postSearchEvent
             );
 
