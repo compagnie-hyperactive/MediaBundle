@@ -32,11 +32,11 @@ $contrast-color: #e5e5e5;
     &:hover, &.chosen {
       cursor: pointer;
       background-color: $contrast-color;
-      span.tag {
-        background-color: #aaa;
-        padding: 5px;
-        margin:5px;
-      }
+    }
+    span.tag {
+      background-color: #aaa;
+      padding: 5px;
+      margin:5px;
     }
   }
 }
