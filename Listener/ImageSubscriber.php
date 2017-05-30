@@ -162,7 +162,7 @@ class ImageSubscriber implements EventSubscriberInterface
         $mediaType = $event->getMediaType();
 
         // Only for Image based classed
-        if(is_subclass_of($mediaType[Configuration::ENTITY], Image::class)) {
+        if(!is_subclass_of($mediaType[Configuration::ENTITY], Image::class)) {
             return;
         }
 
