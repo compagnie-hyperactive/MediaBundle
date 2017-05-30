@@ -9,6 +9,7 @@
 namespace Lch\MediaBundle\Listener;
 
 
+use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
 use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Entity\Image;
@@ -33,7 +34,7 @@ class ImageSubscriber implements EventSubscriberInterface
 
     /**
      * ImagePrePersistListener constructor.
-     * @param ImageManager $imageManager     
+     * @param ImageManager $imageManager
      */
     public function __construct(ImageManager $imageManager) {
         $this->imageManager = $imageManager;
@@ -140,6 +141,9 @@ class ImageSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param PostStorageEvent $event
+     */
     public function onImagePostStorage(PostStorageEvent $event) {
         $image = $event->getMedia();
 
@@ -157,8 +161,8 @@ class ImageSubscriber implements EventSubscriberInterface
     public function onImagePreSearch(PreSearchEvent $event) {
         $mediaType = $event->getMediaType();
 
-        // Only for Images
-        if($mediaType[Configuration::ENTITY] != Image::class) {
+        // Only for Image based classed
+        if(is_subclass_of($mediaType[Configuration::ENTITY], Image::class)) {
             return;
         }
 
