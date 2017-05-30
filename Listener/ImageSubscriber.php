@@ -9,10 +9,13 @@
 namespace Lch\MediaBundle\Listener;
 
 
+use Lch\MediaBundle\DependencyInjection\Configuration;
+use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\PostStorageEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
+use Lch\MediaBundle\Event\PreSearchEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
@@ -43,7 +46,8 @@ class ImageSubscriber implements EventSubscriberInterface
             LchMediaEvents::THUMBNAIL => 'onImageThumbnail',
             LchMediaEvents::LIST_ITEM => 'onImageListItem',
             LchMediaEvents::URL => 'onImageUrl',
-            LchMediaEvents::POST_STORAGE => 'onImagePostStorage'
+            LchMediaEvents::POST_STORAGE => 'onImagePostStorage',
+            LchMediaEvents::PRE_SEARCH => 'onImagePreSearch'
         ];
     }
 
@@ -145,5 +149,28 @@ class ImageSubscriber implements EventSubscriberInterface
         }
 
         $this->imageManager->generateThumbnails($image);
+    }
+
+    /**
+     * @param PreSearchEvent $event
+     */
+    public function onImagePreSearch(PreSearchEvent $event) {
+        $mediaType = $event->getMediaType();
+
+        // Only for Images
+        if($mediaType[Configuration::ENTITY] != Image::class) {
+            return;
+        }
+
+        $resourceQueryBuilder = $event->getQueryBuilder();
+
+        // Search on common media properties
+        if(isset($event->getParameters()[Media::NAME])) {
+            $resourceQueryBuilder
+                ->leftJoin("{$event->getAlias()}.tags", 't')
+                ->orWhere($resourceQueryBuilder->expr()->like("t.name", ':name'))
+                ->setParameter('name', "%{$event->getParameters()[Media::NAME]}%")
+            ;
+        }
     }
 }
