@@ -25,8 +25,8 @@ $(function() {
         data.search = searchParams;
 
         //Add list parameters
-        if($("#media-type-selector").find("select").length > 0) {
-            data.type = $("#media-type-selector").find("select").val();
+        if($form.attributes.getNamedItem('data-type')) {
+            data.type = $form.attributes.getNamedItem('data-type').value;
         } else {
             data.type = 'all';
         }

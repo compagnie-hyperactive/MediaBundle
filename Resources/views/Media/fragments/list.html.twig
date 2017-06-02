@@ -1,6 +1,6 @@
 {% block ckeditor_css %}{% endblock ckeditor_css %}
 <div id="media-search" class="col-xs-12 clearfix">
-    <form class="form-inline" action="{{ path('lch_media_search') }}" method="POST">
+    <form class="form-inline" action="{{ path('lch_media_search') }}" method="POST" data-type="{{ type }}">
         <div class="form-group">
             <label for="media-name">{{ "lch.media.list.search.name.label"|trans }}</label>
             <input type="text" class="form-control" id="media-name" name="media-name" placeholder="{{ "lch.media.list.search.name.placeholder"|trans }}">
