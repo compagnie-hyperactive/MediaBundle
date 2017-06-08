@@ -280,6 +280,13 @@ Have a look to [validators section](#validators) in order to have more details.
 Then, assuming you added form_theme as stated above, the twig parent form type become :
 
 ```twig
+{% block css %}
+    {{ parent() }}
+    {# Media #}
+    <link rel="stylesheet" href="{{ asset('bundles/lchmedia/css/media.css') }}" type="text/css" />
+{% endblock css %}
+
+
 {% block your_content %}
 { form_start(form) }}
     {{ form_errors(form) }}
@@ -288,13 +295,17 @@ Then, assuming you added form_theme as stated above, the twig parent form type b
     {# ... #}
 {% endblock your_content %}
 
-{% block javascripts %}
+{% block scripts %}
     {{ parent() }}
-    {# Medias #}
-    <script src="{{ asset('bundles/lchmedia/js/isotope.js') }}"></script>
-    <script src="{{ asset('bundles/lchmedia/js/media.js') }}"></script>
-    <script src="{{ asset('bundles/lchmedia/js/media-search.js') }}"></script>
-{% endblock javascripts %}
+        {# Routing : needed for interaction in the media popin #}
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
+        {# Medias #}
+        <script src="{{ asset('bundles/lchmedia/js/isotope.js') }}"></script>
+        <script src="{{ asset('bundles/lchmedia/js/media.js') }}"></script>
+        <script src="{{ asset('bundles/lchmedia/js/media-search.js') }}"></script>
+{% endblock scripts %}
 ```
 
 You have to add those 3 javascript files in order to make things work.
