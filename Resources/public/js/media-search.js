@@ -34,6 +34,7 @@ $(function() {
         data.libraryMode = true;
 
         var $mediaList = $(this).closest('.library-parent').find('.isotope');
+        var $modal = $(this).closest('.modal');
 
         // Reload list
         jQuery.ajax({
@@ -46,6 +47,8 @@ $(function() {
 
                 $mediaList.isotope( 'remove', $(".media-list").find(".media") );
                 $mediaList.isotope('insert', $(html).find(".media"));
+
+                attachMediaItemHandlers($modal, $mediaList, extractRandId($modal.attr('id')));
             }
         });
 

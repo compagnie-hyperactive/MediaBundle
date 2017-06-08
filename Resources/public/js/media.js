@@ -7,13 +7,13 @@
 //     };
 // }( $ ));
 
+// TODO find better way to check already handled
+var idModal = 'image-modal__';
+// var idModalSave = 'image-modal-save__';
+var inputName = 'image__';
+var thumbName = 'imageThumb__';
 
 $(document).ready(function(){
-    // TODO find better way to check already handled
-    var idModal = 'image-modal__';
-    // var idModalSave = 'image-modal-save__';
-    var inputName = 'image__';
-    var thumbName = 'imageThumb__';
 
     /**
      * On media modal show
@@ -47,23 +47,6 @@ $(document).ready(function(){
     //     save();
     // });
 
-
-    /**
-     * Extract the random id generated
-     *
-     * @param string
-     * @returns {*}
-     */
-    function extractRandId(string)
-    {
-        var numberPattern = /\d+/g;
-        return string.match( numberPattern )[0];
-    }
-
-    function resetFormElement(e) {
-        e.wrap('<form>').closest('form').get(0).reset();
-        e.unwrap();
-    }
 
     /**
      * Load the add Media Form in the modal
@@ -268,50 +251,74 @@ $(document).ready(function(){
                         }
                     });
                 }
-
-
-                // Handle media selection in list
-                $listTab.find("div.media").on('click', function(e) {
-                    $listTab.find("div.media").removeClass('chosen');
-                    $(this).addClass('chosen');
-                });
-
-                $listTab.find("div.media").dblclick(function(){
-                    var $chosen = $listTab.find("div.media.chosen");
-                    var entity = {
-                        id: $chosen.attr('data-id'),
-                        // url: $chosen.attr('data-url'),
-                        thumbnail: $chosen.html(),
-                        name: $chosen.attr('data-name'),
-                    };
-                    setChosenMedia(entity, randId);
-                    $modal.modal('toggle');
-                });
-
-                // Handle media final choosing
-                $listTab.find("button.select[type='submit']").on('click', function(e) {
-                    e.preventDefault();
-                    var $chosen = $listTab.find("div.media.chosen");
-                    var entity = {
-                        id: $chosen.attr('data-id'),
-                        // url: $chosen.attr('data-url'),
-                        thumbnail: $chosen.html(),
-                        name: $chosen.attr('data-name'),
-                    };
-                    setChosenMedia(entity, randId);
-                    $modal.modal('toggle');
-                });
+                attachMediaItemHandlers($modal, $listTab, randId);
             }
         });
     }
-
-    function setChosenMedia(entity, randId) {
-        var $mediaControl = $('div[id="'+inputName+randId+'"]');
-        $mediaControl.find('input[type=hidden]').val(entity.id);
-        var thumbId = thumbName + randId;
-        // var thumbSelector = "div#" + thumbId;
-        $mediaControl.find("div.thumbnail-container").html(entity.thumbnail);
-        $mediaControl.find('p[id^=display]').text(entity.name);
-    }
-
 });
+
+
+function attachMediaItemHandlers($modal, $container, randId) {
+    // Handle media selection in list
+    $container.find("div.media").on('click', function(e) {
+        $container.find("div.media").removeClass('chosen');
+        $(this).addClass('chosen');
+    });
+
+    $container.find("div.media").dblclick(function(){
+        var $chosen = $container.find("div.media.chosen");
+        var entity = {
+            id: $chosen.attr('data-id'),
+            // url: $chosen.attr('data-url'),
+            thumbnail: $chosen.html(),
+            name: $chosen.attr('data-name'),
+        };
+        setChosenMedia(entity, randId);
+        $modal.modal('toggle');
+    });
+
+    // Handle media final choosing
+    $container.find("button.select[type='submit']").on('click', function(e) {
+        e.preventDefault();
+        var $chosen = $container.find("div.media.chosen");
+        var entity = {
+            id: $chosen.attr('data-id'),
+            // url: $chosen.attr('data-url'),
+            thumbnail: $chosen.html(),
+            name: $chosen.attr('data-name'),
+        };
+        setChosenMedia(entity, randId);
+        $modal.modal('toggle');
+    });
+}
+
+/**
+ * Handle media type filling when chosen
+ * @param entity
+ * @param randId
+ */
+function setChosenMedia(entity, randId) {
+    var $mediaControl = $('div[id="'+inputName+randId+'"]');
+    $mediaControl.find('input[type=hidden]').val(entity.id);
+    var thumbId = thumbName + randId;
+    // var thumbSelector = "div#" + thumbId;
+    $mediaControl.find("div.thumbnail-container").html(entity.thumbnail);
+    $mediaControl.find('p[id^=display]').text(entity.name);
+}
+
+/**
+ * Extract the random id generated
+ *
+ * @param string
+ * @returns {*}
+ */
+function extractRandId(string)
+{
+    var numberPattern = /\d+/g;
+    return string.match( numberPattern )[0];
+}
+
+function resetFormElement(e) {
+    e.wrap('<form>').closest('form').get(0).reset();
+    e.unwrap();
+}
