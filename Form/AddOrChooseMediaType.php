@@ -110,7 +110,7 @@ class AddOrChooseMediaType extends AbstractType
         $view->vars[static::LIST_MEDIA_ROUTE] = $options[static::LIST_MEDIA_ROUTE];
         // Media addition
         $view->vars[static::ADD_MEDIA_ROUTE] = $options[static::ADD_MEDIA_ROUTE];
-
+        
         // Media type
         foreach($this->registeredMediaTypes as $mediaSlug => $registeredMediaType) {
             if($registeredMediaType[Configuration::ENTITY] === $options[static::ENTITY_REFERENCE]) {

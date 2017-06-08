@@ -35,6 +35,7 @@ class LchMediaExtension extends Extension
                 $config[Configuration::ROOT_FOLDER[Configuration::KEY]]
             );
         }
+        
 
         // Overload registered types and declare new ones
         if(isset($config[Configuration::TYPES])) {
