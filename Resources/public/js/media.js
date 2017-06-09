@@ -8,6 +8,7 @@
 // }( $ ));
 
 // TODO find better way to check already handled
+var mediaSelectorContainer = 'media-selector-container';
 var idModal = 'image-modal__';
 // var idModalSave = 'image-modal-save__';
 var inputName = 'image__';
@@ -39,13 +40,20 @@ $(document).ready(function(){
                 // // Relayout istope
                 // $parentModal.isotope('reLayout');
             }
-        });
+        })
+        .on('click', 'button.remove-media-association', function(e) {
+            e.preventDefault();
+            var $parentMediaContainer = $(this).closest('.' + mediaSelectorContainer);
+            var $input = $parentMediaContainer.find('input[type=hidden]');
 
-    // $('body').on('click', 'button[id^='+idModalSave+']', function(e){
-    //     var id = $(this).attr('id');
-    //     var randId = extractRandId(id);
-    //     save();
-    // });
+            // Remove attribute
+            $input.removeAttr('value');
+            $parentMediaContainer.find('.thumbnail-container').html("");
+            $parentMediaContainer.find('button.remove-media-association, button.choose-media, button.edit-media')
+                .toggleClass('hidden')
+            ;
+        })
+    ;
 
 
     /**
