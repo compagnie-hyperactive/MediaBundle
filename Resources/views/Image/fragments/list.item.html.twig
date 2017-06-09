@@ -19,14 +19,6 @@
     </div>
     <div class="col-xs-8">
         <p>{{ listItemEvent.media.name }}</p>
-        {% if listItemEvent.media.tags|length > 0 %}
-            {% for tag in listItemEvent.media.tags %}
-                <span class="tag">
-                    <i class="glyphicon glyphicon-tag"></i>
-                    {{ tag.name }}
-                </span>
-            {% endfor %}
-        {% endif %}
         <p><strong>{{ listItemEvent.media.width }}</strong>px x <strong>{{ listItemEvent.media.height }}</strong>px</p>
         <p><strong>{{ size }} Ko</strong></p>
     </div>

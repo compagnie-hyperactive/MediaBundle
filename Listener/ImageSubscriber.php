@@ -48,7 +48,6 @@ class ImageSubscriber implements EventSubscriberInterface
             LchMediaEvents::LIST_ITEM => 'onImageListItem',
             LchMediaEvents::URL => 'onImageUrl',
             LchMediaEvents::POST_STORAGE => 'onImagePostStorage',
-            LchMediaEvents::PRE_SEARCH => 'onImagePreSearch'
         ];
     }
 
@@ -153,28 +152,5 @@ class ImageSubscriber implements EventSubscriberInterface
         }
 
         $this->imageManager->generateThumbnails($image);
-    }
-
-    /**
-     * @param PreSearchEvent $event
-     */
-    public function onImagePreSearch(PreSearchEvent $event) {
-        $mediaType = $event->getMediaType();
-
-        // Only for Image based classed
-        if(!is_subclass_of($mediaType[Configuration::ENTITY], Image::class)) {
-            return;
-        }
-
-        $resourceQueryBuilder = $event->getQueryBuilder();
-
-        // Search on common media properties
-        if(isset($event->getParameters()[Media::NAME])) {
-            $resourceQueryBuilder
-                ->leftJoin("{$event->getAlias()}.tags", 't')
-                ->orWhere($resourceQueryBuilder->expr()->like("t.name", ':name'))
-                ->setParameter('name', "%{$event->getParameters()[Media::NAME]}%")
-            ;
-        }
     }
 }

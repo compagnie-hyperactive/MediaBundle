@@ -4,7 +4,6 @@ namespace Lch\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Lch\MediaBundle\Behavior\Storable;
-use Lch\MediaBundle\Validator\Constraints\ImageSize;
 
 /**
  * Class Image

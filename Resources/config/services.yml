@@ -4,9 +4,14 @@ parameters:
   lch.media.manager.class: Lch\MediaBundle\Manager\MediaManager
   lch.media.pdf.manager.class: Lch\MediaBundle\Manager\PdfManager
   lch.media.twig.extension.class: Lch\MediaBundle\Twig\Extension\MediaExtension
+  lch.media.subscriber.class: Lch\MediaBundle\Listener\MediaSubscriber
+
   lch.media.image.manager.class: Lch\MediaBundle\Manager\ImageManager
   lch.media.image.regenerate_thumbnails.command.class: Lch\MediaBundle\Command\RegenerateImageThumbnailsCommand
+  lch.media.image.subscriber.class: Lch\MediaBundle\Listener\ImageSubscriber
+
   lch.media.pdf.regenerate_thumbnails.command.class: Lch\MediaBundle\Command\RegeneratePdfThumbnailsCommand
+  lch.media.pdf.subscriber.class: Lch\MediaBundle\Listener\PdfSubscriber
 
   lch.media.types:
       image:
@@ -92,16 +97,15 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
 
-
   lch.media.subscriber:
-    class: Lch\MediaBundle\Listener\MediaSubscriber
+    class: '%lch.media.subscriber.class%'
     arguments: ['@lch.media.uploader','@lch.media.pdf.manager','%kernel.root_dir%']
     tags:
       - { name: kernel.event_subscriber }
     lazy: true
 
   lch.media.image.subscriber:
-    class: Lch\MediaBundle\Listener\ImageSubscriber
+    class: '%lch.media.image.subscriber.class%'
     arguments: ['@lch.media.image.manager', '%kernel.root_dir%']
     tags:
       - { name: kernel.event_subscriber }
@@ -129,7 +133,7 @@ services:
         - { name: doctrine.event_listener, event: postPersist }
 
   lch.media.pdf.subscriber:
-    class: Lch\MediaBundle\Listener\PdfSubscriber
+    class: '%lch.media.pdf.subscriber.class%'
     arguments: ['@lch.media.manager']
     tags:
       - { name: kernel.event_subscriber }
