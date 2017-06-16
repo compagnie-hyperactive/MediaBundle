@@ -39,6 +39,9 @@ class Configuration implements ConfigurationInterface
     const RESIZE_STRATEGY = 'resize';
     const CROP_STRATEGY = 'crop';
 
+    const MAX_ITEMS_PER_PAGE = 'max_items_per_page';
+    const DEFAULT_MAX_ITEMS_PER_PAGE = 20;
+
     /**
      * {@inheritdoc}
      */
@@ -101,6 +104,9 @@ class Configuration implements ConfigurationInterface
                                         ->end()
                                     ->end()
                                 ->end()
+                            ->end()
+                            ->scalarNode(static::MAX_ITEMS_PER_PAGE)
+                                ->defaultValue(static::DEFAULT_MAX_ITEMS_PER_PAGE)
                             ->end()
                         ->end()
                     ->end()

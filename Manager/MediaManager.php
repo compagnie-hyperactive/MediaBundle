@@ -179,9 +179,10 @@ class MediaManager
     /**
      * @param array $authorizedMediasTypes
      * @param array $parameters
+     * @param int $pageNumber
      * @return array
      */
-    public function getFilteredMedias(array $authorizedMediasTypes, array $parameters) {
+    public function getFilteredMedias(array $authorizedMediasTypes, array $parameters, int $pageNumber) {
         $authorizedMediasQueryBuilder = $this->entityManager
             ->createQueryBuilder()
         ;
@@ -211,6 +212,9 @@ class MediaManager
                     ->setParameter('name', "%{$parameters[Media::NAME]}%")
                 ;
             }
+
+            // add results limits
+            $preSearchEvent->getQueryBuilder()->setMaxResults($authorizedMediasType[Configuration::MAX_ITEMS_PER_PAGE]);
 
             // TODO make post event
 //            // Post search event

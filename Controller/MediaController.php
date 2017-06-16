@@ -34,11 +34,11 @@ class MediaController extends Controller // implements MediaControllerInterface
 
         $registeredMediaTypes = $this->getParameter('lch.media.types');
 
-        if($request->request->has('search')) {
-            $searchParameters = $request->request->get('search');
-        } else {
-            $searchParameters = [];
-        }
+        // Search handling
+        $searchParameters = $request->request->has('search') ? $request->request->get('search') : [];
+
+        // Pagination handling
+        $pageNumber = $request->request->has('page') ? $request->request->get('page') : 1;
 
         // If type not set, select all
         if(null === $type) {
@@ -69,7 +69,7 @@ class MediaController extends Controller // implements MediaControllerInterface
             throw new \Exception();
         }
         // TODO add events for listing filtering, pass types found to event
-        $medias = $this->get('lch.media.manager')->getFilteredMedias($authorizedMediaTypes, $searchParameters);
+        $medias = $this->get('lch.media.manager')->getFilteredMedias($authorizedMediaTypes, $searchParameters, $pageNumber);
 
         // TODO add pagination, infinite scroll
 

@@ -52,6 +52,7 @@ You need to define your **media types** in `config.yml`. You can define as many 
           thumbnail_view:   'YourBundle/Media/Resource/fragments:thumbnail.html.twig' # the view used for displaying thumbnail
           list_item_view:   'YourBundle/Media/Resource/fragments:list.item.html.twig' # the view used for displaying list item in selection lists
           extensions:       ['jpg', 'jpeg', 'png', 'gif'] # allowed extensions
+          max_items_per_page: 20 # not required, 20 per default
           thumbnail_sizes:
             news:
               width: 396
