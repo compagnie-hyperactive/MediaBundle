@@ -13,18 +13,23 @@ $(function() {
 
         e.preventDefault();
 
+        var library = false;
         var $modal = $(this).closest('.modal');
         var $form = $modal.find('form.search');
+        if($form.length === 0) {
+            library = true;
+            $form = $('form.search');
+        }
         var $mediaList = $(this).closest('.library-parent').find('.isotope');
 
         var data = {}
         var searchParams = {};
 
-        var page = $modal.find('input[name="page"]').val();
+        var page = $form.find('input[name="page"]').val();
         var more = false;
 
         if($(this).attr('id') == "more") {
-            $modal.find('input[name="page"]').val(parseInt($modal.find('input[name="page"]').val()) + 1);
+            $form.find('input[name="page"]').val(parseInt($form.find('input[name="page"]').val()) + 1);
             more = true;
         }
 
@@ -59,8 +64,9 @@ $(function() {
                     $mediaList.isotope( 'remove', $(".media-list").find(".media") );
                 }
                 $mediaList.isotope('insert', $(html).find(".media"));
-
-                attachMediaItemHandlers($modal, $mediaList, extractRandId($modal.attr('id')));
+                if(!library) {
+                    attachMediaItemHandlers($modal, $mediaList, extractRandId($modal.attr('id')));
+                }
                 $button.find('.loader').toggleClass('hidden');
             }
         });
