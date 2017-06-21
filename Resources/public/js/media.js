@@ -229,6 +229,7 @@ $(document).ready(function(){
      * @param randId
      * @param listRoute
      * @param mediaType
+     * @param page
      */
     function loadListMediaForm(randId, listRoute, mediaType)
     {
@@ -248,9 +249,9 @@ $(document).ready(function(){
                     html
                 );
 
-                if (!$listTab.hasClass('isotope')) {
+                // if (!$listTab.find('.media-list').hasClass('isotope')) {
                     // Isotope presentation
-                    $listTab.isotope({
+                    $listTab.find('.media-list').isotope({
                         itemSelector: '.media',
                         percentPosition: true,
                         masonry: {
@@ -258,7 +259,7 @@ $(document).ready(function(){
                             columnWidth: '.media'
                         }
                     });
-                }
+                // }
                 attachMediaItemHandlers($modal, $listTab, randId);
             }
         });

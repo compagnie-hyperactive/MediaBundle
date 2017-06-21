@@ -6,36 +6,46 @@ $(function() {
     // Search
     $(document).on('click', "button", function(e) {
 
-        if($(this).attr('id') != "search-button") {
+        if($(this).attr('id') != "search-button" && $(this).attr('id') != "more") {
             return;
         }
+        $(this).find('.loader').toggleClass('hidden');
 
         e.preventDefault();
 
-        var $form = $(this).closest('form')[0];
+        var $modal = $(this).closest('.modal');
+        var $form = $modal.find('form.search');
+        var $mediaList = $(this).closest('.library-parent').find('.isotope');
 
         var data = {}
         var searchParams = {};
 
-        // Loop on length-1 elements to avoid storing submit button which is form element
-        for(var i=0;i<($form.elements.length)-1;i++) {
-            searchParams[$form.elements[i].name] = $form.elements[i].value;
-            // formData.append($form.elements[i].name, $form.elements[i].value);
-        }
-        data.search = searchParams;
+        var page = $modal.find('input[name="page"]').val();
+        var more = false;
 
-        //Add list parameters
-        if($form.attributes.getNamedItem('data-type')) {
-            data.type = $form.attributes.getNamedItem('data-type').value;
+        if($(this).attr('id') == "more") {
+            $modal.find('input[name="page"]').val(parseInt($modal.find('input[name="page"]').val()) + 1);
+            more = true;
+        }
+
+        // Loop on length-1 elements to avoid storing submit button which is form element
+        // for(var i=0;i<($form.elements.length)-1;i++) {
+        //     searchParams[$form.elements[i].name] = $form.elements[i].value;
+        //     // formData.append($form.elements[i].name, $form.elements[i].value);
+        // }
+
+        data.search = $form.serializeArray();
+
+        // Add list parameters
+        if($form.data('type')) {
+            data.type = $form.data('type');
         } else {
             data.type = 'all';
         }
 
         data.libraryMode = true;
 
-        var $mediaList = $(this).closest('.library-parent').find('.isotope');
-        var $modal = $(this).closest('.modal');
-
+        var $button = $(this);
         // Reload list
         jQuery.ajax({
             url: Routing.generate('lch_media_search'),
@@ -45,10 +55,13 @@ $(function() {
                 // Isotope presentation
                 $mediaList.isotope();
 
-                $mediaList.isotope( 'remove', $(".media-list").find(".media") );
+                if(!more) {
+                    $mediaList.isotope( 'remove', $(".media-list").find(".media") );
+                }
                 $mediaList.isotope('insert', $(html).find(".media"));
 
                 attachMediaItemHandlers($modal, $mediaList, extractRandId($modal.attr('id')));
+                $button.find('.loader').toggleClass('hidden');
             }
         });
 

@@ -214,7 +214,9 @@ class MediaManager
             }
 
             // add results limits
-            $preSearchEvent->getQueryBuilder()->setMaxResults($authorizedMediasType[Configuration::MAX_ITEMS_PER_PAGE]);
+            $preSearchEvent->getQueryBuilder()
+                ->setFirstResult(($pageNumber-1) * $authorizedMediasType[Configuration::MAX_ITEMS_PER_PAGE])
+                ->setMaxResults($authorizedMediasType[Configuration::MAX_ITEMS_PER_PAGE]);
 
             // TODO make post event
 //            // Post search event

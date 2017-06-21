@@ -35,10 +35,15 @@ class MediaController extends Controller // implements MediaControllerInterface
         $registeredMediaTypes = $this->getParameter('lch.media.types');
 
         // Search handling
-        $searchParameters = $request->request->has('search') ? $request->request->get('search') : [];
-
+//        $searchParameters = $request->request->has('search') ? $request->request->get('search') : [];
+        $searchParameters = [];
+        if($request->request->has('search')) {
+            foreach($request->request->get('search') as $param) {
+                $searchParameters[$param['name']] = $param['value'];
+            }
+        }
         // Pagination handling
-        $pageNumber = $request->request->has('page') ? $request->request->get('page') : 1;
+        $pageNumber = isset($searchParameters['page']) ? intval($searchParameters['page']) : 1;
 
         // If type not set, select all
         if(null === $type) {
@@ -83,7 +88,8 @@ class MediaController extends Controller // implements MediaControllerInterface
         return $this->render('@LchMedia/Media/fragments/list.html.twig', [
             'medias' => $medias,
             'type' => $type,
-            'libraryMode' => $libraryMode
+            'libraryMode' => $libraryMode,
+            'pageNumber' => $pageNumber
         ]);
     }
 

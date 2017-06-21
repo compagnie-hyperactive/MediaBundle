@@ -22,3 +22,4 @@ lch:
           placeholder: Nom à rechercher
         submit:
           label: Rechercher
+      load_more: Charger plus
