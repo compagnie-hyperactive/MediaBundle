@@ -65,7 +65,8 @@ $(function() {
                 }
                 $mediaList.isotope('insert', $(html).find(".media"));
                 if(!library) {
-                    attachMediaItemHandlers($modal, $mediaList, extractRandId($modal.attr('id')));
+                    // attachMediaItemHandlers($modal, $mediaList, extractRandId($modal.attr('id')));
+                  $mediaList.lchMedia('attachMediaItemHandlers', $modal);
                 }
                 $button.find('.loader').toggleClass('hidden');
             }

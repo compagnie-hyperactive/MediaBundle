@@ -2,82 +2,90 @@
  * LCH media jQuery plugin
  * Handles all stuff related to medias in SF bundle
  */
-(function( $ ){
+(function( $ ) {
 
-    var mediaSelectorContainer = 'media-selector-container';
-    var idModal = 'image-modal__';
-    // var idModalSave = 'image-modal-save__';
-    var inputName = 'image__';
-    var thumbName = 'imageThumb__';
+  var mediaSelectorContainer = 'media-selector-container';
+  var idModal = 'image-modal__';
+  // var idModalSave = 'image-modal-save__';
+  var inputName = 'image__';
+  var thumbName = 'imageThumb__';
 
-    var methods = {
-      /**
-       * Init plugin
-       * @param options
-       */
-        init : function(options) {
+  var methods = {
+    /**
+     * Init plugin
+     * @param options
+     */
+    init: function (options) {
 
-            return this;
-        },
-        /**
-        * Renew random ID on media selector widget
-        *
-        */
-        renewRandomId : function() {
-          // var this = element.find('.media-selector-container');
-          var oldRandomId = this.attr('data-random');
-          var newRandomId = Math.floor(100000000 + Math.random() * 900000000);
+      return this;
+    },
+    /**
+     * Renew random ID on media selector widget
+     */
+    renewRandomId: function () {
+      // var this = element.find('.media-selector-container');
+      var oldRandomId = this.attr('data-random');
+      var newRandomId = Math.floor(100000000 + Math.random() * 900000000);
 
-          // Update IDs
-          this.find("[id$='"+ oldRandomId +"']").each(function () {
-            var rootId = $(this).attr('id').split('__')[0];
-            $(this).attr('id', rootId + "__" + newRandomId);
-          });
+      // Update IDs
+      this.find("[id$='" + oldRandomId + "']").each(function () {
+        var rootId = $(this).attr('id').split('__')[0];
+        $(this).attr('id', rootId + "__" + newRandomId);
+      });
 
-          // Update hrefs
-          this.find("a[href$='"+ oldRandomId +"']").each(function () {
-            var rootId = $(this).attr('href').split('__')[0];
-            $(this).attr('href', rootId + "__" + newRandomId);
-          });
+      // Update hrefs
+      this.find("a[href$='" + oldRandomId + "']").each(function () {
+        var rootId = $(this).attr('href').split('__')[0];
+        $(this).attr('href', rootId + "__" + newRandomId);
+      });
 
-          // then change the data-random
-          this.attr('data-random', newRandomId);
+      // then change the data-random
+      this.attr('data-random', newRandomId);
 
-          // then change data-target button
-          $('[data-target$="' + oldRandomId + '"]').attr('data-target', "#image-modal__" + newRandomId);
-        }
-    };
+      // then change data-target button
+      $('[data-target$="' + oldRandomId + '"]').attr('data-target', "#image-modal__" + newRandomId);
+    },
 
-    /**********************************************
-    * Private methods
-    */
+    /**
+     * Dynamic attach event bindings to item loaded with isotope
+     * @param $modal the modal object containing list
+     */
+    attachMediaItemHandlers: function ($modal) {
+      randId = extractRandId($modal.attr('id'));
+      attachMediaItemHandlers($modal, this, randId);
+    }
+  };
+
+  /**********************************************
+   * Private methods
+   */
 
   /**
    * On media modal show
    */
   $('body')
-      .on('show.bs.modal', 'div[id^='+idModal+']', function (e) {
+      .on('show.bs.modal', 'div[id^=' + idModal + ']', function (e) {
         var id = $(this).attr('id');
         var randId = extractRandId(id);
         var addRoute = $(this).attr('data-route-add');
         var mediaType = $(this).attr('data-media-type');
         loadAddMediaForm(randId, addRoute, mediaType);
       })
-      .on('shown.bs.tab', 'div[id^='+idModal+'] a[data-toggle="tab"]', function (e) {
-        var $parentModal = $(this).parents('div[id^='+idModal+']');
+      .on('shown.bs.tab', 'div[id^=' + idModal + '] a[data-toggle="tab"]', function (e) {
+        var $parentModal = $(this).parents('div[id^=' + idModal + ']');
         var id = $parentModal.attr('id');
         var randId = extractRandId(id);
         var listRoute = $parentModal.attr('data-route-list');
         var mediaType = $parentModal.attr('data-media-type');
 
-        if(e.target.hash == "#list-media__" + randId) {
+        if (e.target.hash == "#list-media__" + randId) {
           loadListMediaForm(randId, listRoute, mediaType);
 
           // // Relayout istope
           // $parentModal.isotope('reLayout');
         }
       })
-      .on('click', 'button.remove-media-association', function(e) {
+      .on('click', 'button.remove-media-association', function (e) {
         e.preventDefault();
         var $parentMediaContainer = $(this).closest('.' + mediaSelectorContainer);
         var $input = $parentMediaContainer.find('input[type=hidden]');
@@ -90,6 +98,7 @@
         ;
       })
   ;
+
   /**
    * Load the add Media Form in the modal
    *
@@ -97,18 +106,17 @@
    * @param addRoute
    * @param mediaType
    */
-  function loadAddMediaForm(randId, addRoute, mediaType)
-  {
-    var $modal = $('#'+idModal+randId);
+  function loadAddMediaForm(randId, addRoute, mediaType) {
+    var $modal = $('#' + idModal + randId);
     var fileValue;
-    var data = {'id' : $('div[id="'+inputName+randId+'"] input[type=hidden]').val() };
+    var data = {'id': $('div[id="' + inputName + randId + '"] input[type=hidden]').val()};
 
     // Load addition route by default
     jQuery.ajax({
-      url : Routing.generate(addRoute, {'type': mediaType}),
+      url: Routing.generate(addRoute, {'type': mediaType}),
       type: 'POST',
-      data : data,
-      success: function(html) {
+      data: data,
+      success: function (html) {
         var formName = $(html).attr('name');
 
         $modal.find('div.modal-body #add-media__' + randId).empty();
@@ -117,11 +125,11 @@
         );
 
         // Set file helper
-        $('div#'+idModal+randId+' p.fileHelper').html($('#'+inputName+randId).find('input[type=hidden]').attr('data-helper'));
+        $('div#' + idModal + randId + ' p.fileHelper').html($('#' + inputName + randId).find('input[type=hidden]').attr('data-helper'));
 
         // TODO review extension check
         // var $fileError = $('#'+idModal+randId + ' #fileError');
-        $('div#'+idModal+randId+' #lch_media_bundle_image_file').on('change', function() {
+        $('div#' + idModal + randId + ' #lch_media_bundle_image_file').on('change', function () {
           //
           //     fileValue = $(this).val();
           //
@@ -213,7 +221,7 @@
         });
 
         // TODO find a way to make it work even if there was problem on first load
-        $('form[name='+formName+']').on('submit', function(e) {
+        $('form[name=' + formName + ']').on('submit', function (e) {
           e.preventDefault();
           // Add loader in button
           var $button = $(this).find('[type="submit"]');
@@ -225,17 +233,18 @@
           var formData = new FormData($(this)[0]);
 
           jQuery.ajax({
-            url : $(html).attr('action'),
+            url: $(html).attr('action'),
             type: 'POST',
             data: formData,
             cache: false,
             contentType: false,
             processData: false,
-            success: function(result) {
-              if(result instanceof Object && "success" in result) {
+            success: function (result) {
+              if (result instanceof Object && "success" in result) {
                 setChosenMedia(result, randId);
                 $modal.modal('toggle');
-              } else {
+              }
+              else {
                 $modal.find('div.modal-body #add-media__' + randId)
                     .empty()
                     .html(result)
@@ -265,17 +274,16 @@
    * @param mediaType
    * @param page
    */
-  function loadListMediaForm(randId, listRoute, mediaType)
-  {
-    var $modal = $('#'+idModal+randId);
+  function loadListMediaForm(randId, listRoute, mediaType) {
+    var $modal = $('#' + idModal + randId);
     var $listTab = $modal.find('div.modal-body #list-media__' + randId);
     // var fileValue;
 
     // Load list route
     jQuery.ajax({
-      url : Routing.generate(listRoute, { type: mediaType }),
+      url: Routing.generate(listRoute, {type: mediaType}),
       type: 'GET',
-      success: function(html) {
+      success: function (html) {
         // var formName = $(html).attr('name');
 
         $listTab.empty();
@@ -301,13 +309,14 @@
 
 
   function attachMediaItemHandlers($modal, $container, randId) {
+
     // Handle media selection in list
-    $container.find("div.media").on('click', function(e) {
+    $container.find("div.media").on('click', function (e) {
       $container.find("div.media").removeClass('chosen');
       $(this).addClass('chosen');
     });
 
-    $container.find("div.media").dblclick(function(){
+    $container.find("div.media").dblclick(function () {
       var $chosen = $container.find("div.media.chosen");
       var entity = {
         id: $chosen.attr('data-id'),
@@ -320,7 +329,7 @@
     });
 
     // Handle media final choosing
-    $container.find("button.select[type='submit']").on('click', function(e) {
+    $container.find("button.select[type='submit']").on('click', function (e) {
       e.preventDefault();
       var $chosen = $container.find("div.media.chosen");
       var entity = {
