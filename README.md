@@ -304,14 +304,14 @@ Then, assuming you added form_theme as stated above, the twig parent form type b
 
         {# Medias #}
         <script src="{{ asset('bundles/lchmedia/js/isotope.js') }}"></script>
-        <script src="{{ asset('bundles/lchmedia/js/media.js') }}"></script>
+        <script src="{{ asset('bundles/lchmedia/js/jquery.media.js') }}"></script>
         <script src="{{ asset('bundles/lchmedia/js/media-search.js') }}"></script>
 {% endblock scripts %}
 ```
 
 You have to add those 3 javascript files in order to make things work.
 - The list use [isotope](https://isotope.metafizzy.co/) to make elegant item presentation
-- All logic (list/creation) is handled in AJAX in `media.js`
+- All logic (list/creation) is handled _via_ jQuery plugin `jquery.media.js`
 - `media-search.js` contains JS logic around search (externalized to be used on a specific library page)
 
 ##### Result (after custom styling):
@@ -371,23 +371,9 @@ Example below linked to above `AddOrChooseMultipleMediasType` (with symfony coll
             // Change the random number to ensure uniqueness
             after_add: function(collection, element) {
                 var $mediaSelector = element.find('.media-selector-container');
-                var oldRandomId = $mediaSelector.attr('data-random');
-                var newRandomId = Math.floor(100000000 + Math.random() * 900000000);
-
-                // Update IDs
-                $mediaSelector.find("[id$='"+ oldRandomId +"']").each(function () {
-                    var rootId = $(this).attr('id').split('__')[0];
-                    $(this).attr('id', rootId + "__" + newRandomId);
-                });
-
-                // Update hrefs
-                $mediaSelector.find("a[href$='"+ oldRandomId +"']").each(function () {
-                    var rootId = $(this).attr('href').split('__')[0];
-                    $(this).attr('href', rootId + "__" + newRandomId);
-                });
-
-                // then change the data-random
-                $mediaSelector.attr('data-random', newRandomId);
+                
+                // Renew random ID on just added media selector
+                $mediaSelector.lchMedia('renewRandomId');
 
                 return true;
             }
@@ -434,10 +420,7 @@ All validators work both on class and property level. So you need to define them
     class Resource extends Media
     {
         // Remember to use the Storable to ensure physical file is correctly stored
-        use Storable,
-            MediaTaggable,
-            Blameable,
-            Timestampable
+        use Storable,           
             ;
     }
 ```
@@ -473,5 +456,6 @@ _Note : so far, we use the image longer dimension and adapt the other one to kee
  ```
  4. Add a Voter to restrain service   
  5. Option : Register a Listener/Subscriber to LchMediaEvents::DOWNLOAD to control what to serve (add watermark...)
+
 
  TODO : to be completed with detailled event usage examples
