@@ -80,7 +80,7 @@ class MediaManager
         $relativeFilePath = "/" . date('Y') . "/" . date('m') . "/";
 
         // Create file name
-        $fileName = md5(uniqid()).'.' . $media->getFile()->guessExtension();
+        $fileName = md5(uniqid()).'.' . $media->getFile()->getClientOriginalExtension();
 
         // Throw event to act before storage
         $preStorageEvent = new PreStorageEvent($media, $relativeFilePath, $fileName);

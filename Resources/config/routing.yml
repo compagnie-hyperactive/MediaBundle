@@ -33,10 +33,9 @@ lch_media_delete:
     options:
         expose: true
 
-#lch_media_image_add:
-#    path: /image/add
-#    defaults: { _controller: LchMediaBundle:Image:add }
-#    methods:  [ PUT, POST ]
-#    options:
-#        expose: true
+lch_media_edit:
+    path: /edit/{type}/{id}
+    defaults: { _controller: LchMediaBundle:Media:edit }
+    options:
+        expose: true
 

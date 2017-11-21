@@ -123,11 +123,9 @@ class MediaController extends Controller // implements MediaControllerInterface
             $mediaEntity,
             [ 'action' => $this->generateUrl('lch_media_add', ['type' => $type])]
         );
-
         $mediaForm->handleRequest($request);
 
         if ($mediaForm->isSubmitted() && $mediaForm->isValid()) {
-            
             // Dispatch pre-persist event
             // - Allow different media types listener to correctly persist media according to its customisations
             $prePersistEvent = new PrePersistEvent($mediaEntity);
@@ -199,9 +197,113 @@ class MediaController extends Controller // implements MediaControllerInterface
 //        }
 //    }
 
-    public function editAction()
+    public function editAction($id, $type, Request $request)
     {
-        // TODO: Implement editAction() method.
+        if(!isset($this->getParameter('lch.media.types')[$type])) {
+            // TODO throw exception type not defined
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $mediaClass = $this->getParameter('lch.media.types')[$type][Configuration::ENTITY];
+
+        /** @var Media $mediaEntity */
+        if (null === $mediaEntity = $em->getRepository($mediaClass)->findOneBy(['id' => $id])) {
+           // TODO: Throw not found exception
+        }
+
+        $oldMediaName = $mediaEntity->getFile();
+
+        $mediaForm = $this->createForm(
+            $this->getParameter('lch.media.types')[$type][Configuration::FORM],
+            $mediaEntity,
+            [
+                'action' => $this->generateUrl('lch_media_edit', ['type' => $type, 'id' => $mediaEntity->getId()]),
+                'attr' => ['width' => '550px'],
+            ]
+        );
+
+        $mediaForm->handleRequest($request);
+
+        if ($mediaForm->isSubmitted() && $mediaForm->isValid()) {
+
+            if (null === $mediaForm->getData()->getFile()) {
+                $mediaEntity->setFile($oldMediaName);
+                $em->flush();
+            } else {
+                // Dispatch pre-persist event
+                // - Allow different media types listener to correctly persist media according to its customisations
+                $prePersistEvent = new PrePersistEvent($mediaEntity);
+                $this->get('event_dispatcher')->dispatch(
+                    LchMediaEvents::PRE_PERSIST,
+                    $prePersistEvent
+                );
+
+                $em->persist($prePersistEvent->getMedia());
+                $em->flush();
+            }
+
+            if (isset($prePersistEvent)) {
+                // Dispatch post-persist event
+                // - Once media correctly saved and stored, allow different media types listener to perform post-operations (thumbnail generations...) and retrieve ID for DataTransformer
+                $postPersistEvent = new PostPersistEvent($prePersistEvent->getMedia());
+                $this->get('event_dispatcher')->dispatch(
+                    LchMediaEvents::POST_PERSIST,
+                    $postPersistEvent
+                );
+
+                // Throw event to act after storage
+                $postStorageEvent = new PostStorageEvent($postPersistEvent->getMedia());
+                $this->get('event_dispatcher')->dispatch(LchMediaEvents::POST_STORAGE, $postStorageEvent);
+
+                // Generate thumbnail
+                // TODO find an organization to avoid circular reference if calling service directly
+                $templateEvent = $this->get('lch.media.manager')->getListItem($postPersistEvent->getMedia());
+                $listItem = $this->renderView($templateEvent->getTemplate(), [
+                    'listItemEvent' => $templateEvent,
+                    'attributes' => []
+                ]);
+
+                $mediaEntity = $postPersistEvent->getMedia();
+
+            }
+
+            if (true === $request->isXmlHttpRequest()) {
+
+                $templateEvent = $this->get('lch.media.manager')->getListItem($mediaEntity);
+                $listItem = $this->renderView($templateEvent->getTemplate(), [
+                    'listItemEvent' => $templateEvent,
+                    'attributes' => []
+                ]);
+
+
+
+                return new JsonResponse(
+                    array_merge(['success'   => true],
+                        array_merge(
+                            (isset($prePersistEvent) && is_array($prePersistEvent->getData())) ? $prePersistEvent->getData() : [],
+                            [
+                                'id' => $mediaEntity->getId(),
+                                'thumbnail' => $listItem,
+                                'type' => $type
+                            ]
+                        )
+                    )
+                );
+            }
+        }
+
+        if ($mediaForm->isSubmitted() && false === $mediaForm->isValid())  {
+            return new JsonResponse([
+                $mediaForm->getErrors(),
+            ]);
+        }
+
+        return $this->render($this->getParameter('lch.media.types')[$type][Configuration::EDIT_VIEW], [
+                'mediaForm' => $mediaForm->createView(),
+                'mediaEntity' => $mediaEntity,
+            ]
+        );
     }
 
     public function removeAction(Request $request, int $id, string $type)

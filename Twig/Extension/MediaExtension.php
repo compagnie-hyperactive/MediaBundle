@@ -5,6 +5,7 @@ namespace Lch\MediaBundle\Twig\Extension;
 use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Manager\MediaManager;
+use Symfony\Component\HttpFoundation\File\File;
 
 class MediaExtension extends \Twig_Extension
 {
@@ -54,11 +55,26 @@ class MediaExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getUrl', [$this, 'getUrl' ], [
                 'needs_environment' => false
             ]),
+            new \Twig_SimpleFunction('getRealUrl', [$this, 'getRealUrl' ], [
+                'needs_environment' => false
+            ]),
             new \Twig_SimpleFunction('getSearchFields', [$this, 'getSearchFields' ], [
                 'needs_environment' => false,
                 'is_safe' => ['html']
             ]),
+            new \Twig_SimpleFunction('getPath', [$this, 'getPath' ], [
+                'needs_environment' => false,
+                'is_safe' => ['html']
+            ]),
         );
+    }
+
+    public function getPath(Media $media, $mediaParameters = [])
+    {
+        /** @var File $file */
+        $file = $media->getFile();
+        $realPath = $file->getRealPath();
+        return substr($realPath, strpos($realPath, '/web/') + 4);
     }
 
     /**
@@ -125,6 +141,15 @@ class MediaExtension extends \Twig_Extension
             return '';
         }
 
+    }
+
+    public function getRealUrl(Media $media)
+    {
+        $fullPath = $media->getFile();
+
+        if(strpos($fullPath, 'web') !== false) {
+            return  explode('/web', $fullPath)[1];
+        }
     }
 
     /**

@@ -1,0 +1,11 @@
+{% form_theme mediaForm 'bootstrap_3_layout.html.twig' %}
+
+{{ form_errors(mediaForm) }}
+{{ form_start(mediaForm) }}
+    {{ form_row(mediaForm.file) }}
+    {{ form_row(mediaForm.name) }}
+<div class="text-right col-xs-12">
+    {{ form_row(mediaForm.submit) }}
+</div>
+{{ form_rest(mediaForm) }}
+{{ form_end(mediaForm) }}

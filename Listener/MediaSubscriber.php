@@ -115,11 +115,16 @@ class MediaSubscriber implements EventSubscriberInterface
 
     public function onMediaPostStorage(PostStorageEvent $event) {
         $media = $event->getMedia();
+        $file = $media->getFile();
+        if (true === is_string($file)) {
+            $file = new File("{$this->kernelRootDir}/../web{$file}");
+            $media->setFile($file);
+        }
 
         if ($media instanceof Media && (
-                $media->getFile()->getExtension() == 'pdf'
+                $file->getExtension() == 'pdf'
                 ||
-                $media->getFile()->getExtension() == 'PDF')
+                $file->getExtension() == 'PDF')
         ){
             $this->pdfManager->generateThumbnail($media);
         }

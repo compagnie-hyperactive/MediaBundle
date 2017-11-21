@@ -17,6 +17,7 @@ parameters:
       image:
         form:       'Lch\MediaBundle\Form\ImageType'
         add_view:   'LchMediaBundle:Image/fragments:add.html.twig'
+        edit_view:   'LchMediaBundle:Image/fragments:edit.html.twig'
         thumbnail_view: 'LchMediaBundle:Image/fragments:thumbnail.html.twig'
         list_item_view: 'LchMediaBundle:Image/fragments:list.item.html.twig'
         extensions: ['jpg', 'jpeg', 'png', 'gif']

@@ -16,18 +16,59 @@ $(function(){
         }
     });
 
+    // Edit Media Form in popin
+    $('body').on('submit', '#media-edit-form', function(e) {
+        e.preventDefault();
+
+        var formData = new FormData($(this).get(0));
+
+        var $mediaItem = $(".media-list .media[data-id='" + $(this).attr('data-id') + "']");
+
+        jQuery.ajax({
+            url: $(this).attr('action'),
+            data: formData,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            dataType	: 'json',
+            //cache: false,
+            success: function (data) {
+                if(data instanceof Object && "success" in data) {
+                    // Close modal
+                    $modal.modal('hide');
+
+                    $mediaList.isotope( 'remove', $mediaItem );
+
+                    var $newItems = $(data.thumbnail);
+                    $mediaList.isotope( 'insert', $newItems );
+
+                }
+                else {
+                    $modal.find('p.alert-danger')
+                        .text(data.error + " - " + data.message)
+                        .removeClass('hidden')
+                    ;
+                }
+            }
+        });
+
+        return false;
+    });
+
     if($('#popin-mode').length > 0 && $('#popin-mode').val() == 1) {
         var popinMode = true;
 
         // Remove unwanted elements in popin mode
         $('div#main-menu').remove();
         $('header#horizontal-nav').remove();
-
     } else {
         var popinMode = false;
     }
 
     if(!popinMode) {
+
+        console.log('popinmod false');
+
         /**
          * Handle type change
          */
@@ -54,16 +95,26 @@ $(function(){
             ;
 
             $modal.find('ul#media-details').html("");
-            $modal.find('ul#media-details').append('<li>URL du média : <strong>' + $(this).attr('data-url') + '</strong></li>');
-            if($(this).data('preview')) {
-                $modal.find('.modal-body').append('<div class="text-center" style="border: 1px solid #ddd"><img src="' + $(this).data('preview') + '" /></div>');
-            }
+
+            jQuery.ajax({
+                url: Routing.generate('lch_media_edit', {id: $(this).attr('data-id'), type: $("#media-type-selector select").val() }),
+                //type: 'DELETE',
+                success: function (data) {
+                    $modal.find('.modal-body').empty();
+                    $modal.find('.modal-body').append(data);
+                }
+            });
+
+            // $modal.find('ul#media-details').append('<li>URL du média : <strong>' + $(this).attr('data-url') + '</strong></li>');
+            // if($(this).data('preview')) {
+            //     $modal.find('.modal-body').append('<div class="text-center" style="border: 1px solid #ddd"><img src="' + $(this).data('preview') + '" /></div>');
+            // }
 
             $("#details-modal").modal('show');
         });
 
         // Delete
-        $modal.find('button[type="submit"]').click(function(e) {
+        $modal.find('button[data-action="delete"]').click(function(e) {
             if($(this).attr('data-id') && $(this).attr('data-type')) {
 
                 var $mediaItem = $(".media-list .media[data-id='" + $(this).attr('data-id') + "']");
@@ -92,8 +143,6 @@ $(function(){
                 });
             }
         });
-
-
 
         /**
          * Handle form submission and media creation
