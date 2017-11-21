@@ -42,7 +42,7 @@ class HasAllowedFileExtensionValidator extends ConstraintValidator
     {
         if ((null !== $media) && ($media instanceOf Media) && $this->mediaManager->getMediaUploader()->checkStorable($media) && null !== $media->getFile()) {
             $allowedExtensions = $this->mediaManager->getMediaTypeConfiguration($media)[Configuration::EXTENSIONS];
-            if (!in_array(strtolower($media->getFile()->getClientOriginalExtension()), $allowedExtensions)) {
+            if (!in_array(strtolower($media->getFile()->guessExtension()), $allowedExtensions)) {
                 $this->context->buildViolation($hasAllowedFileExtensionConstraint->getMessage())
                     ->setParameter('%extensions%', implode(', ', $allowedExtensions))
                     ->addViolation();
