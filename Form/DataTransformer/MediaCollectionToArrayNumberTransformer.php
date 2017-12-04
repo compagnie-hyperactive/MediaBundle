@@ -64,12 +64,14 @@ class MediaCollectionToArrayNumberTransformer implements DataTransformerInterfac
         if($medias instanceof Collection) {
             $returnCollection = new ArrayCollection();
             foreach ($medias as $media) {
-                $transformEvent = new TransformEvent($media, $this->mediaParameters);
-                $this->eventDispatcher->dispatch(
-                    LchMediaEvents::TRANSFORM, $transformEvent
-                );
+                if (null !== $media) {
+                    $transformEvent = new TransformEvent($media, $this->mediaParameters);
+                    $this->eventDispatcher->dispatch(
+                        LchMediaEvents::TRANSFORM, $transformEvent
+                    );
 
-                $returnCollection->add($transformEvent->getMedia());
+                    $returnCollection->add($transformEvent->getMedia());
+                }
             }
 
             return $returnCollection;
