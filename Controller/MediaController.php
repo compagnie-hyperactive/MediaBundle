@@ -384,6 +384,17 @@ class MediaController extends Controller // implements MediaControllerInterface
 
         // prepare BinaryFileResponse
         $fileName = "{$downloadEvent->getMedia()->getName()}.{$downloadEvent->getFile()->getExtension()}";
+
+        // https://stackoverflow.com/a/2021729/4519773
+        // Remove anything which isn't a word, whitespace, number
+        // or any of the following caracters -_~,;[]().
+        // If you don't need to handle multi-byte characters
+        // you can use preg_replace rather than mb_ereg_replace
+        // Thanks @Łukasz Rysiak!
+        $fileName = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $fileName);
+        // Remove any runs of periods (thanks falstro!)
+        $fileName = mb_ereg_replace("([\.]{2,})", '', $fileName);
+
         $response = new BinaryFileResponse($downloadEvent->getFile()->getRealPath());
         $response->trustXSendfileTypeHeader();
         $response->setContentDisposition(
