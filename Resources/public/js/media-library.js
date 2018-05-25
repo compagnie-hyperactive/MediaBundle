@@ -150,6 +150,9 @@ $(function(){
         $('#media-form-container').find('form').submit(function() {
             var formData = new FormData($(this)[0]);
 
+            var $submitButton = $('#media-form-container').find('form button[type=submit]');
+            var initialText = $submitButton.text();
+
             jQuery.ajax({
                 url : $(this).attr('action'),
                 type: 'POST',
@@ -157,6 +160,14 @@ $(function(){
                 cache: false,
                 contentType: false,
                 processData: false,
+                beforeSend: function() {
+                    $($submitButton).text('Enregistrement en cours...');
+                    $($submitButton).attr('disabled','disabled');
+                },
+                complete: function() {
+                    $($submitButton).text(initialText);
+                    $($submitButton).removeAttr('disabled');
+                },
                 success: function(result) {
                     if(result instanceof Object && "success" in result) {
                         // Reload list
