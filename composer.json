@@ -2,7 +2,7 @@
     "name": "lch/media-bundle",
     "type": "symfony-bundle",
     "description": "Symfony LchMediaBundle",
-    "keywords": ["Media management"],
+    "keywords": ["media","management","file","image"],
     "homepage": "https://github.com/compagnie-hyperactive/MediaBundle",
     "license": "MIT",
     "authors": [
@@ -16,8 +16,8 @@
         }
     ],
     "require": {
-        "php": "^7.0",
-        "symfony/symfony": "~3.2",
+        "php": "^7.2",
+        "symfony/symfony": "~3.4|~4.2",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "knplabs/doctrine-behaviors": "~1.1",
         "lch/components-bundle": "dev-master"
