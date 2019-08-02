@@ -252,9 +252,9 @@ class MediaManager
      * @return string
      */
     public function getRealRelativeUrl($fullPath) {
-        // CHeck path is full, with "web" inside
-        if(strpos($fullPath, 'web') !== false) {
-            return explode('/web', $fullPath)[1];
+        // CHeck path is full, with "public" inside
+        if(strpos($fullPath, 'public') !== false) {
+            return explode('/public', $fullPath)[1];
         }
         // If not, already relative path
         else {

@@ -74,7 +74,7 @@ class MediaExtension extends \Twig_Extension
         /** @var File $file */
         $file = $media->getFile();
         $realPath = $file->getRealPath();
-        return substr($realPath, strpos($realPath, '/web/') + 4);
+        return substr($realPath, strpos($realPath, '/public/') + 4);
     }
 
     /**
@@ -147,8 +147,8 @@ class MediaExtension extends \Twig_Extension
     {
         $fullPath = $media->getFile();
 
-        if(strpos($fullPath, 'web') !== false) {
-            return  explode('/web', $fullPath)[1];
+        if(strpos($fullPath, 'public') !== false) {
+            return  explode('/public', $fullPath)[1];
         }
     }
 

@@ -89,6 +89,6 @@ class MediaUploader
     }
 
     public function getWebRootDir() {
-        return "{$this->kernelRootDir}/../web/";
+        return "{$this->kernelRootDir}/../public/";
     }
 }

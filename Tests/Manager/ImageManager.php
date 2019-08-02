@@ -53,7 +53,7 @@ class ImageManagerTest extends \PHPUnit_Framework_TestCase
     private function getImageUploader()
     {
         return $this->getMockBuilder('Lch\MediaBundle\Uploader\ImageUploader')
-            ->setConstructorArgs(['../../../web/'])
+            ->setConstructorArgs(['../../../public/'])
             ->getMockForAbstractClass();
     }
 }
