@@ -38,12 +38,12 @@ parameters:
 services:
   lch.media.uploader:
     class: '%lch.media.uploader.class%'
-    arguments: [ '@knp.doctrine_behaviors.reflection.class_analyzer', '%kernel.root_dir%', '%lch_media.root_folder%' ]
+    arguments: [ '@knp.doctrine_behaviors.reflection.class_analyzer', '%kernel.project_dir%', '%lch_media.root_folder%' ]
     public: true
 
   lch.media.downloader:
     class: '%lch.media.downloader.class%'
-    arguments: [ '%kernel.root_dir%', '%lch_media.root_folder%' ]
+    arguments: [ '%kernel.project_dir%', '%lch_media.root_folder%' ]
     public: true
 
   lch.media.form:
@@ -82,13 +82,13 @@ services:
 
   lch.media.extension.validator:
     class: Lch\MediaBundle\Validator\Constraints\HasAllowedFileExtensionValidator
-    arguments: [ '%kernel.root_dir%', '@lch.media.manager' ]
+    arguments: [ '%kernel.project_dir%', '@lch.media.manager' ]
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
 
   lch.media.weight.validator:
     class: Lch\MediaBundle\Validator\Constraints\MediaWeightValidator
-    arguments: [ '%kernel.root_dir%', '@lch.media.manager' ]
+    arguments: [ '%kernel.project_dir%', '@lch.media.manager' ]
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
 
@@ -100,14 +100,14 @@ services:
 
   lch.media.subscriber:
     class: '%lch.media.subscriber.class%'
-    arguments: ['@lch.media.uploader','@lch.media.pdf.manager','%kernel.root_dir%']
+    arguments: ['@lch.media.uploader','@lch.media.pdf.manager','%kernel.project_dir%']
     tags:
       - { name: kernel.event_subscriber }
     public: true
 
   lch.media.image.subscriber:
     class: '%lch.media.image.subscriber.class%'
-    arguments: ['@lch.media.image.manager', '%kernel.root_dir%']
+    arguments: ['@lch.media.image.manager', '%kernel.project_dir%']
     tags:
       - { name: kernel.event_subscriber }
     public: true
@@ -128,7 +128,7 @@ services:
 
   lch.media.doctrine.listener:
     class: Lch\MediaBundle\Listener\DoctrineMediaListener
-    arguments: ['@lch.media.uploader', '%kernel.root_dir%']
+    arguments: ['@lch.media.uploader', '%kernel.project_dir%']
     tags:
         - { name: doctrine.event_listener, event: postLoad }
         - { name: doctrine.event_listener, event: postPersist }
