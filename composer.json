@@ -7,27 +7,16 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Matthieu Léorat",
-            "email": "mleorat@compagnie-hyperactive.com"
-        },
-        {
             "name": "Nicolas BONNIOT",
             "email": "nbonniot@compagnie-hyperactive.com"
         }
     ],
     "require": {
         "php": "^7.2",
-        "symfony/symfony": "~3.4|~4.2",
-        "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "symfony/framework-bundle": "^4.2",
+        "friendsofsymfony/jsrouting-bundle": "^2.3",
         "knplabs/doctrine-behaviors": "~1.1",
-        "lch/components-bundle": "dev-master"
-    },
-    "require-dev": {
-        "doctrine/doctrine-bundle": "^1.3",
-        "phpunit/phpunit": "~4.8|~5.0"
-    },
-    "conflict": {
-        "symfony/doctrine-bridge": "<2.7"
+        "lch/components-bundle": "^1.0.1"
     },
     "autoload": {
         "psr-4": {
@@ -36,9 +25,5 @@
         "exclude-from-classmap": [
             "/Tests/"
         ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-        }
     }
 }
