@@ -3,7 +3,8 @@ parameters:
   lch.media.downloader.class: Lch\MediaBundle\Loader\MediaDownloader
   lch.media.manager.class: Lch\MediaBundle\Manager\MediaManager
   lch.media.pdf.manager.class: Lch\MediaBundle\Manager\PdfManager
-  lch.media.twig.extension.class: Lch\MediaBundle\Twig\Extension\MediaExtension
+  lch.media.twig.extension.class: Lch\MediaBundle\Twig\MediaExtension
+  lch.media.twig.runtime.class: Lch\MediaBundle\Twig\MediaRuntime
   lch.media.subscriber.class: Lch\MediaBundle\Listener\MediaSubscriber
 
   lch.media.image.manager.class: Lch\MediaBundle\Manager\ImageManager
@@ -60,10 +61,14 @@ services:
 
   lch.media.twig.extension:
     class: "%lch.media.twig.extension.class%"
-    arguments: [ '@lch.media.manager', '@twig', '%lch.media.types%' ]
     tags:
       - { name: twig.extension }
-    public: true
+
+  lch.media.twig.extension.runtime:
+    class: "%lch.media.twig.runtime.class%"
+    arguments: [ '@lch.media.manager', '@twig', '%lch.media.types%' ]
+    tags:
+      - { name: twig.runtime }
 
   lch.media.manager:
     class: '%lch.media.manager.class%'

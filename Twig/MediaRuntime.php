@@ -1,27 +1,32 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: nicolas
+ * Date: 02/08/19
+ * Time: 23:09
+ */
 
-namespace Lch\MediaBundle\Twig\Extension;
+namespace Lch\MediaBundle\Twig;
 
-use Lch\MediaBundle\Entity\Image;
-use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Manager\MediaManager;
-use Symfony\Component\HttpFoundation\File\File;
+use Lch\MediaBundle\Entity\Media;
+use Lch\MediaBundle\Entity\Image;
 
-class MediaExtension extends \Twig_Extension
+class MediaRuntime
 {
     /**
      * @var MediaManager
      */
-    private $mediaManager;
+    protected $mediaManager;
 
     /**
      * @var \Twig_Environment
      */
-    private $twig;
+    protected $twig;
     /**
      * @var array
      */
-    private $mediaTypes;
+    protected $mediaTypes;
 
     /**
      * MediaExtension constructor.
@@ -35,40 +40,6 @@ class MediaExtension extends \Twig_Extension
         $this->mediaTypes = $mediaTypes;
     }
 
-    /**
-     * @return array
-     */
-    public function getFunctions()
-    {
-        return array(
-            new \Twig_SimpleFunction('getThumbnail', [$this, 'getThumbnail' ], [
-                'needs_environment' => false,
-                'is_safe' => ['html']
-            ]),
-            new \Twig_SimpleFunction('getThumbnailUrl', [$this, 'getThumbnailUrl' ], [
-                'needs_environment' => false,
-            ]),
-            new \Twig_SimpleFunction('getListItem', [$this, 'getListItem' ], [
-                'needs_environment' => false,
-                'is_safe' => ['html']
-            ]),
-            new \Twig_SimpleFunction('getUrl', [$this, 'getUrl' ], [
-                'needs_environment' => false
-            ]),
-            new \Twig_SimpleFunction('getRealUrl', [$this, 'getRealUrl' ], [
-                'needs_environment' => false
-            ]),
-            new \Twig_SimpleFunction('getSearchFields', [$this, 'getSearchFields' ], [
-                'needs_environment' => false,
-                'is_safe' => ['html']
-            ]),
-            new \Twig_SimpleFunction('getPath', [$this, 'getPath' ], [
-                'needs_environment' => false,
-                'is_safe' => ['html']
-            ]),
-        );
-    }
-
     public function getPath(Media $media, $mediaParameters = [])
     {
         /** @var File $file */
@@ -79,7 +50,7 @@ class MediaExtension extends \Twig_Extension
 
     /**
      * @param Media $media
-    
+
      * @return string
      */
     public function getThumbnail(Media $media, $mediaParameters = [])
@@ -176,13 +147,5 @@ class MediaExtension extends \Twig_Extension
             'width' => $renderWidth,
             'height' => $renderHeight,
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'lch.media_bundle.image';
     }
 }
