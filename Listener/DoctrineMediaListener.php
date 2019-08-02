@@ -61,7 +61,7 @@ class DoctrineMediaListener
 
         if (!$entity->getFile() instanceof File && $fileName = $this->getRealRelativeUrl($entity->getFile())) {
             // TODO make this configurable
-            $entity->setFile(new File("{$this->kernelRootDir}/../public{$fileName}"));
+            $entity->setFile(new File("{$this->kernelRootDir}/public{$fileName}"));
         }
     }
 

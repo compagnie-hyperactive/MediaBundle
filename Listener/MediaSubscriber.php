@@ -117,7 +117,7 @@ class MediaSubscriber implements EventSubscriberInterface
         $media = $event->getMedia();
         $file = $media->getFile();
         if (true === is_string($file)) {
-            $file = new File("{$this->kernelRootDir}/../public{$file}");
+            $file = new File("{$this->kernelRootDir}/public{$file}");
             $media->setFile($file);
         }
 
