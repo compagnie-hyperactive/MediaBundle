@@ -7,7 +7,7 @@
 <div {{ attrs }} class="{% if attributes.fullSize is defined and attributes.fullSize == true %}col-xs-12{% else %}col-xs-6 col-sm-4 col-md-3{% endif %} media"
      data-id="{{ listItemEvent.media.id }}"
      data-type="{{ getClass(listItemEvent.media) }}"
-     {#data-url="{{ listItemEvent.media.file }}"#}
+     data-url="{{ listItemEvent.media.file }}"
      data-url="{{ getUrl(listItemEvent.media) }}"
      data-name="{{ listItemEvent.media.name }}"
      data-width="{{ listItemEvent.media.width }}"

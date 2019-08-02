@@ -9,7 +9,7 @@ $(function() {
         if($(this).attr('id') != "search-button" && $(this).attr('id') != "more") {
             return;
         }
-        $(this).find('.loader').toggleClass('hidden');
+        $(this).find('.loader').toggleClass('d-none');
 
         e.preventDefault();
 
@@ -68,7 +68,7 @@ $(function() {
                     // attachMediaItemHandlers($modal, $mediaList, extractRandId($modal.attr('id')));
                   $mediaList.lchMedia('attachMediaItemHandlers', $modal);
                 }
-                $button.find('.loader').toggleClass('hidden');
+                $button.find('.loader').toggleClass('d-none');
             }
         });
 

@@ -50,7 +50,7 @@ $(document).ready(function(){
             $input.removeAttr('value');
             $parentMediaContainer.find('.thumbnail-container').html("");
             $parentMediaContainer.find('button.remove-media-association, button.choose-media, button.edit-media')
-                .toggleClass('hidden')
+                .toggleClass('d-none')
             ;
         })
     ;
@@ -183,8 +183,8 @@ $(document).ready(function(){
                     e.preventDefault();
                     // Add loader in button
                     var $button = $(this).find('[type="submit"]');
-                    var $loader = $('img.loader.hidden').first();
-                    $loader.removeClass('hidden');
+                    var $loader = $('img.loader.d-none').first();
+                    $loader.removeClass('d-none');
                     $button.find('i').remove();
                     $button.prepend($loader);
 

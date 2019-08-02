@@ -46,7 +46,7 @@ $(function(){
                 else {
                     $modal.find('p.alert-danger')
                         .text(data.error + " - " + data.message)
-                        .removeClass('hidden')
+                        .removeClass('d-none')
                     ;
                 }
             }
@@ -91,7 +91,7 @@ $(function(){
             ;
             $modal.find('p.alert-danger')
                 .text("")
-                .addClass('hidden')
+                .addClass('d-none')
             ;
 
             $modal.find('ul#media-details').html("");
@@ -136,7 +136,7 @@ $(function(){
                         else {
                             $modal.find('p.alert-danger')
                                 .text(data.error + " - " + data.message)
-                                .removeClass('hidden')
+                                .removeClass('d-none')
                             ;
                         }
                     }

@@ -17,15 +17,15 @@
                         <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value.id }}" {% endif %}/>
                     </div>
                     <div class="col-xs-12">
-                        <button type="button" class="btn btn-default choose-media {% if value is not empty %}hidden{% else %}{% endif %}" data-toggle="modal" data-target="#image-modal__{{ form.vars['rand']}}">
+                        <button type="button" class="btn btn-default choose-media {% if value is not empty %}d-none{% else %}{% endif %}" data-toggle="modal" data-target="#image-modal__{{ form.vars['rand']}}">
                             <i class="glyphicon glyphicon-picture"></i>
                              {{ 'lch.media.choose'|trans }}
                         </button>
-                        <button type="button" class="btn btn-default edit-media {% if value is not empty %}{% else %}hidden{% endif %}" data-toggle="modal" data-target="#image-modal__{{ form.vars['rand']}}">
+                        <button type="button" class="btn btn-default edit-media {% if value is not empty %}{% else %}d-none{% endif %}" data-toggle="modal" data-target="#image-modal__{{ form.vars['rand']}}">
                             <i class="glyphicon glyphicon-picture"></i>
                              {{ 'lch.media.edit'|trans }}
                         </button>
-                        <button class="btn btn-default remove-media-association {% if value is not empty %}{% else %}hidden{% endif %}"><i class="glyphicon glyphicon-remove"></i></button>
+                        <button class="btn btn-default remove-media-association {% if value is not empty %}{% else %}d-none{% endif %}"><i class="glyphicon glyphicon-remove"></i></button>
                     </div>
                 </div>
                 {{ form_errors(form) }}
@@ -74,6 +74,6 @@
             </div>
             <hr class="col-xs-10 col-xs-offset-1">
         </div>
-        <img class="loader hidden" src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
+        <img class="loader d-none" src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
     {% endspaceless %}
 {% endblock %}

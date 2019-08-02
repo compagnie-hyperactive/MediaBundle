@@ -11,7 +11,7 @@
         <input type="hidden" name="page" value="{{ pageNumber }}"/>
         <button id="search-button" type="submit" class="btn btn-primary">
             <i class="glyphicon glyphicon-search"></i>{{ "lch.media.list.search.submit.label"|trans }}
-            <img class="loader hidden" src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
+            <img class="loader d-none" src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" />
         </button>
     </form>
 </div>
@@ -25,7 +25,7 @@
     {% endif %}
 </div>
 <div class="col-xs-12 text-center">
-    <button id="more" class="btn btn-warning"><i class="glyphicon glyphicon-plus"></i>{{ "lch.media.list.load_more"|trans }}<img class="loader hidden" src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" /></button>
+    <button id="more" class="btn btn-warning"><i class="glyphicon glyphicon-plus"></i>{{ "lch.media.list.load_more"|trans }}<img class="loader d-none" src="{{ asset('bundles/lchmedia/images/ajax-loader.gif') }}" /></button>
 </div>
 {% if libraryMode == false %}
     <div class="col-xs-12 text-right">
