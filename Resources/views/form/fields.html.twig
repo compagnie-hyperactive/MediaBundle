@@ -11,7 +11,7 @@
                     <div class="col-xs-12">
                         <div class="thumbnail-container">
                             {% if value is not empty %}
-                                {{ getListItem(value, { id:"imageThumb__" ~ form.vars['rand'], fullSize: true}) }}
+                                {{ get_list_item(value, { id:"imageThumb__" ~ form.vars['rand'], fullSize: true}) }}
                             {% endif %}
                         </div>
                         <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value.id }}" {% endif %}/>

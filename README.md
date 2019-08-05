@@ -10,7 +10,7 @@ Features:
 
 ## Installation and pre-requisites
 So far, Imagick is used to generate thumbnails and images sizes sets. A future development will ad GD to maximize various server compliance
-On the GUI side, the bundle use [Bootstrap](http://getbootstrap.com/) and [jQuery](https://jquery.com/). Be sure those 2 dependencies are fullfilled, especially on admin screens (media selection/creation)
+On the GUI side, the bundle use [Bootstrap 4](http://getbootstrap.com/) and [jQuery](https://jquery.com/). Be sure those 2 dependencies are fullfilled, especially on admin screens (media selection/creation)
 
 For installing, use simply :
 `composer require lch/media-bundle`
@@ -188,14 +188,14 @@ You can find below the list item view for generic Image defined by the bundle. Y
 <div {{ attrs }} class="{% if attributes.fullSize is defined and attributes.fullSize == true %}col-xs-12{% else %}col-xs-6 col-sm-4 col-md-3{% endif %} media"
      data-id="{{ listItemEvent.media.id }}"
      data-type="{{ getClass(listItemEvent.media) }}"
-     data-url="{{ getUrl(listItemEvent.media) }}"
+     data-url="{{ get_url(listItemEvent.media) }}"
      data-name="{{ listItemEvent.media.name }}"
      data-width="{{ listItemEvent.media.width }}"
      data-height="{{ listItemEvent.media.height }}"
      data-size="{{ size }}"
 >
     <div class="col-xs-4">
-        {{ getThumbnail(listItemEvent.media) }}
+        {{ get_thumbnail(listItemEvent.media) }}
     </div>
     <div class="col-xs-8">
         <p>{{ listItemEvent.media.name }}</p>
@@ -217,10 +217,10 @@ More informations in [dedicated section](#image-sizes)
 
 ### Twig extension & tools
 
-- `{{ getListItem(media, attributes) }}` : display a list item
-- `{{ getThumbnail(media, attributes) }}` : display the media thumbnail (called in getListItem)
-- `{{ getThumbnailUrl(media, attributes) }}` : return the thumbnail URL only (where getThumbnail will return an HTML <img> tag)
-- `{{ getUrl(media, attributes) }}` : returns the URL for the given media. direct media URL by default, but you can easily hook on DOWNLOAD event to return something more complicated (such as downloader for private resources)
+- `{{ get_list_item(media, attributes) }}` : display a list item
+- `{{ get_thumbnail(media, attributes) }}` : display the media thumbnail (called in getListItem)
+- `{{ get_thumbnail_url(media, attributes) }}` : return the thumbnail URL only (where `get_thumbnail` will return an HTML <img> tag)
+- `{{ get_url(media, attributes) }}` : returns the URL for the given media. direct media URL by default, but you can easily hook on DOWNLOAD event to return something more complicated (such as downloader for private resources)
 
 
 You can find below a graphical render for several methods listed above :
@@ -277,6 +277,20 @@ Although it's quite clear, note that `entity_reference` is the media class you w
 - `min_media_weight` and `max_media_weight` for media size
 
 Have a look to [validators section](#validators) in order to have more details.
+
+You must then register a Twig namespace, and add the bundle `field.html.twig` as a `form_theme` :
+
+```twig
+twig:
+    #...
+    paths:
+        #...
+        '%kernel.project_dir%/vendor/lch/media-bundle/Resources/views': LchMediaBundle
+    form_themes:
+        #...
+        - 'bootstrap_4_layout.html.twig'
+        - '@LchMediaBundle\form\fields.html.twig'
+```
 
 Then, assuming you added form_theme as stated above, the twig parent form type become :
 
