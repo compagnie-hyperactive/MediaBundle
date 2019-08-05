@@ -2,7 +2,7 @@
      data-id="{{ listItemEvent.media.id }}"
      data-url="{{ listItemEvent.media.file }}"
      data-name="{{ listItemEvent.media.name }}"
-     data-preview="{{ getUrl(listItemEvent.media, {'size': 'preview'}) }}"
+     data-preview="{{ get_url(listItemEvent.media, {'size': 'preview'}) }}"
 >
-    {{ getThumbnail(listItemEvent.media) }}
+    {{ get_thumbnail(listItemEvent.media) }}
 </div>

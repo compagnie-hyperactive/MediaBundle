@@ -6,7 +6,7 @@
             <input type="text" class="form-control" id="media-name" name="media-name" placeholder="{{ "lch.media.list.search.name.placeholder"|trans }}">
         </div>
         {% if type != 'all' %}
-            {{ getSearchFields(type) }}
+            {{ get_search_fields(type) }}
         {% endif %}
         <input type="hidden" name="page" value="{{ pageNumber }}"/>
         <button id="search-button" type="submit" class="btn btn-primary">
@@ -18,7 +18,7 @@
 <div class="media-list col-xs-12 clearfix isotope">
     {% if medias|length > 0 %}
         {% for media in medias %}
-            {{ getListItem(media) }}
+            {{ get_list_item(media) }}
         {% endfor %}
     {% else %}
         <p class="text-center alert alert-warning"><i class="glyphicon glyphicon-alert"></i>{{ "lch.media.list.empty"|trans }}</p>

@@ -8,14 +8,14 @@
      data-id="{{ listItemEvent.media.id }}"
      data-type="{{ getClass(listItemEvent.media) }}"
      data-url="{{ listItemEvent.media.file }}"
-     data-url="{{ getUrl(listItemEvent.media) }}"
+     data-url="{{ get_url(listItemEvent.media) }}"
      data-name="{{ listItemEvent.media.name }}"
      data-width="{{ listItemEvent.media.width }}"
      data-height="{{ listItemEvent.media.height }}"
      data-size="{{ size }}"
 >
     <div class="col-xs-4">
-        {{ getThumbnail(listItemEvent.media) }}
+        {{ get_thumbnail(listItemEvent.media) }}
     </div>
     <div class="col-xs-8">
         <p>{{ listItemEvent.media.name }}</p>
