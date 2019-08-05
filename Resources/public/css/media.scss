@@ -1,5 +1,10 @@
 $contrast-color: #e5e5e5;
 
+.media-selector-container {
+  .btn {
+    border: 1px solid $contrast-color;
+  }
+}
 .media {
   border-radius: 4px;
   border: 1px solid $contrast-color;

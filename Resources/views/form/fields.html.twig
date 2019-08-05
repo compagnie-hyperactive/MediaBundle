@@ -25,7 +25,7 @@
                             <i class="glyphicon glyphicon-picture"></i>
                              {{ 'lch.media.edit'|trans }}
                         </button>
-                        <button class="btn btn-default remove-media-association {% if value is not empty %}{% else %}d-none{% endif %}"><i class="glyphicon glyphicon-remove"></i></button>
+                        <button class="btn btn-default remove-media-association {% if value is not empty %}{% else %}d-none{% endif %}">X</button>
                     </div>
                 </div>
                 {{ form_errors(form) }}
@@ -43,16 +43,20 @@
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
+                                <h5 class="modal-title" id="myModalLabel">{{ form.vars['modal_title']|trans }}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">{{ form.vars['modal_title']|trans }}</h4>
-                                {% if(form.vars.attr.helper is defined) %}
-                                    <p class="helper"><i class="glyphicon glyphicon-question-sign"></i>{{ form.vars.attr.helper|trans()|raw }}</p>
-                                {% endif %}
                             </div>
                             <div class="modal-body clearfix library-parent">
+                                {% if(form.vars.attr.helper is defined) %}
+                                    <p class="small helper"><i class="glyphicon glyphicon-question-sign"></i>{{ form.vars.attr.helper|trans()|raw }}</p>
+                                {% endif %}
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#add-media__{{ form.vars['rand']}}" aria-controls="add-media" role="tab" data-toggle="tab">{{ "lch.media.add"|trans }}</a></li>
-                                    <li role="presentation"><a href="#list-media__{{ form.vars['rand']}}" aria-controls="profile" role="tab" data-toggle="tab">{{ "lch.media.choose"|trans }}</a></li>
+                                    <li role="presentation" class="nav-item">
+                                        <a class="nav-link active" href="#add-media__{{ form.vars['rand']}}" aria-controls="add-media" role="tab" data-toggle="tab">{{ "lch.media.add"|trans }}</a>
+                                    </li>
+                                    <li role="presentation" class="nav-item">
+                                        <a class="nav-link" href="#list-media__{{ form.vars['rand']}}" aria-controls="profile" role="tab" data-toggle="tab">{{ "lch.media.choose"|trans }}</a>
+                                    </li>
                                 </ul>
                                 <!-- Tab panes -->
                                 <div class="tab-content">
