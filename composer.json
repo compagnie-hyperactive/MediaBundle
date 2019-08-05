@@ -12,6 +12,7 @@
         }
     ],
     "require": {
+        "ext-imagick": "*",
         "php": "^7.2",
         "symfony/framework-bundle": "^4.2",
         "friendsofsymfony/jsrouting-bundle": "^2.3",

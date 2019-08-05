@@ -9,7 +9,7 @@ Features:
 - Provides [validators](#validators) to restrain media to boundaries (size, resolution for images, extensions...)
 
 ## Installation and pre-requisites
-So far, Imagick is used to generate thumbnails and images sizes sets. A future development will ad GD to maximize various server compliance
+Imagick is used to generate thumbnails and images sizes sets.
 On the GUI side, the bundle use [Bootstrap 4](http://getbootstrap.com/) and [jQuery](https://jquery.com/). Be sure those 2 dependencies are fullfilled, especially on admin screens (media selection/creation)
 
 For installing, use simply :
