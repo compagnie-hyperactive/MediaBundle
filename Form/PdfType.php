@@ -7,12 +7,15 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PdfType extends AbstractType
 {
     const NAME = 'lch_media_pdf_type';
     const ROOT_TRANSLATION_PATH = 'lch.media.pdf';
+    const FILE_TYPE_NAME = 'file';
 
     /**
      * @inheritdoc
@@ -21,26 +24,34 @@ class PdfType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => static::ROOT_TRANSLATION_PATH . '.name.label',
+                'label'    => static::ROOT_TRANSLATION_PATH . '.name.label',
                 'required' => false,
-                'attr' => [
+                'attr'     => [
                     'helper' => static::ROOT_TRANSLATION_PATH . '.name.helper',
                 ]
             ])
-            ->add('file', FileType::class, [
-                'label' => static::ROOT_TRANSLATION_PATH . '.file.label',
+            ->add(static::FILE_TYPE_NAME, FileType::class, [
+                'label'    => static::ROOT_TRANSLATION_PATH . '.file.label',
                 'required' => true,
-                'attr' => [
+                'attr'     => [
                     'helper' => static::ROOT_TRANSLATION_PATH . '.file.helper',
                 ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => static::ROOT_TRANSLATION_PATH . '.modal.save.label',
-                'attr' => [
+                'attr'  => [
                     'class' => 'btn btn-primary',
                 ],
-            ])
-        ;
+            ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        // Replace ID with something unique to ensure uniqueness on form with multiple images
+        $view->children[static::FILE_TYPE_NAME]->vars['id'] = random_int(0, 100000);
     }
 
     /**

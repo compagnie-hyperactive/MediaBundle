@@ -7,12 +7,15 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImageType extends AbstractType
 {
     const NAME = 'lch_media_image_type';
     const ROOT_TRANSLATION_PATH = 'lch.media.image';
+    const FILE_TYPE_NAME = 'file';
 
     /**
      * @inheritdoc
@@ -34,7 +37,7 @@ class ImageType extends AbstractType
                     'helper' => static::ROOT_TRANSLATION_PATH . '.alt.helper',
                 ]
             ])
-            ->add('file', FileType::class, [
+            ->add(static::FILE_TYPE_NAME, FileType::class, [
                 'label' => static::ROOT_TRANSLATION_PATH . '.file.label',
                 'required' => true,
                 'attr' => [
@@ -48,6 +51,15 @@ class ImageType extends AbstractType
                 ],
             ])
         ;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        // Replace ID with something unique to ensure uniqueness on form with multiple images
+        $view->children[static::FILE_TYPE_NAME]->vars['id'] = random_int(0, 100000);
     }
 
     /**
