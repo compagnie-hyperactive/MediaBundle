@@ -41,67 +41,79 @@ services:
     class: '%lch.media.uploader.class%'
     arguments: [ '@knp.doctrine_behaviors.reflection.class_analyzer', '%kernel.project_dir%', '%lch_media.root_folder%' ]
     public: true
+    lazy: true
 
   lch.media.downloader:
     class: '%lch.media.downloader.class%'
     arguments: [ '%kernel.project_dir%', '%lch_media.root_folder%' ]
     public: true
+    lazy: true
 
   lch.media.form:
     class: Lch\MediaBundle\Form\AddOrChooseMediaType
     arguments: [ "@doctrine.orm.entity_manager", "@event_dispatcher", '%lch.media.types%' ]
     tags:
       - { name: form.type }
+    lazy: true
 
   lch.media.multiple.form:
     class: Lch\MediaBundle\Form\AddOrChooseMultipleMediasType
     arguments: [ "@doctrine.orm.entity_manager", "@event_dispatcher", '%lch.media.types%' ]
     tags:
       - { name: form.type }
+    lazy: true
 
   lch.media.twig.extension:
     class: "%lch.media.twig.extension.class%"
     tags:
       - { name: twig.extension }
+    lazy: true
 
   lch.media.twig.extension.runtime:
     class: "%lch.media.twig.runtime.class%"
     arguments: [ '@lch.media.manager', '@twig', '%lch.media.types%' ]
     tags:
       - { name: twig.runtime }
+    lazy: true
 
   lch.media.manager:
     class: '%lch.media.manager.class%'
     arguments: [ '@lch.media.uploader', '@doctrine.orm.entity_manager', '@event_dispatcher', '%lch.media.types%' ]
     public: true
+    lazy: true
 
   lch.media.image.manager:
     class: '%lch.media.image.manager.class%'
     arguments: [ '@lch.media.manager','@lch.media.uploader' ]
     public: true
+    lazy: true
 
   lch.media.pdf.manager:
     class: '%lch.media.pdf.manager.class%'
     arguments: [ '@lch.media.manager' ]
     public: true
+    lazy: true
 
   lch.media.extension.validator:
     class: Lch\MediaBundle\Validator\Constraints\HasAllowedFileExtensionValidator
     arguments: [ '%kernel.project_dir%', '@lch.media.manager' ]
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
+    lazy: true
 
   lch.media.weight.validator:
     class: Lch\MediaBundle\Validator\Constraints\MediaWeightValidator
     arguments: [ '%kernel.project_dir%', '@lch.media.manager' ]
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
+    lazy: true
 
   lch.media.image.size.validator:
     class: Lch\MediaBundle\Validator\Constraints\ImageSizeValidator
     arguments: [ '@session', '@translator' ]
     tags:
       - { name: validator.constraint_validator, alias: alias_name }
+    lazy: true
 
   lch.media.subscriber:
     class: '%lch.media.subscriber.class%'
@@ -109,6 +121,7 @@ services:
     tags:
       - { name: kernel.event_subscriber }
     public: true
+    lazy: true
 
   lch.media.image.subscriber:
     class: '%lch.media.image.subscriber.class%'
@@ -116,6 +129,7 @@ services:
     tags:
       - { name: kernel.event_subscriber }
     public: true
+    lazy: true
 
   lch.media.image.regenerate_thumbnail.command:
     class: '%lch.media.image.regenerate_thumbnails.command.class%'
@@ -123,6 +137,7 @@ services:
     tags:
       - { name: console.command }
     public: true
+    lazy: true
 
   lch.media.pdf.regenerate_thumbnail.command:
     class: '%lch.media.pdf.regenerate_thumbnails.command.class%'
@@ -130,6 +145,7 @@ services:
     tags:
       - { name: console.command }
     public: true
+    lazy: true
 
   lch.media.doctrine.listener:
     class: Lch\MediaBundle\Listener\DoctrineMediaListener
@@ -137,6 +153,7 @@ services:
     tags:
         - { name: doctrine.event_listener, event: postLoad }
         - { name: doctrine.event_listener, event: postPersist }
+    lazy: true
 
   lch.media.pdf.subscriber:
     class: '%lch.media.pdf.subscriber.class%'
@@ -144,3 +161,4 @@ services:
     tags:
       - { name: kernel.event_subscriber }
     public: true
+    lazy: true
