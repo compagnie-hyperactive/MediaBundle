@@ -89,16 +89,26 @@ class MediaRuntime
     }
 
     /**
-     * @param Media $media
+     * @param Media|null $media
      * @param array $mediaParameters
      * @return string
      * @throws \Exception
      */
-    public function getUrl(Media $media, $mediaParameters = []) {
-        return $this->mediaManager->getUrl($media, $mediaParameters);
+    public function getUrl(Media $media = null, $mediaParameters = []) {
+        if($media instanceof Media) {
+            return $this->mediaManager->getUrl($media, $mediaParameters);
+        }
     }
 
 
+    /**
+     * @param string $type
+     *
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function getSearchFields(string $type) {
         $searchFormEvent =  $this->mediaManager->getSearchFields($type);
 
@@ -114,6 +124,11 @@ class MediaRuntime
 
     }
 
+    /**
+     * @param Media $media
+     *
+     * @return mixed
+     */
     public function getRealUrl(Media $media)
     {
         $fullPath = $media->getFile();
