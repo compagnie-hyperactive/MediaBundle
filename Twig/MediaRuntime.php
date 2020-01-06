@@ -11,6 +11,8 @@ namespace Lch\MediaBundle\Twig;
 use Lch\MediaBundle\Manager\MediaManager;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Entity\Image;
+use Symfony\Component\HttpFoundation\File\File;
+use Twig\Environment;
 
 class MediaRuntime
 {
@@ -34,7 +36,7 @@ class MediaRuntime
      * @param \Twig_Environment $twig
      * @param array $mediaTypes
      */
-    public function __construct(MediaManager $mediaManager, \Twig_Environment $twig, array $mediaTypes) {
+    public function __construct(MediaManager $mediaManager, Environment $twig, array $mediaTypes) {
         $this->mediaManager = $mediaManager;
         $this->twig = $twig;
         $this->mediaTypes = $mediaTypes;
@@ -50,8 +52,11 @@ class MediaRuntime
 
     /**
      * @param Media $media
-
+     * @param array $mediaParameters
      * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function getThumbnail(Media $media, $mediaParameters = [])
     {
@@ -75,6 +80,9 @@ class MediaRuntime
      * @param Media $media
      * @param array $attributes
      * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function getListItem(Media $media, array $attributes = [])
     {
