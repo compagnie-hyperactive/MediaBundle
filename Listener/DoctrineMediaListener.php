@@ -9,9 +9,7 @@
 namespace Lch\MediaBundle\Listener;
 
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
-use Lch\MediaBundle\Entity\Image;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Loader\MediaUploader;
 use Symfony\Component\HttpFoundation\File\File;
@@ -53,7 +51,7 @@ class DoctrineMediaListener
 
 
     private function handleFile(LifecycleEventArgs $args) {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         if (!$entity instanceof Media || !$this->mediaUploader->checkStorable($entity)) {
             return;
