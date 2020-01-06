@@ -1,3 +1,0 @@
-lch_components_homepage:
-    path:     /
-    defaults: { _controller: LchComponentsBundle:Default:index }

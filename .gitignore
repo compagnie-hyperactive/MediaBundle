@@ -1,1 +1,10 @@
-.idea
+/.idea/
+vendor/
+composer.lock
+phpunit.xml
+.php_cs.cache
+.phpunit.result.cache
+composer.phar
+package.tar
+/packages.json
+/.phpunit
