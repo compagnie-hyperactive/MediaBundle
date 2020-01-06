@@ -14,6 +14,8 @@ parameters:
   lch.media.pdf.regenerate_thumbnails.command.class: Lch\MediaBundle\Command\RegeneratePdfThumbnailsCommand
   lch.media.pdf.subscriber.class: Lch\MediaBundle\Listener\PdfSubscriber
 
+  lch.media.behavior.reflection.class_analyzer.class: Lch\MediaBundle\Behavior\ClassAnalyzer
+
   lch.media.types:
       image:
         form:       'Lch\MediaBundle\Form\ImageType'
@@ -39,7 +41,7 @@ parameters:
 services:
   lch.media.uploader:
     class: '%lch.media.uploader.class%'
-    arguments: [ '@knp.doctrine_behaviors.reflection.class_analyzer', '%kernel.project_dir%', '%lch_media.root_folder%' ]
+    arguments: [ '@lch.media.behavior.reflection.class_analyzer', '%kernel.project_dir%', '%lch_media.root_folder%' ]
     public: true
     lazy: true
 
@@ -93,6 +95,10 @@ services:
     arguments: [ '@lch.media.manager' ]
     public: true
     lazy: true
+
+  lch.media.behavior.reflection.class_analyzer:
+    class: '%lch.media.behavior.reflection.class_analyzer.class%'
+    public: false
 
   lch.media.extension.validator:
     class: Lch\MediaBundle\Validator\Constraints\HasAllowedFileExtensionValidator
