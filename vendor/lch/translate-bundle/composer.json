@@ -1,0 +1,30 @@
+{
+    "name": "lch/translate-bundle",
+    "description": "Provides translatable routing",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicolas BONNIOT",
+            "email": "nicolas@devgiants.fr"
+        },
+        {
+            "name": "Adrien H",
+            "email": "adrien.h@tuta.io"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "symfony/framework-bundle": "^4.2",
+        "symfony/serializer": "^4.2",
+        "symfony/twig-bundle": "^4.2",
+        "symfony/form": "^4.2",
+        "symfony/orm-pack": "^1.0",
+        "symfony/validator": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lch\\TranslateBundle\\": ""
+        }
+    }
+}

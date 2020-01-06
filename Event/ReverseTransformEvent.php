@@ -4,7 +4,7 @@ namespace Lch\MediaBundle\Event;
 
 use Lch\MediaBundle\Behavior\Mediable;
 use Lch\MediaBundle\Entity\Media;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class ImageEvent

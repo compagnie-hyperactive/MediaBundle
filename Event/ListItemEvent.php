@@ -10,7 +10,7 @@ namespace Lch\MediaBundle\Event;
 
 
 use Lch\MediaBundle\Behavior\Mediable;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ListItemEvent extends Event implements MediaTemplateEventInterface
 {
