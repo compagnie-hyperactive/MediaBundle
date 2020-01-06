@@ -112,6 +112,10 @@ class MediaSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param PostStorageEvent $event
+     * @throws \Exception
+     */
     public function onMediaPostStorage(PostStorageEvent $event) {
         $media = $event->getMedia();
         $file = $media->getFile();

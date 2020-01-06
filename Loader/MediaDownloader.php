@@ -10,6 +10,7 @@ namespace Lch\MediaBundle\Loader;
 
 
 use Lch\MediaBundle\Entity\Media;
+use Lch\MediaBundle\Manager\MediaManager;
 
 class MediaDownloader
 {

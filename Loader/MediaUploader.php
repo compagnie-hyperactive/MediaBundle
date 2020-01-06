@@ -2,7 +2,7 @@
 
 namespace Lch\MediaBundle\Loader;
 
-use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
+use Lch\MediaBundle\Behavior\ClassAnalyzer;
 use Lch\MediaBundle\Behavior\Storable;
 use Lch\MediaBundle\Entity\Media;
 
@@ -72,6 +72,7 @@ class MediaUploader
      * Check if a media is storable (implements matching trait)
      * @param Media $media
      * @return boolean
+     * @throws \ReflectionException
      */
     public function checkStorable(Media $media) {
         // Check media is storable
