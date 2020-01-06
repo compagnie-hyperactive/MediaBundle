@@ -3,14 +3,10 @@
 namespace Lch\MediaBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
-use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
-use Lch\MediaBundle\Behavior\Storable;
 use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\MediaTemplateEventInterface;
-use Lch\MediaBundle\Event\PostSearchEvent;
-use Lch\MediaBundle\Event\PostStorageEvent;
 use Lch\MediaBundle\Event\PreSearchEvent;
 use Lch\MediaBundle\Event\SearchFormEvent;
 use Lch\MediaBundle\Event\PreStorageEvent;
@@ -19,7 +15,6 @@ use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Loader\MediaUploader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaManager
 {
