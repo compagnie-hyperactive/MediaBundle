@@ -50,8 +50,11 @@ class MediaRuntime
 
     /**
      * @param Media $media
-
+     * @param array $mediaParameters
      * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function getThumbnail(Media $media, $mediaParameters = [])
     {
@@ -62,8 +65,9 @@ class MediaRuntime
 
     /**
      * @param Media $media
-
+     * @param array $mediaParameters
      * @return string
+     * @throws \Exception
      */
     public function getThumbnailUrl(Media $media, $mediaParameters = [])
     {
@@ -75,6 +79,9 @@ class MediaRuntime
      * @param Media $media
      * @param array $attributes
      * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function getListItem(Media $media, array $attributes = [])
     {

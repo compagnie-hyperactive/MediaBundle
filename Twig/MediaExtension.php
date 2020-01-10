@@ -2,12 +2,10 @@
 
 namespace Lch\MediaBundle\Twig;
 
-use Lch\MediaBundle\Entity\Image;
-use Lch\MediaBundle\Entity\Media;
-use Lch\MediaBundle\Manager\MediaManager;
-use Symfony\Component\HttpFoundation\File\File;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class MediaExtension extends \Twig_Extension
+class MediaExtension extends AbstractExtension
 {
 
     /**
@@ -16,28 +14,28 @@ class MediaExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('get_thumbnail', [MediaRuntime::class, 'getThumbnail' ], [
+            new TwigFunction('get_thumbnail', [MediaRuntime::class, 'getThumbnail' ], [
                 'needs_environment' => false,
                 'is_safe' => ['html']
             ]),
-            new \Twig_SimpleFunction('get_thumbnail_url', [MediaRuntime::class, 'getThumbnailUrl' ], [
+            new TwigFunction('get_thumbnail_url', [MediaRuntime::class, 'getThumbnailUrl' ], [
                 'needs_environment' => false,
             ]),
-            new \Twig_SimpleFunction('get_list_item', [MediaRuntime::class, 'getListItem' ], [
+            new TwigFunction('get_list_item', [MediaRuntime::class, 'getListItem' ], [
                 'needs_environment' => false,
                 'is_safe' => ['html']
             ]),
-            new \Twig_SimpleFunction('get_url', [MediaRuntime::class, 'getUrl' ], [
+            new TwigFunction('get_url', [MediaRuntime::class, 'getUrl' ], [
                 'needs_environment' => false
             ]),
-            new \Twig_SimpleFunction('get_real_url', [MediaRuntime::class, 'getRealUrl' ], [
+            new TwigFunction('get_real_url', [MediaRuntime::class, 'getRealUrl' ], [
                 'needs_environment' => false
             ]),
-            new \Twig_SimpleFunction('get_search_fields', [MediaRuntime::class, 'getSearchFields' ], [
+            new TwigFunction('get_search_fields', [MediaRuntime::class, 'getSearchFields' ], [
                 'needs_environment' => false,
                 'is_safe' => ['html']
             ]),
-            new \Twig_SimpleFunction('get_path', [MediaRuntime::class, 'getPath' ], [
+            new TwigFunction('get_path', [MediaRuntime::class, 'getPath' ], [
                 'needs_environment' => false,
                 'is_safe' => ['html']
             ]),
