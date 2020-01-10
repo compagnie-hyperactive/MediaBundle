@@ -4,15 +4,13 @@ namespace Lch\MediaBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Lch\MediaBundle\Entity\Media;
-use Lch\MediaBundle\Event\ImageEvent;
 use Lch\MediaBundle\Event\ReverseTransformEvent;
 use Lch\MediaBundle\Event\TransformEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class MediaCollectionToArrayNumberTransformer implements DataTransformerInterface
 {

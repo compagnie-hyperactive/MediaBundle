@@ -2,9 +2,8 @@
 
 namespace Lch\MediaBundle\Form\DataTransformer;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Lch\MediaBundle\Entity\Media;
-use Lch\MediaBundle\Event\ImageEvent;
 use Lch\MediaBundle\Event\ReverseTransformEvent;
 use Lch\MediaBundle\Event\TransformEvent;
 use Lch\MediaBundle\LchMediaEvents;
