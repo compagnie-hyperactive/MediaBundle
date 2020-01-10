@@ -8,15 +8,10 @@
 
 namespace Lch\MediaBundle\Listener;
 
-
-use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
-use Lch\MediaBundle\DependencyInjection\Configuration;
-use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\Event\ListItemEvent;
 use Lch\MediaBundle\Event\PostStorageEvent;
 use Lch\MediaBundle\Event\PrePersistEvent;
-use Lch\MediaBundle\Event\PreSearchEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\Event\UrlEvent;
 use Lch\MediaBundle\LchMediaEvents;
@@ -53,6 +48,7 @@ class ImageSubscriber implements EventSubscriberInterface
 
     /**
      * @param PrePersistEvent $event
+     * @throws \Exception
      */
     public function onImagePrePersist(PrePersistEvent $event) {
 
@@ -93,6 +89,7 @@ class ImageSubscriber implements EventSubscriberInterface
 
     /**
      * @param ThumbnailEvent $event
+     * @throws \Exception
      */
     public function onImageThumbnail(ThumbnailEvent $event) {
         $image = $event->getMedia();
@@ -119,6 +116,7 @@ class ImageSubscriber implements EventSubscriberInterface
 
     /**
      * @param UrlEvent $event
+     * @throws \Exception
      */
     public function onImageUrl(UrlEvent $event)
     {
@@ -142,6 +140,7 @@ class ImageSubscriber implements EventSubscriberInterface
 
     /**
      * @param PostStorageEvent $event
+     * @throws \Exception
      */
     public function onImagePostStorage(PostStorageEvent $event) {
         $image = $event->getMedia();
