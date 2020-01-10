@@ -10,7 +10,7 @@ namespace Lch\MediaBundle\Event;
 
 
 use Lch\MediaBundle\Entity\Media;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class PostDeleteEvent extends Event
 {
