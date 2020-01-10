@@ -3,7 +3,7 @@
 namespace Lch\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
  * Media
@@ -13,7 +13,7 @@ use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
 abstract class Media
 {
 
-    use Timestampable;
+    use TimestampableTrait;
 
     const ALL = 'all';
     const DOWNLOAD = 'download';
