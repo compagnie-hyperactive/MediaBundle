@@ -3,11 +3,9 @@
 namespace Lch\MediaBundle\Validator\Constraints;
 
 use Lch\MediaBundle\Behavior\Storable;
-use Lch\MediaBundle\DependencyInjection\Configuration;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Form\AddOrChooseMediaType;
 use Lch\MediaBundle\Manager\MediaManager;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ValidatorException;

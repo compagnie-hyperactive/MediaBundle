@@ -5,7 +5,7 @@ namespace Lch\MediaBundle\Validator\Constraints;
 use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\Form\AddOrChooseMediaType;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ValidatorException;
