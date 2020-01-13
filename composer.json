@@ -16,8 +16,9 @@
         "php": "^7.2",
         "symfony/framework-bundle": "^4.2",
         "friendsofsymfony/jsrouting-bundle": "^2.3",
-        "knplabs/doctrine-behaviors": "~1.1",
-        "lch/components-bundle": "^1.0.1"
+        "knplabs/doctrine-behaviors": "^2.0",
+        "lch/components-bundle": "^1.0.1",
+        "twig/extensions": "1.5.*"
     },
     "autoload": {
         "psr-4": {

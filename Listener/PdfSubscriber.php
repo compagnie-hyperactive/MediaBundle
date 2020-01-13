@@ -38,9 +38,10 @@ class PdfSubscriber implements EventSubscriberInterface
             LchMediaEvents::LIST_ITEM => 'onPdfListItem'
         ];
     }
-    
+
     /**
      * @param PrePersistEvent $event
+     * @throws \Exception
      */
     public function onPdfPrePersist(PrePersistEvent $event) {
         

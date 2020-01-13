@@ -5,12 +5,12 @@ namespace Lch\MediaBundle\Command;
 use Doctrine\ORM\EntityManager;
 use Lch\MediaBundle\Entity\Image;
 use Lch\MediaBundle\Manager\ImageManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Lch\MediaBundle\DependencyInjection\Configuration;
 
-class RegenerateImageThumbnailsCommand extends ContainerAwareCommand
+class RegenerateImageThumbnailsCommand extends Command
 {
     /**
      * @var EntityManager $entityManager

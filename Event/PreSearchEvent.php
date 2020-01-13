@@ -10,7 +10,7 @@ namespace Lch\MediaBundle\Event;
 
 
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class PreSearchEvent extends Event
 {

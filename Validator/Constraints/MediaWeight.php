@@ -3,7 +3,6 @@
 namespace Lch\MediaBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Exception\InvalidOptionsException;
 
 /**
  * @Annotation

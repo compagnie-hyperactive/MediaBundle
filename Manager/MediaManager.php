@@ -124,6 +124,7 @@ class MediaManager
      * @param Media $media
      * @param array $mediaParameters
      * @return MediaTemplateEventInterface
+     * @throws \Exception
      */
     public function getThumbnail(Media $media, array $mediaParameters) {
         $thumbnailEvent = new ThumbnailEvent($media);

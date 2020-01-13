@@ -10,13 +10,11 @@ namespace Lch\MediaBundle\Listener;
 
 
 use Lch\MediaBundle\Entity\Media;
-use Lch\MediaBundle\Entity\Pdf;
 use Lch\MediaBundle\Event\PostDeleteEvent;
 use Lch\MediaBundle\Event\PostStorageEvent;
 use Lch\MediaBundle\Event\ThumbnailEvent;
 use Lch\MediaBundle\LchMediaEvents;
 use Lch\MediaBundle\Loader\MediaUploader;
-use Lch\MediaBundle\Manager\MediaManager;
 use Lch\MediaBundle\Manager\PdfManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -89,6 +87,7 @@ class MediaSubscriber implements EventSubscriberInterface
     /**
      * Launch thumbnail generationfor PDF
      * @param ThumbnailEvent $thumbnailEvent
+     * @throws \Exception
      */
     public function onMediaThumbnail(ThumbnailEvent $thumbnailEvent){
 
