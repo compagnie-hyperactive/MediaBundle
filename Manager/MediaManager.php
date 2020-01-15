@@ -84,7 +84,10 @@ class MediaManager
 
         // Throw event to act before storage
         $preStorageEvent = new PreStorageEvent($media, $relativeFilePath, $fileName);
-        $this->eventDispatcher->dispatch(LchMediaEvents::PRE_STORAGE, $preStorageEvent);
+        $this->eventDispatcher->dispatch(
+            $preStorageEvent,
+            LchMediaEvents::PRE_STORAGE
+        );
 
         $filePath = $this->mediaUploader->upload($media, $preStorageEvent->getRelativeFilePath(), $preStorageEvent->getFileName());
         
@@ -113,8 +116,8 @@ class MediaManager
         $urlEvent = new UrlEvent($media, $this->getRealRelativeUrl($media->getFile()), $mediaParameters);
 
         $this->eventDispatcher->dispatch(
-            LchMediaEvents::URL,
-            $urlEvent
+            $urlEvent,
+            LchMediaEvents::URL
         );
 
         return $urlEvent->getUrl();
@@ -133,8 +136,8 @@ class MediaManager
         $thumbnailEvent->setTemplate($this->getMediaTypeConfiguration($media)[Configuration::THUMBNAIL_VIEW]);
 
         $this->eventDispatcher->dispatch(
-            LchMediaEvents::THUMBNAIL,
-            $thumbnailEvent
+            $thumbnailEvent,
+            LchMediaEvents::THUMBNAIL
         );
 
         // TODO: add one by default
@@ -168,8 +171,8 @@ class MediaManager
         $listItemEvent->setTemplate($this->getMediaTypeConfiguration($media)[Configuration::LIST_ITEM_VIEW]);
 
         $this->eventDispatcher->dispatch(
-            LchMediaEvents::LIST_ITEM,
-            $listItemEvent
+            $listItemEvent,
+            LchMediaEvents::LIST_ITEM
         );
 
         // TODO: add one by default
@@ -201,8 +204,8 @@ class MediaManager
             // Pre search event
             $preSearchEvent = new PreSearchEvent($authorizedMediasType, $alias, $authorizedMediasQueryBuilder, $parameters);
             $this->eventDispatcher->dispatch(
-                LchMediaEvents::PRE_SEARCH,
-                $preSearchEvent
+                $preSearchEvent,
+                LchMediaEvents::PRE_SEARCH
             );
 
 
@@ -223,8 +226,8 @@ class MediaManager
 //            // Post search event
 //            $postSearchEvent = new PostSearchEvent($authorizedMediasType, $alias, $preSearchEvent->getQueryBuilder(), $parameters);
 //            $this->eventDispatcher->dispatch(
-//                LchMediaEvents::POST_SEARCH,
-//                $postSearchEvent
+//                $postSearchEvent,
+//                LchMediaEvents::POST_SEARCH
 //            );
 
             $medias = array_merge($medias, $preSearchEvent->getQueryBuilder()->getQuery()->getResult());
@@ -240,8 +243,8 @@ class MediaManager
         }
 
         $this->eventDispatcher->dispatch(
-            LchMediaEvents::SEARCH_FORM,
-            $searchFormEvent
+            $searchFormEvent,
+            LchMediaEvents::SEARCH_FORM
         );
 
 
