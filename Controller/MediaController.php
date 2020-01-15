@@ -130,8 +130,8 @@ class MediaController extends Controller // implements MediaControllerInterface
             // - Allow different media types listener to correctly persist media according to its customisations
             $prePersistEvent = new PrePersistEvent($mediaEntity);
             $this->get('event_dispatcher')->dispatch(
-                LchMediaEvents::PRE_PERSIST,
-                $prePersistEvent
+                $prePersistEvent,
+                LchMediaEvents::PRE_PERSIST
             );
 
             $em = $this->getDoctrine()->getManager();
@@ -142,13 +142,16 @@ class MediaController extends Controller // implements MediaControllerInterface
             // - Once media correctly saved and stored, allow different media types listener to perform post-operations (thumbnail generations...) and retrieve ID for DataTransformer
             $postPersistEvent = new PostPersistEvent($prePersistEvent->getMedia());
             $this->get('event_dispatcher')->dispatch(
-                LchMediaEvents::POST_PERSIST,
-                $postPersistEvent
+                $postPersistEvent,
+                LchMediaEvents::POST_PERSIST
             );
 
             // Throw event to act after storage
             $postStorageEvent = new PostStorageEvent($postPersistEvent->getMedia());
-            $this->get('event_dispatcher')->dispatch(LchMediaEvents::POST_STORAGE, $postStorageEvent);
+            $this->get('event_dispatcher')->dispatch(
+                $postStorageEvent,
+                LchMediaEvents::POST_STORAGE
+            );
 
             // Generate thumbnail
             // TODO find an organization to avoid circular reference if calling service directly
@@ -235,8 +238,8 @@ class MediaController extends Controller // implements MediaControllerInterface
                 // - Allow different media types listener to correctly persist media according to its customisations
                 $prePersistEvent = new PrePersistEvent($mediaEntity);
                 $this->get('event_dispatcher')->dispatch(
-                    LchMediaEvents::PRE_PERSIST,
-                    $prePersistEvent
+                    $prePersistEvent,
+                    LchMediaEvents::PRE_PERSIST
                 );
 
                 $em->persist($prePersistEvent->getMedia());
@@ -248,13 +251,16 @@ class MediaController extends Controller // implements MediaControllerInterface
                 // - Once media correctly saved and stored, allow different media types listener to perform post-operations (thumbnail generations...) and retrieve ID for DataTransformer
                 $postPersistEvent = new PostPersistEvent($prePersistEvent->getMedia());
                 $this->get('event_dispatcher')->dispatch(
-                    LchMediaEvents::POST_PERSIST,
-                    $postPersistEvent
+                    $postPersistEvent,
+                    LchMediaEvents::POST_PERSIST
                 );
 
                 // Throw event to act after storage
                 $postStorageEvent = new PostStorageEvent($postPersistEvent->getMedia());
-                $this->get('event_dispatcher')->dispatch(LchMediaEvents::POST_STORAGE, $postStorageEvent);
+                $this->get('event_dispatcher')->dispatch(
+                    $postStorageEvent,
+                    LchMediaEvents::POST_STORAGE
+                );
 
                 // Generate thumbnail
                 // TODO find an organization to avoid circular reference if calling service directly
@@ -323,8 +329,8 @@ class MediaController extends Controller // implements MediaControllerInterface
         try {
             $preDeleteEvent = new PreDeleteEvent($media);
             $this->get('event_dispatcher')->dispatch(
-                LchMediaEvents::PRE_DELETE,
-                $preDeleteEvent
+                $preDeleteEvent,
+                LchMediaEvents::PRE_DELETE
             );
 
             $this->getDoctrine()->getManager()->remove($media);
@@ -332,8 +338,8 @@ class MediaController extends Controller // implements MediaControllerInterface
 
             $postDeleteEvent = new PostDeleteEvent($preDeleteEvent->getMedia());
             $this->get('event_dispatcher')->dispatch(
-                LchMediaEvents::POST_DELETE,
-                $postDeleteEvent
+                $postDeleteEvent,
+                LchMediaEvents::POST_DELETE
             );
         }
         catch(\Exception $exception) {
@@ -378,8 +384,8 @@ class MediaController extends Controller // implements MediaControllerInterface
         // Distpatch download event
         $downloadEvent = new DownloadEvent($media, $file);
         $this->get('event_dispatcher')->dispatch(
-            LchMediaEvents::DOWNLOAD,
-            $downloadEvent
+            $downloadEvent,
+            LchMediaEvents::DOWNLOAD
         );
 
         // prepare BinaryFileResponse
