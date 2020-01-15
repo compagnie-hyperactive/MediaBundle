@@ -65,7 +65,8 @@ class MediaCollectionToArrayNumberTransformer implements DataTransformerInterfac
                 if (null !== $media) {
                     $transformEvent = new TransformEvent($media, $this->mediaParameters);
                     $this->eventDispatcher->dispatch(
-                        LchMediaEvents::TRANSFORM, $transformEvent
+                        $transformEvent,
+                        LchMediaEvents::TRANSFORM
                     );
 
                     $returnCollection->add($transformEvent->getMedia());
@@ -94,7 +95,8 @@ class MediaCollectionToArrayNumberTransformer implements DataTransformerInterfac
             foreach ($medias as $media) {
                 $reverseTransformEvent = new ReverseTransformEvent($media, $this->mediaParameters);
                 $this->eventDispatcher->dispatch(
-                    LchMediaEvents::REVERSE_TRANSFORM, $reverseTransformEvent
+                    $reverseTransformEvent,
+                    LchMediaEvents::REVERSE_TRANSFORM
                 );
 
                 $returnCollection->add($reverseTransformEvent->getMedia());

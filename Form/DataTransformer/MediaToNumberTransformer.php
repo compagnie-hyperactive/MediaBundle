@@ -60,7 +60,8 @@ class MediaToNumberTransformer implements DataTransformerInterface
 
         $transformEvent = new TransformEvent($media, $this->mediaParameters);
         $this->eventDispatcher->dispatch(
-            LchMediaEvents::TRANSFORM, $transformEvent
+            $transformEvent,
+            LchMediaEvents::TRANSFORM
         );
 
         return $transformEvent->getMedia();
@@ -90,7 +91,8 @@ class MediaToNumberTransformer implements DataTransformerInterface
 
         $reverseTransformEvent = new ReverseTransformEvent($media, $this->mediaParameters);
         $this->eventDispatcher->dispatch(
-            LchMediaEvents::REVERSE_TRANSFORM, $reverseTransformEvent
+            $reverseTransformEvent,
+            LchMediaEvents::REVERSE_TRANSFORM
         );
 
         if (null === $media) {
