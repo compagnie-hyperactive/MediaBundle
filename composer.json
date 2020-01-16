@@ -14,10 +14,10 @@
     "require": {
         "ext-imagick": "*",
         "php": "^7.2",
-        "symfony/framework-bundle": "^4.2",
+        "symfony/framework-bundle": "^4.4",
         "friendsofsymfony/jsrouting-bundle": "^2.3",
         "knplabs/doctrine-behaviors": "^2.0",
-        "lch/components-bundle": "^1.0.1",
+        "lch/components-bundle": "^1.2",
         "twig/extensions": "1.5.*"
     },
     "autoload": {
