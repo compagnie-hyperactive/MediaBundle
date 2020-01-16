@@ -3,6 +3,7 @@
 namespace Lch\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 
 /**
@@ -10,7 +11,7 @@ use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
  *
  * @ORM\MappedSuperclass()
  */
-abstract class Media
+abstract class Media implements TimestampableInterface
 {
 
     use TimestampableTrait;
