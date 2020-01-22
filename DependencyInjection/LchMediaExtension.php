@@ -58,5 +58,10 @@ class LchMediaExtension extends Extension
             }
             $container->setParameter($typesParametersAlias, $mergedTypes);
         }
+
+        // set fallback file path
+        if (isset($config[Configuration::FALLBACK_FILE_PATH[Configuration::KEY]]) && is_string($config[Configuration::FALLBACK_FILE_PATH[Configuration::KEY]])) {
+            $container->setParameter(Configuration::ROOT_PARAMETERS_NAMESPACE . "." . Configuration::FALLBACK_FILE_PATH[Configuration::KEY], $config[Configuration::FALLBACK_FILE_PATH[Configuration::KEY]]);
+        }
     }
 }

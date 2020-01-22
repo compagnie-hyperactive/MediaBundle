@@ -43,6 +43,11 @@ class Configuration implements ConfigurationInterface
     const MAX_ITEMS_PER_PAGE = 'max_items_per_page';
     const DEFAULT_MAX_ITEMS_PER_PAGE = 20;
 
+    const FALLBACK_FILE_PATH = [
+        self::KEY           => 'fallback_file_path',
+        self::DEFAULT_VALUE => '~'
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -115,7 +120,10 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-
+                ->scalarNode(static::FALLBACK_FILE_PATH[static::KEY])
+                    ->defaultValue(static::FALLBACK_FILE_PATH[static::DEFAULT_VALUE])
+                    ->info('Define fallback file when file not found')
+                ->end()
         ;
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

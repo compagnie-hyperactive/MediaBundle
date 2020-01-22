@@ -37,6 +37,8 @@ parameters:
         list_item_view: 'LchMediaBundle:Pdf/fragments:list.item.html.twig'
         extensions: ['pdf']
 
+  lch.media.fallback_file_path: ~ # par default null donc aucun fichier par default si le fichier n'existe pas
+
 
 services:
   lch.media.service.class_analyzer:
@@ -155,7 +157,7 @@ services:
 
   lch.media.doctrine.listener:
     class: Lch\MediaBundle\Listener\DoctrineMediaListener
-    arguments: ['@lch.media.uploader', '%kernel.project_dir%']
+    arguments: ['@lch.media.uploader', '%kernel.project_dir%',  '%lch.media.fallback_file_path%']
     tags:
         - { name: doctrine.event_listener, event: postLoad }
         - { name: doctrine.event_listener, event: postPersist }
