@@ -8,32 +8,39 @@
 
 namespace Lch\MediaBundle\Listener;
 
-
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Lch\MediaBundle\Entity\Media;
 use Lch\MediaBundle\Loader\MediaUploader;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
+use ReflectionException;
+use Exception;
 
 class DoctrineMediaListener
 {
     /**
-     * @var string
-     */
-    private $kernelRootDir;
-
-    /**
      * @var MediaUploader
      */
     private $mediaUploader;
+    /**
+     * @var string
+     */
+    private $kernelRootDir;
+    /**
+     * @var string
+     */
+    private $fallBackFilePath;
 
     /**
      * DoctrineImageListener constructor.
-     * @param $kernelRootDir
      * @param MediaUploader $mediaUploader
+     * @param $kernelRootDir
+     * @param $fallBackFilePath
      */
-    public function __construct(MediaUploader $mediaUploader, $kernelRootDir) {
+    public function __construct(MediaUploader $mediaUploader, $kernelRootDir, $fallBackFilePath) {
         $this->mediaUploader = $mediaUploader;
         $this->kernelRootDir = $kernelRootDir;
+        $this->fallBackFilePath = $fallBackFilePath;
     }
 
 
@@ -50,6 +57,13 @@ class DoctrineMediaListener
     }
 
 
+    /**
+     * @param LifecycleEventArgs $args
+     *
+     * @throws ReflectionException
+     * @throws FileNotFoundException
+     * @throws Exception
+     */
     private function handleFile(LifecycleEventArgs $args) {
         $entity = $args->getEntity();
 
@@ -59,7 +73,31 @@ class DoctrineMediaListener
 
         if (!$entity->getFile() instanceof File && $fileName = $this->getRealRelativeUrl($entity->getFile())) {
             // TODO make this configurable
-            $entity->setFile(new File("{$this->kernelRootDir}/public{$fileName}"));
+            $publicDirectory = "{$this->kernelRootDir}/public";
+            try {
+                $entity->setFile(new File("{$publicDirectory}{$fileName}"));
+            } catch (Exception $exception) {
+                switch (get_class($exception)) {
+                    case FileNotFoundException::class: {
+                        // rethrow exception
+                        if (empty($this->fallBackFilePath)) throw $exception;
+                        if (!file_exists($this->fallBackFilePath)) {
+                            $this->fallBackFilePath = "{$publicDirectory}".$this->fallBackFilePath;
+                            if (!file_exists($this->fallBackFilePath)) {
+                                throw $exception;
+                            }
+                        }
+                        $entity->setFile(new File($this->fallBackFilePath));
+                        $entity->setFallBack(true);
+                        break;
+                    }
+                    default: {
+                        // unknown exception so rethrow it
+                        throw $exception;
+                        break;
+                    }
+                }
+            }
         }
     }
 

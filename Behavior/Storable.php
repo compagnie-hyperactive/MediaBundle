@@ -18,6 +18,10 @@ trait Storable
      */
     protected $file;
 
+    /**
+     * @var bool
+     */
+    protected $fallBack = false;
 
     /**
      * @return File
@@ -35,5 +39,33 @@ trait Storable
     {
         $this->file = $file;
         return $this;
+    }
+
+    /**
+     * @param bool $fallBack
+     *
+     * @return $this
+     */
+    public function setFallBack(bool $fallBack): self
+    {
+        $this->fallBack = $fallBack;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getFallBack(): bool
+    {
+        return $this->fallBack;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFallBack(): bool
+    {
+        return $this->getFallBack();
     }
 }
